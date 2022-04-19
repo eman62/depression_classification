@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/models/post_model.dart';
-import 'package:save/modules/sideBar_pages/favourite_screen/favourite_screen.dart';
-import 'package:save/modules/sideBar_pages/feedback_screen/feedback.dart';
-import 'package:save/modules/sideBar_pages/profile_screen/profile_screen.dart';
+import 'package:save/views/sideBar_pages/favourite_screen/favourite_screen.dart';
+import 'package:save/views/sideBar_pages/feedback_screen/feedback.dart';
+import 'package:save/views/sideBar_pages/profile_screen/profile_screen.dart';
 import 'package:save/shared/components/constants.dart';
 
 class HomePage extends  StatelessWidget {

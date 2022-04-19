@@ -6,13 +6,11 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:save/layout/home_layout/HOME_PAGE.dart';
 import 'package:save/layout/home_layout/admin_home_layout.dart';
 import 'package:save/layout/home_layout/home_screen.dart';
-import 'package:save/modules/login_screen/cubit/cubit.dart';
-import 'package:save/modules/login_screen/login_screen.dart';
-import 'package:save/modules/register_screen/cubit/cubit.dart';
 import 'package:save/shared/bloc_observer.dart';
 import 'package:save/shared/components/constants.dart';
 import 'package:save/shared/components/themes.dart';
 import 'package:save/shared/network/local/cache_helper.dart';
+import 'package:save/views/login_screen/login_screen.dart';
 
 import 'layout/cubit/cubit.dart';
 import 'layout/cubit/state.dart';

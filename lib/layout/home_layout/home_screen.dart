@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
-import 'package:save/modules/add_post/add_post_screen.dart';
-import 'package:save/modules/login_screen/login_screen.dart';
-import 'package:save/modules/sideBar_pages/favourite_screen/favourite_screen.dart';
-import 'package:save/modules/sideBar_pages/feedback_screen/feedback.dart';
-import 'package:save/modules/sideBar_pages/profile_screen/profile_screen.dart';
+import 'package:save/views/add_post/add_post_screen.dart';
+import 'package:save/views/login_screen/login_screen.dart';
+import 'package:save/views/sideBar_pages/favourite_screen/favourite_screen.dart';
+import 'package:save/views/sideBar_pages/feedback_screen/feedback.dart';
+import 'package:save/views/sideBar_pages/profile_screen/profile_screen.dart';
 import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
 

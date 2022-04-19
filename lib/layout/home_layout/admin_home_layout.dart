@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
-import 'package:save/modules/admin_pages/feedback/get_feedback.dart';
-import 'package:save/modules/admin_pages/posts/get_posts.dart';
-import 'package:save/modules/admin_pages/users/users_screen.dart';
-import 'package:save/modules/login_screen/login_screen.dart';
 import 'package:save/shared/components/components.dart';
+
+import '../../views/admin_pages/feedback/get_feedback.dart';
+import '../../views/admin_pages/posts/get_posts.dart';
+import '../../views/admin_pages/users/users_screen.dart';
+import '../../views/login_screen/login_screen.dart';
 
 
 class AdminHome extends StatelessWidget {

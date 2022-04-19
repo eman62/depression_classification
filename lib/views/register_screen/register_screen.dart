@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/layout/home_layout/home_screen.dart';
-import 'package:save/modules/register_screen/cubit/state.dart';
 
 import '../../shared/components/components.dart';
 import 'cubit/cubit.dart';

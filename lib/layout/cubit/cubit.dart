@@ -1,31 +1,26 @@
-
 import 'dart:io';
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/layout/home_layout/admin_home_layout.dart';
 import 'package:save/layout/home_layout/home_screen.dart';
 import 'package:save/models/feedback_model.dart';
 import 'package:save/models/post_model.dart';
 import 'package:save/models/user_model.dart';
-import 'package:save/modules/add_post/add_post_screen.dart';
-import 'package:save/modules/login_screen/login_screen.dart';
 import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../../modules/depressionState_screen/depression_screen.dart';
-import '../../modules/friends_screen/friends_screen.dart';
-import '../../modules/notification_screen/notification_screen.dart';
-import '../../modules/posts_screen/posts_screen.dart';
+import '../../views/depressionState_screen/depression_screen.dart';
+import '../../views/friends_screen/friends_screen.dart';
+import '../../views/login_screen/login_screen.dart';
+import '../../views/notification_screen/notification_screen.dart';
 import '../../shared/network/local/cache_helper.dart';
+import '../../views/add_post/add_post_screen.dart';
+import '../../views/posts_screen/posts_screen.dart';
 
 
 class AppCubit extends Cubit <AppStates>{

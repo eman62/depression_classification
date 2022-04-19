@@ -3,7 +3,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:save/models/user_model.dart';
-// import 'package:save/modules/register_screen/cubit/state.dart';
+// import 'package:save/views/register_screen/cubit/state.dart';
 //
 // class AppRegisterCubit extends Cubit <AppRegisterStates>{
 //
