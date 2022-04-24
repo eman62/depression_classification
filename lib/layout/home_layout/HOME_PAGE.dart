@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/models/post_model.dart';
-import 'package:save/views/sideBar_pages/favourite_screen/favourite_screen.dart';
-import 'package:save/views/sideBar_pages/feedback_screen/feedback.dart';
-import 'package:save/views/sideBar_pages/profile_screen/profile_screen.dart';
 import 'package:save/shared/components/constants.dart';
+
+import '../../views/user/sideBar_pages/favourite_screen/favourite_screen.dart';
+import '../../views/user/sideBar_pages/feedback_screen/feedback.dart';
+import '../../views/user/sideBar_pages/profile_screen/profile_screen.dart';
 
 class HomePage extends  StatelessWidget {
    HomePage({Key? key}) : super(key: key);
@@ -108,7 +109,8 @@ class HomePage extends  StatelessWidget {
                             fontSize: 20),),
                         onTap: () {
                           // navigateAndFinish(context, SocialLoginScreen());
-                          AppCubit.get(context).signOut(context);
+                          /// todo: sign out
+                          // AppCubit.get(context).signOut(context);
                           //  FirebaseAuth.instance.signOut();
                           //  navigateAndFinish(context, SocialLoginScreen());
                         },
@@ -127,7 +129,8 @@ class HomePage extends  StatelessWidget {
                     IconButton(
                         onPressed: () {}, icon: Icon(Icons.notifications)),
                     IconButton(onPressed: () {
-                      AppCubit.get(context).changeAppMode();
+                      // todo: app mode
+                      // AppCubit.get(context).changeAppMode();
                       // cubit.changeAppMode();
                     },
                         icon: Icon(Icons.brightness_4_outlined)),

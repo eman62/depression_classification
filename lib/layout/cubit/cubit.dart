@@ -14,20 +14,17 @@ import 'package:save/models/user_model.dart';
 import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../../views/depressionState_screen/depression_screen.dart';
-import '../../views/friends_screen/friends_screen.dart';
-import '../../views/login_screen/login_screen.dart';
-import '../../views/notification_screen/notification_screen.dart';
 import '../../shared/network/local/cache_helper.dart';
-import '../../views/add_post/add_post_screen.dart';
-import '../../views/posts_screen/posts_screen.dart';
+import '../../views/user/add_post/add_post_screen.dart';
+import '../../views/user/depressionState_screen/depression_screen.dart';
+import '../../views/user/friends_screen/friends_screen.dart';
+import '../../views/user/notification_screen/notification_screen.dart';
+import '../../views/user/posts_screen/posts_screen.dart';
 
+class AppCubit extends Cubit<AppStates> {
+  AppCubit() : super(AppInitialState());
 
-class AppCubit extends Cubit <AppStates>{
-
-  AppCubit (): super(AppInitialState());
-
-  static AppCubit get (context)=>BlocProvider.of(context);
+  static AppCubit get(context) => BlocProvider.of(context);
   AppUserModel? userModel;
 
   // void getUserData ()  {
@@ -43,31 +40,26 @@ class AppCubit extends Cubit <AppStates>{
   //       });
   //   }
 ////////////////////////
-Future <AppUserModel?> getUserData({String? uId}) async {
+  Future<AppUserModel?> getUserData({String? uId}) async {
     emit(AppGetUserLoadingState());
-  await  FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .get()
-        .then((value) {
-          print (' here');
-          print(value.data()!);
-        //  print(value.data().runtimeType);
+    await FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      print(' here');
+      print(value.data()!);
+      //  print(value.data().runtimeType);
 
       userModel = AppUserModel.fromJson(value.data()!);
 
       //print (userModel!.uId);
-     // print (userModel!.admin);
+      // print (userModel!.admin);
       emit(AppGetUserSuccessState());
       return userModel;
-    })
-        .catchError((error){
+    }).catchError((error) {
       emit(AppGetUserErrorState(error.toString()));
     });
   }
-  
+
 /////////////////////////////
-  int currentIndex =0;
+  int currentIndex = 0;
 
   // List <BottomNavigationBarItem> bottomItems =[
   //   BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
@@ -76,15 +68,36 @@ Future <AppUserModel?> getUserData({String? uId}) async {
   //   BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Status'),
   // ];
 
-  List <TabItem> bottomItems2 =[
-     TabItem(icon: Icon(Icons.home,),title: 'Home', ),
-     TabItem (icon: Icon(Icons.notifications,),title: 'Notifications'),
-     TabItem (icon: Icon(Icons.upload_file,),title: 'Post'),
-     TabItem(icon: Icon(Icons.people_alt_rounded,),title: 'Friends'),
-     TabItem(icon: Icon(Icons.person,),title: 'Status'),
+  List<TabItem> bottomItems2 = [
+    TabItem(
+      icon: Icon(
+        Icons.home,
+      ),
+      title: 'Home',
+    ),
+    TabItem(
+        icon: Icon(
+          Icons.notifications,
+        ),
+        title: 'Notifications'),
+    TabItem(
+        icon: Icon(
+          Icons.upload_file,
+        ),
+        title: 'Post'),
+    TabItem(
+        icon: Icon(
+          Icons.people_alt_rounded,
+        ),
+        title: 'Friends'),
+    TabItem(
+        icon: Icon(
+          Icons.person,
+        ),
+        title: 'Status'),
   ];
 
-  List <Widget> Screens = [
+  List<Widget> Screens = [
     const PostsScreen(),
     const NotificationScreen(),
     NewPostScreen(),
@@ -92,7 +105,7 @@ Future <AppUserModel?> getUserData({String? uId}) async {
     const FriendsScreen(),
     const DepressionStateScreen(),
   ];
-  List<String>name =[
+  List<String> name = [
     'Home',
     'Notifications',
     'Add Post',
@@ -100,267 +113,220 @@ Future <AppUserModel?> getUserData({String? uId}) async {
     'Status',
   ];
 
-  void changeBottomNavBar (int index){
-
-   // currentIndex =index;
-    if(index==2) {
-
-     // currentIndex =0;
-      currentIndex =index;
+  void changeBottomNavBar(int index) {
+    // currentIndex =index;
+    if (index == 2) {
+      // currentIndex =0;
+      currentIndex = index;
       emit(AppNewPostState());
-    }
-    else {
+    } else {
       //currentIndex = 2;
-      currentIndex =index;
+      currentIndex = index;
       emit(AppBottomNavState());
     }
   }
+
   ////////////////////////////////
   File? profileImage;
   var picker = ImagePicker();
 
-  Future <void>getProfileImage ()async
-  {
+  Future<void> getProfileImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      profileImage = File (pickedFile.path);
+      profileImage = File(pickedFile.path);
       emit(AppProfileImagePickedSuccessState());
-    }
-    else {
-      print ('no image selected');
+    } else {
+      print('no image selected');
       emit(AppProfileImagePickedErrorState());
     }
   }
-  
 
   void uploadProfileImage({
-
     required String name,
     required String email,
     required String age,
     required String phone,
-}) {
-    firebase_storage.FirebaseStorage.instance.ref().
-    child('users/${Uri.file(profileImage!.path).pathSegments.last}').
-    putFile(profileImage!).
-    then((value){
-
-      value.ref.getDownloadURL().
-      then((value) {
+  }) {
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .putFile(profileImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
         emit(updateProfileImageSuccessState());
         print(value);
-        updateUser(name: name, email: email, age: age, phone: phone,image: value);
-      }).
-      catchError((error){
+        updateUser(name: name, email: email, age: age, phone: phone, image: value);
+      }).catchError((error) {
         emit(updateProfileImageErrorState());
       });
-    }).
-    catchError((error){
+    }).catchError((error) {
       emit(updateProfileImageErrorState());
     });
   }
 
-  void updateUser (
-  {
+  void updateUser({
     required String name,
     required String email,
     required String age,
     required String phone,
     String? image,
-}) {
+  }) {
     emit(updateUserLoadingState());
     // if (profileImage != null) {
     //   uploadProfileImage();
     // } else {
-      AppUserModel model = AppUserModel(
-        email: email,
-        name: name,
-        phone: phone,
-        age: age,
-        image: image ?? userModel!.image,
-        uId: userModel!.uId,
-        isEmailVerified: false,
-
-      );
-      FirebaseFirestore.instance.collection('users')
-          .doc(userModel!.uId)
-          .update(model.toMap())
-          .then((value) {
-           getUserData(uId: userModel?.uId);
-      })
-          .catchError((error){
-        emit(updateUserErrorState());
-      });
+    AppUserModel model = AppUserModel(
+      email: email,
+      name: name,
+      phone: phone,
+      age: age,
+      image: image ?? userModel!.image,
+      uId: userModel!.uId,
+      isEmailVerified: false,
+    );
+    FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update(model.toMap()).then((value) {
+      getUserData(uId: userModel?.uId);
+    }).catchError((error) {
+      emit(updateUserErrorState());
+    });
     //}
   }
 
   /////////////////////////////////
 
-  File ? postImage;
+  File? postImage;
 
-  Future <void> getPostImage () async {
+  Future<void> getPostImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
       emit(AppPostImagePickedSuccessState());
-    }
-    else {
-      print ('no image selected');
+    } else {
+      print('no image selected');
       emit(AppPostImagePickedErrorState());
     }
   }
 
-  void removePostImage () {
+  void removePostImage() {
     postImage = null;
     emit(AppRemovePostImageState());
   }
+
 /////////////////////////////////// error
-  void uploadPostImage ({
+  void uploadPostImage({
     required String dateTime,
     required String text,
-}) {
+  }) {
     emit(AppCreatePostLoadingState());
-    firebase_storage.FirebaseStorage.instance.ref()
+    firebase_storage.FirebaseStorage.instance
+        .ref()
         .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
         .putFile(postImage!)
         .then((value) {
-          value.ref.getDownloadURL().then((value){
-            print(value);
-            createPost(dateTime: dateTime, text: text,postImage: value);
-          }).catchError((error){
-
-            emit(AppCreatePostErrorState(error.toString()));
-          });
-    })
-        .catchError((error){
-
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        createPost(dateTime: dateTime, text: text, postImage: value);
+      }).catchError((error) {
+        emit(AppCreatePostErrorState(error.toString()));
+      });
+    }).catchError((error) {
       emit(AppCreatePostErrorState(error.toString()));
     });
   }
 
-  void createPost (
-      {
-        required String dateTime,
-        required String text,
-        String? postImage,
-      }
-      ) {
+  void createPost({
+    required String dateTime,
+    required String text,
+    String? postImage,
+  }) {
     emit(AppCreatePostLoadingState());
-      PostModel model = PostModel(
-        name: userModel!.name,
-        image:userModel!.image,
-        uId: userModel!.uId,
-        dateTime: dateTime,
-        text: text,
-        postImage: postImage ??'',
-      );
-      FirebaseFirestore.instance.collection('posts')
-          .add(model.toMap())
-          .then((value) {
-            emit(AppCreatePostSuccessState());
-      })
-          .catchError((error){
-        emit(AppCreatePostErrorState(error.toString()));
-      });
-    }
-
-    ////////////////
-
-  List<PostModel> posts = [];
-  List<String> postsId= [];
-  List<int> likes= [];
-  void getPosts () {
-    if (posts.length == 0 )
-      FirebaseFirestore.instance
-          .collection('posts')
-          .snapshots()
-          .listen((event) {
-           posts =[];
-           //postsId =[];
-            event.docs.forEach((element) {
-       //  posts =[];
-             element.reference
-             .collection('likes')
-            .snapshots()
-         .listen((event) {
-        //   postsId =[];
-          //  likes = [];
-           likes.add(event.docs.length);
-          postsId.add(element.id);
-           posts.add(PostModel.fromJson(element.data()));});
-       // posts =[];
-     });
-        emit(AppGetPostsSuccessState());
-
-      });
+    PostModel model = PostModel(
+      name: userModel!.name,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+      postImage: postImage ?? '',
+    );
+    FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
+      emit(AppCreatePostSuccessState());
+    }).catchError((error) {
+      emit(AppCreatePostErrorState(error.toString()));
+    });
   }
 
+  ////////////////
 
+  List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<int> likes = [];
+  void getPosts() {
+    if (posts.length == 0)
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+        posts = [];
+        //postsId =[];
+        event.docs.forEach((element) {
+          //  posts =[];
+          element.reference.collection('likes').snapshots().listen((event) {
+            //   postsId =[];
+            //  likes = [];
+            likes.add(event.docs.length);
+            postsId.add(element.id);
+            posts.add(PostModel.fromJson(element.data()));
+          });
+          // posts =[];
+        });
+        emit(AppGetPostsSuccessState());
+      });
+  }
 
   ///////////////////////////////
 
-  void likePosts(String postId){
-
-    FirebaseFirestore.instance
-        .collection('posts')
-        .doc(postId)
-        .collection('likes')
-        .doc(userModel!.uId)
-        .set({
-      'like' : true,
-    })
-        .then((value) {
-          emit(AppLikePostsSuccessState());
-    })
-        .catchError((error){
-          emit(AppLikePostsErrorState(error.toString()));
+  void likePosts(String postId) {
+    FirebaseFirestore.instance.collection('posts').doc(postId).collection('likes').doc(userModel!.uId).set({
+      'like': true,
+    }).then((value) {
+      emit(AppLikePostsSuccessState());
+    }).catchError((error) {
+      emit(AppLikePostsErrorState(error.toString()));
     });
   }
 
   /////////////////////////////////
 
-  List <AppUserModel> users =[];
+  List<AppUserModel> users = [];
 
   void getUsers() {
-  if (users.length ==0)
-    FirebaseFirestore.instance
-        .collection('users')
-     //   .get()
-    .snapshots()
-    .listen((event) {
-      users =[];
-      event.docs.forEach((element) {
-      if (element.data()['uId'] != userModel?.uId)
-        users.add(AppUserModel.fromJson(element.data()));
-    });
-    emit(AppGetAllUserSuccessState());
-
-    });
-
-
+    if (users.length == 0)
+      FirebaseFirestore.instance
+          .collection('users')
+          //   .get()
+          .snapshots()
+          .listen((event) {
+        users = [];
+        event.docs.forEach((element) {
+          if (element.data()['uId'] != userModel?.uId) users.add(AppUserModel.fromJson(element.data()));
+        });
+        emit(AppGetAllUserSuccessState());
+      });
   }
-  
+
   /////////////////////////////////
 
-  void sendFeedback (
-      {
-        required String text,
-      }
-      ) {
+  void sendFeedback({
+    required String text,
+  }) {
     emit(AppCreatePostLoadingState());
     FeedbackModel model = FeedbackModel(
       name: userModel!.name,
-      image:userModel!.image,
+      image: userModel!.image,
       uId: userModel!.uId,
       text: text,
     );
-    FirebaseFirestore.instance.collection('feedback')
-        .add(model.toMap())
-        .then((value) {
+    FirebaseFirestore.instance.collection('feedback').add(model.toMap()).then((value) {
       emit(AppSendFeedbackSuccessState());
-    })
-        .catchError((error){
+    }).catchError((error) {
       emit(AppSendFeedbackErrorState(error.toString()));
     });
   }
@@ -368,104 +334,94 @@ Future <AppUserModel?> getUserData({String? uId}) async {
   List<FeedbackModel> feedback = [];
 
   void getFeedbacks() {
-  if (feedback.length ==0)
-    FirebaseFirestore.instance
-        .collection('feedback')
-        .snapshots()
-        .listen((event) {
-      feedback = [];
-          event.docs.forEach((element) {
-      feedback.add(FeedbackModel.fromJson(element.data()));
-    });
-          emit(AppGetFeedbackSuccessState());
+    if (feedback.length == 0)
+      FirebaseFirestore.instance.collection('feedback').snapshots().listen((event) {
+        feedback = [];
+        event.docs.forEach((element) {
+          feedback.add(FeedbackModel.fromJson(element.data()));
         });
-
-
-
-
-
+        emit(AppGetFeedbackSuccessState());
+      });
   }
+
   /////////////////////////////////
-  bool isDark=false;
+  // bool isDark = false;
   // ThemeMode appMode =ThemeMode.dark;
 
-  void changeAppMode ({bool? fromShared}){
-    if (fromShared !=null) {
-      isDark = fromShared;
-      emit(AppChangeModeState());
-    }
-    else {
-      isDark = !isDark;
-      CacheHelper.putData(key: 'isDark', value: isDark).then((value) {
-        emit(AppChangeModeState());
-      });
-    }
-  }
+  // void changeAppMode({bool? fromShared}) {
+  //   if (fromShared != null) {
+  //     isDark = fromShared;
+  //     emit(AppChangeModeState());
+  //   } else {
+  //     isDark = !isDark;
+  //     CacheHelper.putData(key: 'isDark', value: isDark).then((value) {
+  //       emit(AppChangeModeState());
+  //     });
+  //   }
+  // }
+
   ////////////////////////////////////
-  IconData suffix = Icons.visibility;
-  bool IsPassword = true;
+  // IconData suffix = Icons.visibility;
+  // bool IsPassword = true;
+  //
+  // void ChangePasswordVisibality() {
+  //   IsPassword = !IsPassword;
+  //   suffix = IsPassword ? Icons.visibility : Icons.visibility_off;
+  //   emit(AppChangePasswordVisibilityState());
+  // }
 
-  void ChangePasswordVisibality(){
-    IsPassword =!IsPassword;
-    suffix =IsPassword? Icons.visibility:Icons.visibility_off;
-    emit(AppChangePasswordVisibilityState());
-
-  }
-
- Future <void> userLogin (context,{
-    required String email,
-    required String password,
-  })async {
-    try {
-      emit(AppLoginLoadingStates());
-      var value =
-        await  FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password  );
-      AppUserModel? user = await getUserData(uId: value.user!.uid);
-      print ('hello');
-      print (user);
-      await  CacheHelper.saveData(key: 'admin', value:user!.admin );
-      await   CacheHelper.saveData(key: 'uId', value: value.user!.uid );
-      emit(AppLoginSuccessStates(value.user!.uid));
-    } on Exception catch (e,stacktrace) {
-      print(e.toString());
-      print (stacktrace);
-      // TODO
-    }
-   // .then((value){
-   // if (user.admin == true) {
-   //   navigateAndFinish(context, AdminHome());
-   // }
-   // else{
-   //   navigateAndFinish(context, HomeScreen());
-   // }
-
-
-    //     .then((value)async{
-    //    //   print (value.user!.email);
-    //
-    // // print (user.admin);
-    //
-    //      // print ('login screen');
-    //      // print (AppCubit.get(context).userModel!.admin!);
-    //
-    //      // print (state.uId);
-    //
-    //    // });
-    //   ////////////////////////////
-    //   //FirebaseFirestore.instance.collection('users').where('email',isEqualTo:value.user!.email).get();
-    //
-    // //  getUserData();
-    //  // CacheHelper.saveData(key: 'uId', value: value.user?.uid);
-    //  // print (userModel?.email);
-    //  // print (value.user!.uid);
-    //  // return value.user!.uid;
-    //    emit(AppLoginSuccessStates(value.user!.uid));
-    // })
-    //     .catchError((error){
-    //   emit(AppLoginErrorStates(error.toString()));
-    // });
-
-  }
+  // Future<void> userLogin(
+  //   context, {
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   try {
+  //     emit(AppLoginLoadingStates());
+  //     var value = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+  //     AppUserModel? user = await getUserData(uId: value.user!.uid);
+  //     print('hello');
+  //     print(user);
+  //     await CacheHelper.saveData(key: 'admin', value: user!.admin);
+  //     await CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+  //     emit(AppLoginSuccessStates(value.user!.uid));
+  //   } on Exception catch (e, stacktrace) {
+  //     print(e.toString());
+  //     print(stacktrace);
+  //     // TODO
+  //   }
+  //   // .then((value){
+  //   // if (user.admin == true) {
+  //   //   navigateAndFinish(context, AdminHome());
+  //   // }
+  //   // else{
+  //   //   navigateAndFinish(context, HomeScreen());
+  //   // }
+  //
+  //   //     .then((value)async{
+  //   //    //   print (value.user!.email);
+  //   //
+  //   // // print (user.admin);
+  //   //
+  //   //      // print ('login screen');
+  //   //      // print (AppCubit.get(context).userModel!.admin!);
+  //   //
+  //   //      // print (state.uId);
+  //   //
+  //   //    // });
+  //   //   ////////////////////////////
+  //   //   //FirebaseFirestore.instance.collection('users').where('email',isEqualTo:value.user!.email).get();
+  //   //
+  //   // //  getUserData();
+  //   //  // CacheHelper.saveData(key: 'uId', value: value.user?.uid);
+  //   //  // print (userModel?.email);
+  //   //  // print (value.user!.uid);
+  //   //  // return value.user!.uid;
+  //   //    emit(AppLoginSuccessStates(value.user!.uid));
+  //   // })
+  //   //     .catchError((error){
+  //   //   emit(AppLoginErrorStates(error.toString()));
+  //   // });
+  // }
 ////////////////////////////////////////////
 
   // IconData suffix = Icons.visibility;
@@ -478,72 +434,63 @@ Future <AppUserModel?> getUserData({String? uId}) async {
   //
   // }
 ////////////////////////////////////////
-  void UserRegister({
-    required String name,
-    required String phone,
-    required String age,
-    required String email,
-    required String password,
-    required String twitter,
-
-  })
-  {
-    emit(AppRegisterLoadingState());
-    FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    ).then((value) {
-      userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId:value.user!.uid);
-     // CacheHelper.saveData(key: 'uId', value: value.user!.uid);
-    }).catchError((error)
-    {
-      print (error.toString());
-      emit(AppRegisterErrorState(error.toString()));
-    });
-  }
-
-////////////////////////////////
-  void userCreate ({
-    required String name,
-    required String phone,
-    required String age,
-    required String email,
-    required String twitter,
-    required String uId,
-  }){
-    AppUserModel model = AppUserModel(
-      email: email,
-      name: name,
-      phone: phone,
-      age: age,
-      twitter: twitter,
-      uId: uId,
-      image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg',
-      isEmailVerified: false,
-      admin: false,
-    );
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .set(model.toMap())
-        .then((value) {
-      emit(AppCreateUserSuccessState());
-    })
-        .catchError((error){
-      emit(AppCreateUserErrorState(error.toString()));
-    });
-  }
-
-
-
-///////////////////////////////////////
-  void signOut (context)async{
-  await  FirebaseAuth.instance.signOut();
-   await CacheHelper.reset();
-  navigateAndFinish(context, SocialLoginScreen());
-  }
-
+//   void UserRegister({
+//     required String name,
+//     required String phone,
+//     required String age,
+//     required String email,
+//     required String password,
+//     required String twitter,
+//   }) {
+//     emit(AppRegisterLoadingState());
+//     FirebaseAuth.instance
+//         .createUserWithEmailAndPassword(
+//       email: email,
+//       password: password,
+//     )
+//         .then((value) {
+//       userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId: value.user!.uid);
+//       // CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+//     }).catchError((error) {
+//       print(error.toString());
+//       emit(AppRegisterErrorState(error.toString()));
+//     });
+//   }
+//
+// ////////////////////////////////
+//   void userCreate({
+//     required String name,
+//     required String phone,
+//     required String age,
+//     required String email,
+//     required String twitter,
+//     required String uId,
+//   }) {
+//     AppUserModel model = AppUserModel(
+//       email: email,
+//       name: name,
+//       phone: phone,
+//       age: age,
+//       twitter: twitter,
+//       uId: uId,
+//       image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg',
+//       isEmailVerified: false,
+//       admin: false,
+//     );
+//
+//     FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {
+//       emit(AppCreateUserSuccessState());
+//     }).catchError((error) {
+//       emit(AppCreateUserErrorState(error.toString()));
+//     });
+//   }
+//
+// ///////////////////////////////////////
+//   void signOut(context) async {
+//     await FirebaseAuth.instance.signOut();
+//     await CacheHelper.reset();
+//     navigateAndFinish(context, SocialLoginScreen());
+//   }
 
 ////////////////////
 }

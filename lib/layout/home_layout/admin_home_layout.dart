@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/shared/components/components.dart';
-
-import '../../views/admin_pages/feedback/get_feedback.dart';
-import '../../views/admin_pages/posts/get_posts.dart';
-import '../../views/admin_pages/users/users_screen.dart';
-import '../../views/login_screen/login_screen.dart';
+import '../../views/admin/feedback/get_feedback.dart';
+import '../../views/admin/posts/get_posts.dart';
+import '../../views/admin/users/users_screen.dart';
+import '../../views/auth/login_screen.dart';
 
 
 class AdminHome extends StatelessWidget {
