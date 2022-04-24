@@ -15,11 +15,11 @@ import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../shared/network/local/cache_helper.dart';
-import '../../views/user/add_post/add_post_screen.dart';
-import '../../views/user/depressionState_screen/depression_screen.dart';
-import '../../views/user/friends_screen/friends_screen.dart';
-import '../../views/user/notification_screen/notification_screen.dart';
-import '../../views/user/posts_screen/posts_screen.dart';
+import '../../views/02_user/add_post/add_post_screen.dart';
+import '../../views/02_user/depressionState_screen/depression_screen.dart';
+import '../../views/02_user/friends_screen/friends_screen.dart';
+import '../../views/02_user/notification_screen/notification_screen.dart';
+import '../../views/02_user/posts_screen/posts_screen.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -50,7 +50,7 @@ class AppCubit extends Cubit<AppStates> {
       userModel = AppUserModel.fromJson(value.data()!);
 
       //print (userModel!.uId);
-      // print (userModel!.admin);
+      // print (userModel!.03_admin);
       emit(AppGetUserSuccessState());
       return userModel;
     }).catchError((error) {
@@ -378,19 +378,19 @@ class AppCubit extends Cubit<AppStates> {
   //   try {
   //     emit(AppLoginLoadingStates());
   //     var value = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-  //     AppUserModel? user = await getUserData(uId: value.user!.uid);
+  //     AppUserModel? 02_user = await getUserData(uId: value.02_user!.uid);
   //     print('hello');
-  //     print(user);
-  //     await CacheHelper.saveData(key: 'admin', value: user!.admin);
-  //     await CacheHelper.saveData(key: 'uId', value: value.user!.uid);
-  //     emit(AppLoginSuccessStates(value.user!.uid));
+  //     print(02_user);
+  //     await CacheHelper.saveData(key: '03_admin', value: 02_user!.03_admin);
+  //     await CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
+  //     emit(AppLoginSuccessStates(value.02_user!.uid));
   //   } on Exception catch (e, stacktrace) {
   //     print(e.toString());
   //     print(stacktrace);
   //     // TODO
   //   }
   //   // .then((value){
-  //   // if (user.admin == true) {
+  //   // if (02_user.03_admin == true) {
   //   //   navigateAndFinish(context, AdminHome());
   //   // }
   //   // else{
@@ -398,25 +398,25 @@ class AppCubit extends Cubit<AppStates> {
   //   // }
   //
   //   //     .then((value)async{
-  //   //    //   print (value.user!.email);
+  //   //    //   print (value.02_user!.email);
   //   //
-  //   // // print (user.admin);
+  //   // // print (02_user.03_admin);
   //   //
   //   //      // print ('login screen');
-  //   //      // print (AppCubit.get(context).userModel!.admin!);
+  //   //      // print (AppCubit.get(context).userModel!.03_admin!);
   //   //
   //   //      // print (state.uId);
   //   //
   //   //    // });
   //   //   ////////////////////////////
-  //   //   //FirebaseFirestore.instance.collection('users').where('email',isEqualTo:value.user!.email).get();
+  //   //   //FirebaseFirestore.instance.collection('users').where('email',isEqualTo:value.02_user!.email).get();
   //   //
   //   // //  getUserData();
-  //   //  // CacheHelper.saveData(key: 'uId', value: value.user?.uid);
+  //   //  // CacheHelper.saveData(key: 'uId', value: value.02_user?.uid);
   //   //  // print (userModel?.email);
-  //   //  // print (value.user!.uid);
-  //   //  // return value.user!.uid;
-  //   //    emit(AppLoginSuccessStates(value.user!.uid));
+  //   //  // print (value.02_user!.uid);
+  //   //  // return value.02_user!.uid;
+  //   //    emit(AppLoginSuccessStates(value.02_user!.uid));
   //   // })
   //   //     .catchError((error){
   //   //   emit(AppLoginErrorStates(error.toString()));
@@ -449,8 +449,8 @@ class AppCubit extends Cubit<AppStates> {
 //       password: password,
 //     )
 //         .then((value) {
-//       userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId: value.user!.uid);
-//       // CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+//       userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId: value.02_user!.uid);
+//       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
 //     }).catchError((error) {
 //       print(error.toString());
 //       emit(AppRegisterErrorState(error.toString()));
@@ -475,7 +475,7 @@ class AppCubit extends Cubit<AppStates> {
 //       uId: uId,
 //       image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg',
 //       isEmailVerified: false,
-//       admin: false,
+//       03_admin: false,
 //     );
 //
 //     FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {

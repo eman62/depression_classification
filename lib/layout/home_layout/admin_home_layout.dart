@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/shared/components/components.dart';
-import '../../views/admin/feedback/get_feedback.dart';
-import '../../views/admin/posts/get_posts.dart';
-import '../../views/admin/users/users_screen.dart';
-import '../../views/auth/login_screen.dart';
 
+import '../../views/01_auth/login_screen.dart';
+import '../../views/03_admin/feedback/get_feedback.dart';
+import '../../views/03_admin/posts/get_posts.dart';
+import '../../views/03_admin/users/users_screen.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({Key? key}) : super(key: key);

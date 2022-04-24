@@ -9,7 +9,7 @@ import 'package:save/layout/home_layout/home_screen.dart';
 import '../models/user_model.dart';
 import '../shared/components/components.dart';
 import '../shared/network/local/cache_helper.dart';
-import '../views/auth/login_screen.dart';
+import '../views/01_auth/login_screen.dart';
 
 class AppController extends GetxController {
   bool isDark = false;
@@ -67,7 +67,7 @@ class AppController extends GetxController {
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
-      await CacheHelper.saveData(key: 'admin', value: user!.admin);
+      await CacheHelper.saveData(key: '03_admin', value: user!.admin);
       await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
 
       print('/// NAME: ${user.name}');
@@ -75,7 +75,7 @@ class AppController extends GetxController {
       print('/// EMAIL: ${user.email}');
 
       // todo: re-activate
-      // navigate(user.admin!);
+      // navigate(02_user.03_admin!);
 
       changeIsLoadingLoginState(false);
     } on Exception catch (e) {
@@ -117,7 +117,7 @@ class AppController extends GetxController {
     )
         .then((value) {
       userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId: value.user!.uid);
-      // CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+      // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
       print(e.toString());
       showToast(text: e.toString(), state: ToastStates.ERROR);

@@ -5,7 +5,7 @@ import 'package:save/shared/components/constants.dart';
 import 'package:save/shared/components/themes.dart';
 import 'package:save/shared/network/local/cache_helper.dart';
 import 'package:save/view_controllers/app_controller.dart';
-import 'package:save/views/auth/login_screen.dart';
+import 'package:save/views/01_auth/login_screen.dart';
 
 void main(context) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ void main(context) async {
   isAdmin = null;
   token = '';
   uId = await CacheHelper.getData(key: 'uId');
-  isAdmin = await CacheHelper.getData(key: 'admin');
+  isAdmin = await CacheHelper.getData(key: '03_admin');
   // token = await CacheHelper.getData(key: 'token'); // todo: not yet implemented
 
   print('/// saved uId: $uId');
@@ -39,9 +39,7 @@ void main(context) async {
 
   widget = SocialLoginScreen();
 
-
   runApp(MyApp(isDark: isDark, startWidget: widget));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -53,7 +51,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GetMaterialApp(
       title: 'Depression Classification',
       debugShowCheckedModeBanner: false,
@@ -64,6 +61,5 @@ class MyApp extends StatelessWidget {
       // home: startWidget,
       home: startWidget,
     );
-
   }
 }

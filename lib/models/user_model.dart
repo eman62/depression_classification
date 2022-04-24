@@ -29,7 +29,7 @@ class AppUserModel {
      uId =json['uId'];
      image =json['image'];
      isEmailVerified =json['isEmailVerified'];
-     admin =json['admin'];
+     admin =json['03_admin'];
    }
     Map <String,dynamic> toMap(){
      return {
@@ -41,7 +41,7 @@ class AppUserModel {
        'twitter':twitter,
        'uId':uId,
        'isEmailVerified':isEmailVerified,
-       'admin':admin,
+       '03_admin':admin,
 
      };
    }

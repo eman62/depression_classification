@@ -5,10 +5,9 @@ import 'package:save/layout/cubit/cubit.dart';
 import 'package:save/layout/cubit/state.dart';
 import 'package:save/models/post_model.dart';
 import 'package:save/shared/components/constants.dart';
-
-import '../../views/user/sideBar_pages/favourite_screen/favourite_screen.dart';
-import '../../views/user/sideBar_pages/feedback_screen/feedback.dart';
-import '../../views/user/sideBar_pages/profile_screen/profile_screen.dart';
+import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
+import '../../views/02_user/sideBar_pages/feedback_screen/feedback.dart';
+import '../../views/02_user/sideBar_pages/profile_screen/profile_screen.dart';
 
 class HomePage extends  StatelessWidget {
    HomePage({Key? key}) : super(key: key);
