@@ -66,7 +66,7 @@ class AppController extends GetxController {
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
-      await CacheHelper.saveData(key: '03_admin', value: user!.admin);
+      await CacheHelper.saveData(key: 'admin', value: user!.admin);
       await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
 
       print('/// NAME: ${user.name}');
@@ -84,7 +84,7 @@ class AppController extends GetxController {
   }
 
   navigate(bool isAdmin) {
-    isAdmin ? Get.offAll(const AdminHome()) : Get.offAll(HomeScreen());
+    isAdmin ? Get.offAll(const AdminHome()) : Get.offAll(const HomeScreen());
   }
 
   getUserData({String? uId}) async {

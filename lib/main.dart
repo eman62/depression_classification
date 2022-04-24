@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:save/helpers/cache_helper.dart';
 import 'package:save/view_controllers/app_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
+import 'package:save/views/02_user/home_screen.dart';
+import 'package:save/views/03_admin/admin_home_layout.dart';
 
 import 'helpers/constants.dart';
 import 'style/themes.dart';
@@ -21,23 +23,23 @@ void main(context) async {
   isAdmin = null;
   token = '';
   uId = await CacheHelper.getData(key: 'uId');
-  isAdmin = await CacheHelper.getData(key: '03_admin');
+  isAdmin = await CacheHelper.getData(key: 'admin');
   // token = await CacheHelper.getData(key: 'token'); // todo: not yet implemented
 
   print('/// saved uId: $uId');
   print('/// saved isAdmin: $isAdmin');
 
-  // todo: re-activate Home Screen selection
-  // if (uId != null) {
-  //   if (isAdmin!) {
-  //     widget = const AdminHome();
-  //   } else {
-  //     widget = HomeScreen();
-  //   }
-  // } else {
-  //   widget = SocialLoginScreen();
-  // }
+  if (uId != null) {
+    if (isAdmin!) {
+      widget = const AdminHome();
+    } else {
+      widget = const HomeScreen();
+    }
+  } else {
+    widget = SocialLoginScreen();
+  }
 
+  // todo: remove
   widget = SocialLoginScreen();
 
   runApp(MyApp(isDark: isDark, startWidget: widget));
