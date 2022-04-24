@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:save/shared/components/constants.dart';
-import 'package:save/shared/components/themes.dart';
-import 'package:save/shared/network/local/cache_helper.dart';
+import 'package:save/helpers/cache_helper.dart';
 import 'package:save/view_controllers/app_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
+
+import 'helpers/components/constants.dart';
+import 'helpers/components/themes.dart';
 
 void main(context) async {
   WidgetsFlutterBinding.ensureInitialized();

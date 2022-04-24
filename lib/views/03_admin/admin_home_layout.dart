@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:save/shared/components/components.dart';
-
 import '../../cubit/cubit.dart';
 import '../../cubit/state.dart';
+import '../../helpers/components/components.dart';
 import '../01_auth/login_screen.dart';
 import 'feedback/get_feedback.dart';
 import 'posts/get_posts.dart';

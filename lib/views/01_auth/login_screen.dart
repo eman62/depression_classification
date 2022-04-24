@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/app_controller.dart';
-import '../../shared/components/components.dart';
+import '../../helpers/components/components.dart';
 import 'register_screen.dart';
 import 'package:get/get.dart';
 

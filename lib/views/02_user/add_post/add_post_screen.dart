@@ -1,11 +1,10 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:save/shared/components/components.dart';
-import 'package:save/shared/components/constants.dart';
 
 import '../../../cubit/cubit.dart';
 import '../../../cubit/state.dart';
+import '../../../helpers/components/constants.dart';
 
 class NewPostScreen extends StatelessWidget {
   // const NewPostScreen({Key? key}) : super(key: key);
