@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../cubit/cubit.dart';
 import '../../../../cubit/state.dart';
-import '../../../../helpers/components/constants.dart';
+import '../../../../helpers/constants.dart';
 import '../../edit_profile/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget  {

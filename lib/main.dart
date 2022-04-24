@@ -5,8 +5,8 @@ import 'package:save/helpers/cache_helper.dart';
 import 'package:save/view_controllers/app_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
 
-import 'helpers/components/constants.dart';
-import 'helpers/components/themes.dart';
+import 'helpers/constants.dart';
+import 'style/themes.dart';
 
 void main(context) async {
   WidgetsFlutterBinding.ensureInitialized();

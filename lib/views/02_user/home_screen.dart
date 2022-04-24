@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/cubit.dart';
 import '../../cubit/state.dart';
-import '../../helpers/components/constants.dart';
+import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
 import '../../views/02_user/sideBar_pages/feedback_screen/feedback.dart';
 import '../../views/02_user/sideBar_pages/profile_screen/profile_screen.dart';

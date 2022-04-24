@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubit/cubit.dart';
 import '../../../cubit/state.dart';
-import '../../../helpers/components/constants.dart';
+import '../../../helpers/constants.dart';
 
 class NewPostScreen extends StatelessWidget {
   // const NewPostScreen({Key? key}) : super(key: key);

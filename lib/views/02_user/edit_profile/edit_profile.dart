@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../cubit/cubit.dart';
 import '../../../cubit/state.dart';
-import '../../../helpers/components/components.dart';
-import '../../../helpers/components/constants.dart';
+import '../../widgets/components.dart';
+import '../../../helpers/constants.dart';
 
 class editProfileScreen extends StatelessWidget {
     // const editProfileScreen({Key? key}) : super(key: key);

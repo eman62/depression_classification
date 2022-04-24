@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'constants.dart';
+import '../helpers/constants.dart';
 
 ThemeData darkMode = ThemeData(
   iconTheme: IconThemeData(color: Colors.black54),
-  inputDecorationTheme: InputDecorationTheme (
+  inputDecorationTheme: InputDecorationTheme(
     //  fillColor: Colors.white,
     // filled: true,
     labelStyle: TextStyle(color: Colors.grey),
@@ -19,20 +19,22 @@ ThemeData darkMode = ThemeData(
     backgroundColor: HexColor('333739'),
   ),
   primarySwatch: defaultColor,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor:defaultColor),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: defaultColor),
   primaryColor: defaultColor,
   scaffoldBackgroundColor: HexColor('333739'),
-  cardTheme: CardTheme(color:  HexColor('#525252'),),
+  cardTheme: CardTheme(
+    color: HexColor('#525252'),
+  ),
   appBarTheme: AppBarTheme(
-    titleTextStyle: TextStyle(color: Colors.white,),
-    backgroundColor:HexColor('#525252'),
-    elevation:20,
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+    ),
+    backgroundColor: HexColor('#525252'),
+    elevation: 20,
     iconTheme: IconThemeData(color: Colors.white),
     systemOverlayStyle: SystemUiOverlayStyle(
-
       statusBarIconBrightness: Brightness.light,
       statusBarColor: HexColor('333739'),
-
     ),
     // textTheme: TextTheme (
     //   bodyText1: TextStyle(
@@ -58,25 +60,22 @@ ThemeData darkMode = ThemeData(
       // fontSize: 17.0,
       fontWeight: FontWeight.bold,
       color: Colors.grey,
-
     ),
   ),
-
 );
 
 ThemeData lightMode = ThemeData(
   primarySwatch: defaultColor,
   primaryColor: defaultColor,
   //  scaffoldBackgroundColor: Colors.white,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor:defaultColor),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: defaultColor),
   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
   //   type: BottomNavigationBarType.fixed,
   //   backgroundColor: defaultColor,
   //   selectedItemColor: defaultColor,
   // ),
   iconTheme: IconThemeData(color: Colors.grey[400]),
-  drawerTheme: const DrawerThemeData(
-  ),
+  drawerTheme: const DrawerThemeData(),
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(color: Colors.white),
     systemOverlayStyle: SystemUiOverlayStyle(
@@ -85,20 +84,20 @@ ThemeData lightMode = ThemeData(
     ),
     backgroundColor: defaultColor,
     elevation: 0,
-    titleTextStyle: TextStyle(color: Colors.white,),
-
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+    ),
   ),
 
   textTheme: TextTheme(
     bodyText1: TextStyle(
       fontSize: 17.0,
       color: Colors.black,
-    ),headline4: TextStyle(
-    // fontSize: 25.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black54,
+    ),
+    headline4: TextStyle(
+      // fontSize: 25.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black54,
+    ),
   ),
-
-  ),
-
 );

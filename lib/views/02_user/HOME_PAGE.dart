@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/models/post_model.dart';
 import '../../cubit/cubit.dart';
 import '../../cubit/state.dart';
-import '../../helpers/components/constants.dart';
+import '../../helpers/constants.dart';
 import 'sideBar_pages/favourite_screen/favourite_screen.dart';
 import 'sideBar_pages/feedback_screen/feedback.dart';
 import 'sideBar_pages/profile_screen/profile_screen.dart';

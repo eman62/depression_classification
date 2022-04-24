@@ -8,7 +8,7 @@ class AppGetUserSuccessState extends AppStates {}
 
 class AppGetUserErrorState extends AppStates {
   final String error;
-  AppGetUserErrorState (this.error);
+  AppGetUserErrorState(this.error);
 }
 
 class AppGetAllUserLoadingState extends AppStates {}
@@ -17,13 +17,12 @@ class AppGetAllUserSuccessState extends AppStates {}
 
 class AppGetAllUserErrorState extends AppStates {
   final String error;
-  AppGetAllUserErrorState (this.error);
+  AppGetAllUserErrorState(this.error);
 }
 
 class AppBottomNavState extends AppStates {}
 
 class AppNewPostState extends AppStates {}
-
 
 ////////// Profile Image
 
@@ -35,8 +34,7 @@ class AppProfileImagePickedErrorState extends AppStates {}
 
 class AppPostImagePickedSuccessState extends AppStates {}
 
-class AppPostImagePickedErrorState extends AppStates {
-}
+class AppPostImagePickedErrorState extends AppStates {}
 
 class AppRemovePostImageState extends AppStates {}
 
@@ -48,7 +46,7 @@ class AppGetPostsSuccessState extends AppStates {}
 
 class AppGetPostsErrorState extends AppStates {
   final String error;
-  AppGetPostsErrorState (this.error);
+  AppGetPostsErrorState(this.error);
 }
 
 //////////////// Likes
@@ -57,7 +55,7 @@ class AppLikePostsSuccessState extends AppStates {}
 
 class AppLikePostsErrorState extends AppStates {
   final String error;
-  AppLikePostsErrorState (this.error);
+  AppLikePostsErrorState(this.error);
 }
 
 ///////////////////////// Send Feedback
@@ -66,7 +64,7 @@ class AppSendFeedbackSuccessState extends AppStates {}
 
 class AppSendFeedbackErrorState extends AppStates {
   final String error;
-  AppSendFeedbackErrorState (this.error);
+  AppSendFeedbackErrorState(this.error);
 }
 
 ///////////////////////// Get Feedback
@@ -75,7 +73,7 @@ class AppGetFeedbackSuccessState extends AppStates {}
 
 class AppGetFeedbackErrorState extends AppStates {
   final String error;
-  AppGetFeedbackErrorState (this.error);
+  AppGetFeedbackErrorState(this.error);
 }
 /////// update profileImage
 
@@ -103,6 +101,7 @@ class AppCreatePostErrorState extends AppStates {
 ////////// Change Mode
 
 class AppChangeModeState extends AppStates {}
+
 ////////////////////////////////////////////
 class AppLoginInitialStates extends AppStates {}
 
@@ -111,7 +110,7 @@ class AppLoginLoadingStates extends AppStates {}
 class AppLoginSuccessStates extends AppStates {
   final String uId;
 
-  AppLoginSuccessStates (this.uId);
+  AppLoginSuccessStates(this.uId);
 }
 
 class AppLoginErrorStates extends AppStates {
