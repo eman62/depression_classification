@@ -56,7 +56,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
 /////////////////////////////
-  int currentIndex = 0;
+
 
   // List <BottomNavigationBarItem> bottomItems =[
   //   BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
@@ -65,63 +65,22 @@ class AppCubit extends Cubit<AppStates> {
   //   BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Status'),
   // ];
 
-  List<TabItem> bottomItems2 = [
-    TabItem(
-      icon: Icon(
-        Icons.home,
-      ),
-      title: 'Home',
-    ),
-    TabItem(
-        icon: Icon(
-          Icons.notifications,
-        ),
-        title: 'Notifications'),
-    TabItem(
-        icon: Icon(
-          Icons.upload_file,
-        ),
-        title: 'Post'),
-    TabItem(
-        icon: Icon(
-          Icons.people_alt_rounded,
-        ),
-        title: 'Friends'),
-    TabItem(
-        icon: Icon(
-          Icons.person,
-        ),
-        title: 'Status'),
-  ];
 
-  List<Widget> Screens = [
-    const PostsScreen(),
-    const NotificationScreen(),
-    NewPostScreen(),
-    //addPostsScreen(),
-    const FriendsScreen(),
-    const DepressionStateScreen(),
-  ];
-  List<String> name = [
-    'Home',
-    'Notifications',
-    'Add Post',
-    'Friends',
-    'Status',
-  ];
 
-  void changeBottomNavBar(int index) {
-    // currentIndex =index;
-    if (index == 2) {
-      // currentIndex =0;
-      currentIndex = index;
-      emit(AppNewPostState());
-    } else {
-      //currentIndex = 2;
-      currentIndex = index;
-      emit(AppBottomNavState());
-    }
-  }
+
+
+  // void changeBottomNavBar(int index) {
+  //   // currentIndex =index;
+  //   if (index == 2) {
+  //     // currentIndex =0;
+  //     currentIndex = index;
+  //     emit(AppNewPostState());
+  //   } else {
+  //     //currentIndex = 2;
+  //     currentIndex = index;
+  //     emit(AppBottomNavState());
+  //   }
+  // }
 
   ////////////////////////////////
   File? profileImage;
@@ -255,28 +214,28 @@ class AppCubit extends Cubit<AppStates> {
 
   ////////////////
 
-  List<PostModel> posts = [];
-  List<String> postsId = [];
-  List<int> likes = [];
-  void getPosts() {
-    if (posts.length == 0)
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-        posts = [];
-        //postsId =[];
-        event.docs.forEach((element) {
-          //  posts =[];
-          element.reference.collection('likes').snapshots().listen((event) {
-            //   postsId =[];
-            //  likes = [];
-            likes.add(event.docs.length);
-            postsId.add(element.id);
-            posts.add(PostModel.fromJson(element.data()));
-          });
-          // posts =[];
-        });
-        emit(AppGetPostsSuccessState());
-      });
-  }
+  // List<PostModel> posts = [];
+  // List<String> postsId = [];
+  // List<int> likes = [];
+  // void getPosts() {
+  //   if (posts.length == 0)
+  //     FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+  //       posts = [];
+  //       //postsId =[];
+  //       event.docs.forEach((element) {
+  //         //  posts =[];
+  //         element.reference.collection('likes').snapshots().listen((event) {
+  //           //   postsId =[];
+  //           //  likes = [];
+  //           likes.add(event.docs.length);
+  //           postsId.add(element.id);
+  //           posts.add(PostModel.fromJson(element.data()));
+  //         });
+  //         // posts =[];
+  //       });
+  //       emit(AppGetPostsSuccessState());
+  //     });
+  // }
 
   ///////////////////////////////
 

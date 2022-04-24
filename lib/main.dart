@@ -33,7 +33,7 @@ void main(context) async {
     if (isAdmin!) {
       widget = const AdminHome();
     } else {
-      widget = const HomeScreen();
+      widget = HomeScreen();
     }
   } else {
     widget = SocialLoginScreen();
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
   final Widget? startWidget;
   MyApp({Key? key, this.isDark, this.startWidget}) : super(key: key);
 
-  final appController = Get.put(AppController());
+  final appController = Get.put(AppController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {

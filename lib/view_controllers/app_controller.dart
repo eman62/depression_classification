@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save/views/03_admin/admin_home_layout.dart';
+import '../models/post_model.dart';
 import '../views/widgets/components.dart';
 import '../models/user_model.dart';
 import '../helpers/cache_helper.dart';
@@ -20,6 +21,8 @@ class AppController extends GetxController {
   bool isLoadingLogin = false;
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
+  int currentIndex = 0;
+  AppUserModel? userModel;
 
   changeIsLoadingLoginState(bool state) {
     isLoadingLogin = state;
@@ -66,15 +69,17 @@ class AppController extends GetxController {
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
-      await CacheHelper.saveData(key: 'admin', value: user!.admin);
-      await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
 
-      print('/// NAME: ${user.name}');
-      print('/// ADMIN: ${user.admin}');
-      print('/// EMAIL: ${user.email}');
+      print('/// NAME: ${user?.name}');
+      print('/// ADMIN: ${user?.admin}');
+      print('/// EMAIL: ${user?.email}');
 
-      // todo: re-activate
-      // navigate(02_user.03_admin!);
+      // if(user!.admin != null)
+        await CacheHelper.saveData(key: 'admin', value: user!.admin);
+      // if(user.uId != null)
+        await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
+
+      navigate(user.admin!);
 
       changeIsLoadingLoginState(false);
     } on Exception catch (e) {
@@ -84,14 +89,14 @@ class AppController extends GetxController {
   }
 
   navigate(bool isAdmin) {
-    isAdmin ? Get.offAll(const AdminHome()) : Get.offAll(const HomeScreen());
+    isAdmin ? Get.offAll(const AdminHome()) : Get.offAll(HomeScreen());
   }
 
   getUserData({String? uId}) async {
     try {
       changeIsLoadingGetUserDataState(true);
       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
-      AppUserModel userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
+      userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
       changeIsLoadingGetUserDataState(false);
       return userModel;
     } on Exception catch (e) {
@@ -154,6 +159,37 @@ class AppController extends GetxController {
       showToast(text: e.toString(), state: ToastStates.ERROR);
       changeIsLoadingRegisterState(false);
     });
+  }
+
+  void changeBottomNavBar(int index) {
+    currentIndex = index;
+    update();
+  }
+
+  List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<int> likes = [];
+
+  /// todo: check method
+  void getPosts() {
+    if (posts.isEmpty) {
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+        posts = [];
+        //postsId =[];
+        event.docs.forEach((element) {
+          //  posts =[];
+          element.reference.collection('likes').snapshots().listen((event) {
+            //   postsId =[];
+            //  likes = [];
+            likes.add(event.docs.length);
+            postsId.add(element.id);
+            posts.add(PostModel.fromJson(element.data()));
+          });
+          // posts =[];
+        });
+      });
+    }
+    update();
   }
 
 ///////////////////////////////////////
