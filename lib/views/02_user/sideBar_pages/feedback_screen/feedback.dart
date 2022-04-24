@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:save/layout/cubit/cubit.dart';
-import 'package:save/layout/cubit/state.dart';
+
+import '../../../../cubit/cubit.dart';
+import '../../../../cubit/state.dart';
 
 class FeedbackScreen extends StatelessWidget {
 

@@ -1,12 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:save/layout/cubit/cubit.dart';
-import 'package:save/layout/cubit/state.dart';
 import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
 
+import '../../../../cubit/cubit.dart';
+import '../../../../cubit/state.dart';
 import '../../edit_profile/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget  {

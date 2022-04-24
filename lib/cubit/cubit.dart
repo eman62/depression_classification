@@ -5,9 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:save/layout/cubit/state.dart';
-import 'package:save/layout/home_layout/admin_home_layout.dart';
-import 'package:save/layout/home_layout/home_screen.dart';
+import 'package:save/views/03_admin/admin_home_layout.dart';
 import 'package:save/models/feedback_model.dart';
 import 'package:save/models/post_model.dart';
 import 'package:save/models/user_model.dart';
@@ -20,6 +18,7 @@ import '../../views/02_user/depressionState_screen/depression_screen.dart';
 import '../../views/02_user/friends_screen/friends_screen.dart';
 import '../../views/02_user/notification_screen/notification_screen.dart';
 import '../../views/02_user/posts_screen/posts_screen.dart';
+import '../cubit/state.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());

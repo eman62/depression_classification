@@ -2,10 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:save/layout/cubit/cubit.dart';
-import 'package:save/layout/cubit/state.dart';
 import 'package:save/shared/components/components.dart';
 import 'package:save/shared/components/constants.dart';
+
+import '../../../cubit/cubit.dart';
+import '../../../cubit/state.dart';
 
 class editProfileScreen extends StatelessWidget {
     // const editProfileScreen({Key? key}) : super(key: key);
