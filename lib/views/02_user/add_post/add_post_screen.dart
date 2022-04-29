@@ -1,57 +1,46 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../cubit/cubit.dart';
-import '../../../cubit/state.dart';
 import '../../../helpers/constants.dart';
+import 'package:get/get.dart';
+import '../../../view_controllers/02_user_controllers/user_controller.dart';
 
 class NewPostScreen extends StatelessWidget {
-  // const NewPostScreen({Key? key}) : super(key: key);
+  const NewPostScreen({Key? key}) : super(key: key);
 
-  var textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer <AppCubit, AppStates> (
-      listener: (context, state) {
-        if (state is AppCreatePostSuccessState )
-        {
-          textController.text = '';
-        }
-      },
-      builder: (context, state) {
-
-        return  ConditionalBuilder(
-          condition: AppCubit.get(context).userModel != null,
-          builder: (context) =>Column(
+    return GetBuilder<UserController>(
+      builder: (controller) {
+        return ConditionalBuilder(
+          condition: controller.userModel != null,
+          builder: (context) => Column(
             children: [
-              if (state is AppCreatePostLoadingState)
-                LinearProgressIndicator(),
-              if (state is AppCreatePostLoadingState)
-                SizedBox(height: 10,),
-              SizedBox(height: 20,),
+              if (controller.isLoadingCreatePost) const LinearProgressIndicator(),
+              if (controller.isLoadingCreatePost)
+                const SizedBox(
+                  height: 10,
+                ),
+              const SizedBox(
+                height: 20,
+              ),
               Container(
                 child: Row(
                   children: [
-                    Spacer(),
-                    MaterialButton(onPressed: () {
-                      //  AppCubit.get(context).currentIndex =0;
-                      var now = DateTime.now();
-                      if (AppCubit
-                          .get(context)
-                          .postImage == null) {
-                        AppCubit.get(context).createPost(dateTime: now
-                            .toString(), text: textController.text);
-                      } else {
-                        AppCubit.get(context).uploadPostImage(dateTime: now
-                            .toString(), text: textController.text);
-                      }
-
-
-                    },
-                      child: Text(' Save Post',
-                          style: TextStyle(
-                              color: defaultColor, fontSize: 20)),),
+                    const Spacer(),
+                    MaterialButton(
+                      onPressed: () {
+                        //  AppCubit.get(context).currentIndex =0;
+                        var now = DateTime.now();
+                        if (controller.postImage == null) {
+                          controller.createPost(
+                              dateTime: now.toString(), text: controller.textController.text);
+                        } else {
+                          controller.uploadPostImage(
+                              dateTime: now.toString(), text: controller.textController.text);
+                        }
+                      },
+                      child: const Text(' Save Post', style: TextStyle(color: defaultColor, fontSize: 20)),
+                    ),
                   ],
                 ),
                 //SizedBox(width: 5,)
@@ -59,12 +48,8 @@ class NewPostScreen extends StatelessWidget {
                 height: 60,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme
-                      .of(context)
-                      .scaffoldBackgroundColor,
-
+                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
-
               ),
 
               Padding(
@@ -73,25 +58,16 @@ class NewPostScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 25.0,
-                      backgroundImage: NetworkImage(
-                          '${AppCubit.get(context).userModel!.image}'),
+                      backgroundImage: NetworkImage('${controller.userModel!.image}'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Expanded(
                         child: Text(
-                          '${AppCubit
-                              .get(context)
-                              .userModel!
-                              .name}',
-                          style:
-                          Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(height: 1.3),
-                        )),
+                      '${controller.userModel!.name}',
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.3),
+                    )),
                   ],
                 ),
               ),
@@ -100,9 +76,8 @@ class NewPostScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextFormField(
-                    controller: textController,
-
-                    decoration: InputDecoration(
+                    controller: controller.textController,
+                    decoration: const InputDecoration(
                       // fillColor: Colors.grey,
                       // filled: true,
                       ////////////////// اللون للكلام الي بدخله
@@ -112,10 +87,10 @@ class NewPostScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
-              if(AppCubit
-                  .get(context)
-                  .postImage != null)
+              const SizedBox(
+                height: 20,
+              ),
+              if (controller.postImage != null)
                 Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
@@ -125,51 +100,61 @@ class NewPostScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.0),
                         image: DecorationImage(
-                          image: FileImage(AppCubit
-                              .get(context)
-                              .postImage!),
+                          image: FileImage(controller.postImage!),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    IconButton(onPressed: () {
-                      AppCubit.get(context).removePostImage();
-                    },
-                        icon: CircleAvatar(
-                            radius: 20, child: Icon(Icons.close, size: 16,))),
+                    IconButton(
+                        onPressed: () {
+                          controller.removePostImage();
+                        },
+                        icon: const CircleAvatar(
+                            radius: 20,
+                            child: Icon(
+                              Icons.close,
+                              size: 16,
+                            ))),
                   ],
                 ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextButton(onPressed: () {
-                        AppCubit.get(context).getPostImage();
-                      },
+                      child: TextButton(
+                        onPressed: () {
+                          controller.getPostImage();
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Icon(Icons.image),
-                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Text(
-                              'Add photo', style: TextStyle(fontSize: 18),),
-                          ],),),
+                              'Add photo',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-
-
             ],
             // ),
-
           ),
-          fallback: (context) => Center(child: Container(),),
+          fallback: (context) => Center(
+            child: Container(),
+          ),
         );
       },
-
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:save/view_controllers/02_user_controllers/home_controller.dart';
+import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:save/views/02_user/posts_screen/posts_screen.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
@@ -44,8 +44,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size? size = MediaQuery.of(context).size;
-    return GetBuilder<HomeController>(
-      init: HomeController(),
+    return GetBuilder<UserController>(
+      init: UserController(),
       autoRemove: false,
       builder: (controller) {
         return Scaffold(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 Widget defaultButton({
@@ -22,7 +21,7 @@ Widget defaultButton({
         },
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             color: Colors.white,
           ),
@@ -39,9 +38,9 @@ Widget defaultFormField({
 ///////  Function ? onsubmit,
   required String label,
   required IconData prefix,
-  bool ispassword = false,
+  bool isPassword = false,
   IconData? suffix,
-  Function? suffixpressed,
+  Function? suffixPressed,
 }) =>
     TextFormField(
       controller: controller,
@@ -49,11 +48,11 @@ Widget defaultFormField({
 //validator: (s){validate();},
       validator: validate,
       keyboardType: type,
-      obscureText: ispassword,
+      obscureText: isPassword,
       decoration: InputDecoration(
 // hintText: 'Email Adress',
         labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+        border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
         prefixIcon: Icon(
           prefix,
           color: Colors.green,
@@ -64,7 +63,7 @@ Widget defaultFormField({
             ? IconButton(
                 icon: Icon(suffix),
                 onPressed: () {
-                  suffixpressed!();
+                  suffixPressed!();
                 },
                 color: Colors.green,
               )
@@ -81,9 +80,9 @@ Widget defaultFormField2({
 ///////  Function ? onsubmit,
   required String hint,
   required IconData prefix,
-  bool ispassword = false,
+  bool isPassword = false,
   IconData? suffix,
-  Function? suffixpressed,
+  Function? suffixPressed,
 }) =>
     TextFormField(
       controller: controller,
@@ -91,11 +90,11 @@ Widget defaultFormField2({
 //validator: (s){validate();},
       validator: validate,
       keyboardType: type,
-      obscureText: ispassword,
+      obscureText: isPassword,
       decoration: InputDecoration(
 // hintText: 'Email Adress',
         hintText: hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+        border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
         prefixIcon: Icon(
           prefix,
           color: Colors.green,
@@ -106,7 +105,7 @@ Widget defaultFormField2({
             ? IconButton(
                 icon: Icon(suffix),
                 onPressed: () {
-                  suffixpressed!();
+                  suffixPressed!();
                 },
                 color: Colors.green,
               )
@@ -132,18 +131,18 @@ void showToast({required String text, required ToastStates state}) => Get.snackb
 //
 // );
 
-enum ToastStates { SUCCESS, ERROR, WARINING }
+enum ToastStates { success, error, warning }
 
 Color chooseToastColor(ToastStates state) {
   Color color;
   switch (state) {
-    case ToastStates.SUCCESS:
+    case ToastStates.success:
       color = Colors.green;
       break;
-    case ToastStates.ERROR:
+    case ToastStates.error:
       color = Colors.red;
       break;
-    case ToastStates.WARINING:
+    case ToastStates.warning:
       color = Colors.amber;
       break;
   }

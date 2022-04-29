@@ -81,7 +81,7 @@ class AuthController extends GetxController {
 
       changeIsLoadingLoginState(false);
     } on Exception catch (e) {
-      showToast(text: e.toString(), state: ToastStates.ERROR);
+      showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingLoginState(false);
     }
   }
@@ -98,7 +98,7 @@ class AuthController extends GetxController {
       changeIsLoadingGetUserDataState(false);
       return userModel;
     } on Exception catch (e) {
-      showToast(text: e.toString(), state: ToastStates.ERROR);
+      showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
   }
@@ -122,7 +122,7 @@ class AuthController extends GetxController {
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
       print(e.toString());
-      showToast(text: e.toString(), state: ToastStates.ERROR);
+      showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingRegisterState(false);
     });
   }
@@ -154,7 +154,7 @@ class AuthController extends GetxController {
         .set(model.toMap())
         .then((value) {})
         .catchError((e) {
-      showToast(text: e.toString(), state: ToastStates.ERROR);
+      showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingRegisterState(false);
     });
   }

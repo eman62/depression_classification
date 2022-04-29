@@ -1,73 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../cubit/cubit.dart';
-import '../../../../cubit/state.dart';
+import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
+import 'package:get/get.dart';
 
 class FeedbackScreen extends StatelessWidget {
+  FeedbackScreen({Key? key}) : super(key: key);
 
-  var feedbackControll = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
-
   Widget build(BuildContext context) {
-    Size ?size =MediaQuery.of(context).size;
-    return BlocConsumer<AppCubit, AppStates> (
-        listener: (context, state){
-          if(state is AppSendFeedbackSuccessState)
-          {
-            Navigator.pop(context);
-          }
-        },
-        builder: (context, state) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Container(
-          height: 50,
-          width: size.width*.7,
-          child: ElevatedButton(
-            child: Text('SEND YOUR FEEDBACK',style: TextStyle(fontSize:size.width*.04 ),),
-            onPressed: (){
-              showDialog( context: context,builder:(context) =>FeedbackDialog(context), );
-            },
+    Size? size = MediaQuery.of(context).size;
+    return GetBuilder<UserController>(builder: (controller) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: SizedBox(
+            height: 50,
+            width: size.width * .7,
+            child: ElevatedButton(
+              child: Text(
+                'SEND YOUR FEEDBACK',
+                style: TextStyle(fontSize: size.width * .04),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => feedbackDialog(context),
+                );
+              },
+            ),
           ),
         ),
-      ),
-    );}
-    );}
+      );
+    });
+  }
 
-
-
-  Widget FeedbackDialog(context) => AlertDialog(
-    content: Form(
-      key: formKey,
-      child: TextFormField(
-        controller: feedbackControll,
-        keyboardType: TextInputType.multiline,
-        decoration: InputDecoration(
-          hintText: 'Enter your feedback here ..',
-          filled: true,
+  Widget feedbackDialog(context) => GetBuilder<UserController>(
+        builder: (controller) => AlertDialog(
+          content: Form(
+            key: formKey,
+            child: TextFormField(
+              controller: controller.feedbackController,
+              keyboardType: TextInputType.multiline,
+              decoration: const InputDecoration(
+                hintText: 'Enter your feedback here ..',
+                filled: true,
+              ),
+              maxLines: 5,
+              maxLength: 4096,
+              textInputAction: TextInputAction.done,
+              validator: (String? value) {
+                if (value!.isEmpty) {
+                  return 'Please enter a value';
+                }
+                return null;
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.sendFeedback(text: controller.feedbackController.text);
+              },
+              child: const Text('Send'),
+            ),
+          ],
         ),
-        maxLines: 5,
-        maxLength: 4096,
-        textInputAction: TextInputAction.done,
-        validator: (String ?value){
-          if (value!.isEmpty){
-            return 'Please enter a value';
-          }
-          return null;
-        },
-      ),
-    ),
-    actions: [
-      TextButton(onPressed: ()=> Navigator.pop(context), child: Text('Cancel'),),
-      TextButton(onPressed: (){
-        AppCubit.get(context).sendFeedback(text: feedbackControll.text);
-
-
-      }, child: Text('Send'),),
-    ],
-  );
+      );
 }
