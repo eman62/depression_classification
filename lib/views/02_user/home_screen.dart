@@ -16,6 +16,8 @@ import 'notification_screen/notification_screen.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  final homeController = Get.put(UserController(), permanent: true);
+
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
     const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'),
@@ -27,7 +29,7 @@ class HomeScreen extends StatelessWidget {
   final List<Widget> screens = [
     const PostsScreen(),
     const NotificationScreen(),
-    NewPostScreen(),
+    const NewPostScreen(),
     //addPostsScreen(),
     const FriendsScreen(),
     const DepressionStateScreen(),
@@ -45,8 +47,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size? size = MediaQuery.of(context).size;
     return GetBuilder<UserController>(
-      init: UserController(),
-      autoRemove: false,
       builder: (controller) {
         return Scaffold(
           drawer: Drawer(

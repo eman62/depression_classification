@@ -29,15 +29,18 @@ void main(context) async {
   print('/// saved uId: $uId');
   print('/// saved isAdmin: $isAdmin');
 
-  if (uId != null) {
-    if (isAdmin!) {
-      widget = AdminHome();
-    } else {
-      widget = HomeScreen();
-    }
-  } else {
-    widget = SocialLoginScreen();
-  }
+  // if (uId != null) {
+  //   if (isAdmin!) {
+  //     widget = AdminHome();
+  //   } else {
+  //     widget = HomeScreen();
+  //   }
+  // } else {
+  //   widget = SocialLoginScreen();
+  // }
+
+  widget = SocialLoginScreen();
+
 
   runApp(MyApp(isDark: isDark, startWidget: widget));
 }

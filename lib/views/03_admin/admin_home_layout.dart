@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 class AdminHome extends StatelessWidget {
   AdminHome({Key? key}) : super(key: key);
 
-  final adminController = Get.put(AdminController());
+  final adminController = Get.put(AdminController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
