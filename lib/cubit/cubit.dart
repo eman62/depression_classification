@@ -287,18 +287,18 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  List<FeedbackModel> feedback = [];
-
-  void getFeedbacks() {
-    if (feedback.length == 0)
-      FirebaseFirestore.instance.collection('feedback').snapshots().listen((event) {
-        feedback = [];
-        event.docs.forEach((element) {
-          feedback.add(FeedbackModel.fromJson(element.data()));
-        });
-        emit(AppGetFeedbackSuccessState());
-      });
-  }
+  // List<FeedbackModel> feedback = [];
+  //
+  // void getFeedbacks() {
+  //   if (feedback.length == 0)
+  //     FirebaseFirestore.instance.collection('feedback').snapshots().listen((event) {
+  //       feedback = [];
+  //       event.docs.forEach((element) {
+  //         feedback.add(FeedbackModel.fromJson(element.data()));
+  //       });
+  //       emit(AppGetFeedbackSuccessState());
+  //     });
+  // }
 
   /////////////////////////////////
   // bool isDark = false;

@@ -1,6 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:save/view_controllers/app_controller.dart';
+import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import '../widgets/components.dart';
 import 'register_screen.dart';
 import 'package:get/get.dart';
@@ -85,7 +85,7 @@ class SocialLoginScreen extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: double.infinity,
-                                child: GetBuilder<AppController>(
+                                child: GetBuilder<AuthController>(
                                   builder: (controller) => Column(
                                     children: [
                                       const SizedBox(
@@ -127,7 +127,7 @@ class SocialLoginScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      GetBuilder<AppController>(
+                                      GetBuilder<AuthController>(
                                         builder: (controller) => ConditionalBuilder(
                                           condition: controller.isLoadingLogin,
                                           builder: (context) => const CircularProgressIndicator(),

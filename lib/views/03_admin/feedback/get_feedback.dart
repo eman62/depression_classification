@@ -1,48 +1,42 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:save/models/feedback_model.dart';
-
-import '../../../cubit/cubit.dart';
-import '../../../cubit/state.dart';
+import 'package:get/get.dart';
+import '../../../view_controllers/03_admin_controllers/admin_controller.dart';
 
 class GetFeedbackScreen extends StatelessWidget {
   const GetFeedbackScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      AppCubit.get(context).getFeedbacks();
-      return BlocConsumer<AppCubit, AppStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Feedback',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
-              ),
+    return GetBuilder<AdminController>(
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Feedback',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: ConditionalBuilder(
-                condition: AppCubit.get(context).feedback.length > 0 || state is AppSendFeedbackSuccessState,
-                builder: (context) => ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) =>
-                      builtPostItem(AppCubit.get(context).feedback[index], context, index),
-                  separatorBuilder: (context, index) => SizedBox(
-                    height: 20,
-                  ),
-                  itemCount: AppCubit.get(context).feedback.length,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ConditionalBuilder(
+              condition: controller.feedback.isNotEmpty,
+              builder: (context) => ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) =>
+                    builtPostItem(controller.feedback[index], context, index),
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 20,
                 ),
-                fallback: (context) => Center(child: Scaffold()),
+                itemCount: controller.feedback.length,
               ),
+              fallback: (context) => const Center(child: Scaffold()),
             ),
-          );
-        },
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 
   Widget builtPostItem(FeedbackModel model, context, index) => Card(

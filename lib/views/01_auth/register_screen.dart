@@ -1,6 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:save/view_controllers/app_controller.dart';
+import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import '../widgets/components.dart';
 import 'package:get/get.dart';
 
@@ -33,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: GetBuilder<AppController>(
+          child: GetBuilder<AuthController>(
             builder: (controller) => Form(
               key: formKey,
               child: Column(

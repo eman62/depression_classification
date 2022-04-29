@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save/views/03_admin/admin_home_layout.dart';
-import '../models/post_model.dart';
-import '../views/widgets/components.dart';
-import '../models/user_model.dart';
-import '../helpers/cache_helper.dart';
-import '../views/01_auth/login_screen.dart';
-import '../views/02_user/home_screen.dart';
+import '../../models/post_model.dart';
+import '../../views/widgets/components.dart';
+import '../../models/user_model.dart';
+import '../../helpers/cache_helper.dart';
+import '../../views/01_auth/login_screen.dart';
+import '../../views/02_user/home_screen.dart';
 
-class AppController extends GetxController {
+class AuthController extends GetxController {
   bool isDark = false;
 // ThemeMode appMode =ThemeMode.dark;
 
@@ -21,7 +20,6 @@ class AppController extends GetxController {
   bool isLoadingLogin = false;
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
-  int currentIndex = 0;
   AppUserModel? userModel;
 
   changeIsLoadingLoginState(bool state) {
@@ -89,7 +87,7 @@ class AppController extends GetxController {
   }
 
   navigate(bool isAdmin) {
-    isAdmin ? Get.offAll(const AdminHome()) : Get.offAll(HomeScreen());
+    isAdmin ? Get.offAll(AdminHome()) : Get.offAll(HomeScreen());
   }
 
   getUserData({String? uId}) async {
@@ -161,36 +159,9 @@ class AppController extends GetxController {
     });
   }
 
-  void changeBottomNavBar(int index) {
-    currentIndex = index;
-    update();
-  }
 
-  List<PostModel> posts = [];
-  List<String> postsId = [];
-  List<int> likes = [];
 
-  /// todo: check method
-  void getPosts() {
-    if (posts.isEmpty) {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-        posts = [];
-        //postsId =[];
-        event.docs.forEach((element) {
-          //  posts =[];
-          element.reference.collection('likes').snapshots().listen((event) {
-            //   postsId =[];
-            //  likes = [];
-            likes.add(event.docs.length);
-            postsId.add(element.id);
-            posts.add(PostModel.fromJson(element.data()));
-          });
-          // posts =[];
-        });
-      });
-    }
-    update();
-  }
+
 
 ///////////////////////////////////////
   void signOut(context) async {

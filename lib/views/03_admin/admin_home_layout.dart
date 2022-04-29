@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:save/view_controllers/03_admin_controllers/admin_controller.dart';
 import '../../cubit/cubit.dart';
 import '../../cubit/state.dart';
 import '../widgets/components.dart';
@@ -7,9 +8,12 @@ import '../01_auth/login_screen.dart';
 import 'feedback/get_feedback.dart';
 import 'posts/get_posts.dart';
 import 'users/users_screen.dart';
+import 'package:get/get.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({Key? key}) : super(key: key);
+ AdminHome({Key? key}) : super(key: key);
+
+  final adminController = Get.put(AdminController());
 
   @override
   Widget build(BuildContext context) {
