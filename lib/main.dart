@@ -6,8 +6,7 @@ import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
 import 'package:save/views/02_user/home_screen.dart';
 import 'package:save/views/03_admin/admin_home_layout.dart';
-
-import 'helpers/constants.dart';
+import 'helpers/globals.dart';
 import 'style/themes.dart';
 
 void main(context) async {
@@ -29,17 +28,17 @@ void main(context) async {
   print('/// saved uId: $uId');
   print('/// saved isAdmin: $isAdmin');
 
-  // if (uId != null) {
-  //   if (isAdmin!) {
-  //     widget = AdminHome();
-  //   } else {
-  //     widget = HomeScreen();
-  //   }
-  // } else {
-  //   widget = SocialLoginScreen();
-  // }
+  if (uId != null) {
+    if (isAdmin!) {
+      widget = AdminHome();
+    } else {
+      widget = HomeScreen();
+    }
+  } else {
+    widget = SocialLoginScreen();
+  }
 
-  widget = SocialLoginScreen();
+  // widget = SocialLoginScreen();
 
 
   runApp(MyApp(isDark: isDark, startWidget: widget));

@@ -3,6 +3,3 @@ import 'package:flutter/material.dart';
 import 'package:save/helpers/cache_helper.dart';
 
 const defaultColor = Colors.green;
-String token = '';
-String? uId = '';
-bool? isAdmin;

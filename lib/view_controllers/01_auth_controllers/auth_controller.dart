@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save/views/03_admin/admin_home_layout.dart';
+import '../../helpers/globals.dart';
 import '../../models/post_model.dart';
 import '../../views/widgets/components.dart';
 import '../../models/user_model.dart';
@@ -72,10 +73,14 @@ class AuthController extends GetxController {
       print('/// ADMIN: ${user?.admin}');
       print('/// EMAIL: ${user?.email}');
 
-      // if(user!.admin != null)
-        await CacheHelper.saveData(key: 'admin', value: user!.admin);
-      // if(user.uId != null)
+      if (user!.admin != null) {
+        await CacheHelper.saveData(key: 'admin', value: user.admin);
+        isAdmin = user.admin;
+      }
+      if (user.uId != null) {
         await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
+        uId = user.uId;
+      }
 
       navigate(user.admin!);
 
@@ -93,12 +98,17 @@ class AuthController extends GetxController {
   getUserData({String? uId}) async {
     try {
       changeIsLoadingGetUserDataState(true);
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
+      DocumentSnapshot? snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
       userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
       changeIsLoadingGetUserDataState(false);
+      print('/// NAME1: ${userModel?.name}');
+      print('/// ADMIN1: ${userModel?.admin}');
+      print('/// EMAIL1: ${userModel?.email}');
       return userModel;
-    } on Exception catch (e) {
+    } catch (e, stacktrace) {
       showToast(text: e.toString(), state: ToastStates.error);
+      print(e);
+      print(stacktrace);
       changeIsLoadingGetUserDataState(false);
     }
   }
@@ -158,10 +168,6 @@ class AuthController extends GetxController {
       changeIsLoadingRegisterState(false);
     });
   }
-
-
-
-
 
 ///////////////////////////////////////
   void signOut(context) async {

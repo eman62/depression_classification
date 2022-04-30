@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
@@ -21,15 +21,14 @@ class UserController extends GetxController {
   bool isLoadingCreatePost = false;
   var textController = TextEditingController();
   var picker = ImagePicker();
-
   var nameController = TextEditingController();
-
   var emailController = TextEditingController();
-
   var ageController = TextEditingController();
   var phoneController = TextEditingController();
   var feedbackController = TextEditingController();
-
+  File? postImage;
+  File? profileImage;
+  bool isLoadingUpdateUser = false;
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -52,33 +51,95 @@ class UserController extends GetxController {
       phoneController.text = userModel!.phone!;
       changeIsLoadingGetUserDataState(false);
       return userModel;
-    } on Exception catch (e) {
+    } catch (e, stacktrace) {
+      print('XXX EXCEPTION');
+      print(stacktrace);
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
     update();
   }
 
+  bool isLoadingGettingPosts = false;
+  changeIsLoadingGettingPosts(bool state) {
+    isLoadingGettingPosts = state;
+    update();
+
+  }
+
+
   /// todo: check method
-  void getPosts() {
-    if (posts.isEmpty) {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-        posts = [];
-        //postsId =[];
-        event.docs.forEach((element) {
-          //  posts =[];
-          element.reference.collection('likes').snapshots().listen((event) {
-            //   postsId =[];
-            //  likes = [];
-            likes.add(event.docs.length);
-            postsId.add(element.id);
-            posts.add(PostModel.fromJson(element.data()));
-          });
-          // posts =[];
-        });
-      });
+  void getPosts() async {
+    try {
+      changeIsLoadingGettingPosts(true);
+      print('/// GETTING POSTS ...');
+      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('posts').get();
+      posts.addAll(snapshot.docs.map<PostModel>((e) => PostModel.fromJson(e.data())).toList());
+      print(posts);
+      print(posts.length);
+      changeIsLoadingGettingPosts(false);
+
+    } catch (e, stacktrace) {
+      changeIsLoadingGettingPosts(false);
+      print(e);
+      print(stacktrace);
     }
     update();
+
+    // if (posts.isEmpty) {
+    //   FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+    //     posts = [];
+    //     //postsId =[];
+    //     event.docs.forEach((element) {
+    //       //  posts =[];
+    //       element.reference.collection('likes').snapshots().listen((event) {
+    //         //   postsId =[];
+    //         //  likes = [];
+    //         likes.add(event.docs.length);
+    //         postsId.add(element.id);
+    //         posts.add(PostModel.fromJson(element.data()));
+    //       });
+    //       // posts =[];
+    //     });
+    //   });
+    // }
+  }
+
+  /// todo: check method
+  void getLikes() async {
+  //   try {
+  //     changeIsLoadingGettingPosts(true);
+  //     print('/// GETTING POSTS ...');
+  //     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
+  //     likes.addAll(snapshot.docs.map<int>((e) => )).toList());
+  //     print(posts);
+  //     print(posts.length);
+  //     changeIsLoadingGettingPosts(false);
+  //
+  //   } catch (e, stacktrace) {
+  //     changeIsLoadingGettingPosts(false);
+  //     print(e);
+  //     print(stacktrace);
+  //   }
+  //   update();
+  //
+  //   // if (posts.isEmpty) {
+  //   //   FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+  //   //     posts = [];
+  //   //     //postsId =[];
+  //   //     event.docs.forEach((element) {
+  //   //       //  posts =[];
+  //   //       element.reference.collection('likes').snapshots().listen((event) {
+  //   //         //   postsId =[];
+  //   //         //  likes = [];
+  //   //         likes.add(event.docs.length);
+  //   //         postsId.add(element.id);
+  //   //         posts.add(PostModel.fromJson(element.data()));
+  //   //       });
+  //   //       // posts =[];
+  //   //     });
+  //   //   });
+  //   // }
   }
 
   changeIsLoadingCreatePost(bool state) {
@@ -109,8 +170,6 @@ class UserController extends GetxController {
     });
     update();
   }
-
-  File? postImage;
 
   Future<void> getPostImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -150,8 +209,6 @@ class UserController extends GetxController {
     });
   }
 
-  File? profileImage;
-
   Future<void> getProfileImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -181,7 +238,6 @@ class UserController extends GetxController {
     update();
   }
 
-  bool isLoadingUpdateUser = false;
   changeIsLoadingUpdateUser(bool state) {
     isLoadingUpdateUser = state;
     update();
@@ -234,10 +290,22 @@ class UserController extends GetxController {
     });
   }
 
+  void likePosts(String postId) {
+    FirebaseFirestore.instance.collection('posts').doc(postId).collection('likes').doc(userModel!.uId).set({
+      'like': true,
+    }).then((value) {
+      // todo: re-fetch the posts from the firebase
+    }).catchError((error) {
+      showToast(text: '$error', state: ToastStates.error);
+    });
+    update();
+  }
+
   @override
   void onInit() {
     getPosts();
-    getUserData();
+    getLikes();
+    getUserData(uId: uId);
     super.onInit();
   }
 }

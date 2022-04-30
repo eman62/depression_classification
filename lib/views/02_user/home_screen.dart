@@ -49,134 +49,134 @@ class HomeScreen extends StatelessWidget {
     return GetBuilder<UserController>(
       builder: (controller) {
         return Scaffold(
-          drawer: Drawer(
-            child: ListView(
-              children: [
-                ConditionalBuilder(
-                  condition: controller.userModel != null,
-                  builder: (context) => UserAccountsDrawerHeader(
-                    accountName: Text('${controller.userModel?.name}'),
-                    accountEmail: Text('${controller.userModel?.email}'),
-                    currentAccountPicture: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage('${controller.userModel?.image}'),
-                      // child: ClipOval(
-                      //  child: Image.network('${AppCubit.get(context).userModel!.image}',fit: BoxFit.cover,width:100,),
-                      // ),
-                    ),
+                drawer: Drawer(
+                  child: ListView(
+                    children: [
+                      ConditionalBuilder(
+                        condition: controller.userModel != null,
+                        builder: (context) => UserAccountsDrawerHeader(
+                          accountName: Text('${controller.userModel?.name}'),
+                          accountEmail: Text('${controller.userModel?.email}'),
+                          currentAccountPicture: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage('${controller.userModel?.image}'),
+                            // child: ClipOval(
+                            //  child: Image.network('${AppCubit.get(context).userModel!.image}',fit: BoxFit.cover,width:100,),
+                            // ),
+                          ),
+                        ),
+                        fallback: (context) => Center(child: Container()),
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.person,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'Profile',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          // AppCubit.get(context).getUserData();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.favorite,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'Favorite',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const FavouriteScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.feedback,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'Feedback',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => FeedbackScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.logout,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'Log Out',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          // navigateAndFinish(context, SocialLoginScreen());
+                          // todo: app mode
+                          //  AppCubit.get(context).signOut(context);
+                          //  FirebaseAuth.instance.signOut();
+                          //  navigateAndFinish(context, SocialLoginScreen());
+                        },
+                      ),
+                    ],
                   ),
-                  fallback: (context) => Center(child: Container()),
                 ),
-                ListTile(
-                  minLeadingWidth: 70,
-                  leading: const Icon(
-                    Icons.person,
-                    color: defaultColor,
+                appBar: AppBar(
+                  title: Text(
+                    name[controller.currentIndex],
+                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                  title: const Text(
-                    'Profile',
-                    style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-                  ),
-                  onTap: () {
-                    // AppCubit.get(context).getUserData();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  minLeadingWidth: 70,
-                  leading: const Icon(
-                    Icons.favorite,
-                    color: defaultColor,
-                  ),
-                  title: const Text(
-                    'Favorite',
-                    style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const FavouriteScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  minLeadingWidth: 70,
-                  leading: const Icon(
-                    Icons.feedback,
-                    color: defaultColor,
-                  ),
-                  title: const Text(
-                    'Feedback',
-                    style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FeedbackScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  minLeadingWidth: 70,
-                  leading: const Icon(
-                    Icons.logout,
-                    color: defaultColor,
-                  ),
-                  title: const Text(
-                    'Log Out',
-                    style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-                  ),
-                  onTap: () {
-                    // navigateAndFinish(context, SocialLoginScreen());
-                    // todo: app mode
-                    //  AppCubit.get(context).signOut(context);
-                    //  FirebaseAuth.instance.signOut();
-                    //  navigateAndFinish(context, SocialLoginScreen());
-                  },
-                ),
-              ],
-            ),
-          ),
-          appBar: AppBar(
-            title: Text(
-              name[controller.currentIndex],
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
-              IconButton(
-                  onPressed: () {
-                    // todo: app mode
+                  actions: [
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+                    IconButton(
+                        onPressed: () {
+                          // todo: app mode
 
-                    // AppCubit.get(context).changeAppMode();
-                    // cubit.changeAppMode();
+                          // AppCubit.get(context).changeAppMode();
+                          // cubit.changeAppMode();
+                        },
+                        icon: const Icon(Icons.brightness_4_outlined)),
+                  ],
+                ),
+                bottomNavigationBar: SizedBox(
+                  child: ConvexAppBar(
+                    items: bottomItems2,
+                    // activeColor: Colors.grey[100],
+                    initialActiveIndex: controller.currentIndex,
+                    backgroundColor: defaultColor,
+                    onTap: (index) {
+                      controller.changeBottomNavBar(index);
+                    },
+                  ),
+                ),
+                body: ConditionalBuilder(
+                  condition: (controller.posts.isNotEmpty || controller.userModel != null),
+                  builder: (context) {
+                    //  var model = AppCubit.get(context).userModel;
+                    return screens[controller.currentIndex];
                   },
-                  icon: const Icon(Icons.brightness_4_outlined)),
-            ],
-          ),
-          bottomNavigationBar: SizedBox(
-            child: ConvexAppBar(
-              items: bottomItems2,
-              // activeColor: Colors.grey[100],
-              initialActiveIndex: controller.currentIndex,
-              backgroundColor: defaultColor,
-              onTap: (index) {
-                controller.changeBottomNavBar(index);
-              },
-            ),
-          ),
-          body: ConditionalBuilder(
-            condition: (controller.posts.isNotEmpty || controller.userModel != null),
-            builder: (context) {
-              //  var model = AppCubit.get(context).userModel;
-              return screens[controller.currentIndex];
-            },
-            fallback: (context) => const Center(child: CircularProgressIndicator()),
-          ),
-        );
+                  fallback: (context) => const Center(child: CircularProgressIndicator()),
+                ),
+              );
       },
     );
   }
