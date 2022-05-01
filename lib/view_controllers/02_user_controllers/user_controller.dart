@@ -71,50 +71,48 @@ class UserController extends GetxController {
   }
 
 
-  /// todo: check method
-  void getPosts() async {
-    try {
-      changeIsLoadingGettingPosts(true);
-      print('/// GETTING POSTS ...');
-      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('posts').get();
-      posts.addAll(snapshot.docs.map<PostModel>((e) => PostModel.fromJson(e.data())).toList());
-      print(posts);
-      print(posts.length);
-      changeIsLoadingGettingPosts(false);
+  // /// todo: check method
+  // void getPosts() async {
+  //   try {
+  //     changeIsLoadingGettingPosts(true);
+  //     print('/// GETTING POSTS ...');
+  //     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('posts').get();
+  //     posts.addAll(snapshot.docs.map<PostModel>((e) => PostModel.fromJson(e.data())).toList());
+  //     print(posts);
+  //     print(posts.length);
+  //     changeIsLoadingGettingPosts(false);
+  //
+  //   } catch (e, stacktrace) {
+  //     changeIsLoadingGettingPosts(false);
+  //     print(e);
+  //     print(stacktrace);
+  //   }
+  //
+  //   listenToNewPosts();
+  //
+  //   update();
+  // }
 
-    } catch (e, stacktrace) {
-      changeIsLoadingGettingPosts(false);
-      print(e);
-      print(stacktrace);
-    }
+  getPosts() {
+    FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+      posts = [];
 
-    listenToNewPosts();
+      event.docs.forEach((element) {
+        postsId.add(element.id);
+        posts.add(PostModel.fromJson(element.data()));
+        element.reference.collection('likes').snapshots().listen((event) {
+          //   postsId =[];
+           likes = [];
+          likes.add(event.docs.length);
 
-    update();
-  }
-
-  listenToNewPosts() {
-    if (posts.isEmpty) {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-        posts = [];
-        //postsId =[];
-        event.docs.forEach((element) {
-          //  posts =[];
-          element.reference.collection('likes').snapshots().listen((event) {
-            //   postsId =[];
-            //  likes = [];
-            likes.add(event.docs.length);
-            postsId.add(element.id);
-            posts.add(PostModel.fromJson(element.data()));
-          });
-          // posts =[];
         });
+        // posts =[];
+        update();
       });
-    }
+    });
   }
 
-  /// todo: check method
-  void getLikes() async {
+  // void getLikes() async {
     // try {
     //   changeIsLoadingGettingPosts(true);
     //   print('/// GETTING LIKES ...');
@@ -134,27 +132,27 @@ class UserController extends GetxController {
     // update();
     //
 
-  }
+  // }
 
-  listenToNewLikes() {
-    // if (posts.isEmpty) {
-    //   FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-    //     posts = [];
-    //     //postsId =[];
-    //     event.docs.forEach((element) {
-    //       //  posts =[];
-    //       element.reference.collection('likes').snapshots().listen((event) {
-    //         //   postsId =[];
-    //         //  likes = [];
-    //         likes.add(event.docs.length);
-    //         postsId.add(element.id);
-    //         posts.add(PostModel.fromJson(element.data()));
-    //       });
-    //       // posts =[];
-    //     });
-    //   });
-    // }
-  }
+  // getLikes() {
+  //   if (posts.isEmpty) {
+  //     FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+  //       posts = [];
+  //       //postsId =[];
+  //       event.docs.forEach((element) {
+  //         //  posts =[];
+  //         element.reference.collection('likes').snapshots().listen((event) {
+  //           //   postsId =[];
+  //           //  likes = [];
+  //           likes.add(event.docs.length);
+  //           postsId.add(element.id);
+  //           posts.add(PostModel.fromJson(element.data()));
+  //         });
+  //         // posts =[];
+  //       });
+  //     });
+  //   }
+  // }
 
   changeIsLoadingCreatePost(bool state) {
     isLoadingCreatePost = state;
@@ -327,7 +325,7 @@ class UserController extends GetxController {
   @override
   void onInit() {
     getPosts();
-    getLikes();
+    // getLikes();
     getUserData(uId: uId);
     super.onInit();
   }

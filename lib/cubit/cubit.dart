@@ -15,7 +15,7 @@ import '../../views/02_user/add_post/add_post_screen.dart';
 import '../../views/02_user/depressionState_screen/depression_screen.dart';
 import '../../views/02_user/friends_screen/friends_screen.dart';
 import '../../views/02_user/notification_screen/notification_screen.dart';
-import '../../views/02_user/posts_screen/posts_screen.dart';
+import '../../views/02_user/posts_screen/user_posts_screen.dart';
 import '../cubit/state.dart';
 import '../views/01_auth/login_screen.dart';
 import '../views/widgets/components.dart';

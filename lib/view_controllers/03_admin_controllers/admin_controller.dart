@@ -96,6 +96,7 @@ class AdminController extends GetxController {
           });
           // posts =[];
         });
+        update();
       });
     }
     update();

@@ -3,7 +3,7 @@ import 'package:save/view_controllers/03_admin_controllers/admin_controller.dart
 import '../widgets/components.dart';
 import '../01_auth/login_screen.dart';
 import 'feedback/get_feedback.dart';
-import 'posts/get_posts.dart';
+import 'posts/admin_posts_screen.dart';
 import 'users/users_screen.dart';
 import 'package:get/get.dart';
 
@@ -99,7 +99,7 @@ class AdminHome extends StatelessWidget {
                   //  AppCubit.get(context).getPosts();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const GetPostsScreen()),
+                    MaterialPageRoute(builder: (context) => const AdminPostsScreen()),
                   );
                 },
                 child: Padding(

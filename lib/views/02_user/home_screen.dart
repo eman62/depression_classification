@@ -2,7 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
-import 'package:save/views/02_user/posts_screen/posts_screen.dart';
+import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
 import '../../views/02_user/sideBar_pages/feedback_screen/feedback.dart';
@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
   ];
 
   final List<Widget> screens = [
-    const PostsScreen(),
+    const UserPostsScreen(),
     const NotificationScreen(),
     const NewPostScreen(),
     //addPostsScreen(),
