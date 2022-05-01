@@ -5,6 +5,7 @@ class PostModel {
   String? dateTime;
   String? text;
   String? postImage;
+  int? likes;
 
   PostModel({
     this.name,
@@ -13,6 +14,7 @@ class PostModel {
     this.dateTime,
     this.text,
     this.postImage,
+    this.likes,
   });
   PostModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -21,6 +23,7 @@ class PostModel {
     text = json['text'];
     dateTime = json['dateTime'];
     postImage = json['postImage'];
+    likes = json['likes'];
   }
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +33,7 @@ class PostModel {
       'text': text,
       'postImage': postImage,
       'dateTime': dateTime,
+      'likes': likes,
     };
   }
 }

@@ -100,16 +100,16 @@ class UserController extends GetxController {
       event.docs.forEach((element) {
         postsId.add(element.id);
         posts.add(PostModel.fromJson(element.data()));
-        element.reference.collection('likes').snapshots().listen((event) {
-          //   postsId =[];
-           likes = [];
-          likes.add(event.docs.length);
-
-        });
         // posts =[];
         update();
       });
     });
+  }
+
+
+  likePost(String uId){
+    Map<String,Object?> data = {'likes':1};
+    FirebaseFirestore.instance.collection('posts').doc(uId).update(data);
   }
 
   // void getLikes() async {

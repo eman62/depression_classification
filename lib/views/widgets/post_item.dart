@@ -149,7 +149,7 @@ class PostItem extends StatelessWidget {
                                 // todo: resolve likes
                                 Text(
                                   // '${controller.likes[index]}',
-                                  '12',
+                                  '${model.likes}',
                                   style: Theme.of(context).textTheme.caption!,
                                 ),
                               ],
