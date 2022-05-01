@@ -114,11 +114,14 @@ Widget defaultFormField2({
     );
 
 void showToast({required String text, required ToastStates state}) => Get.snackbar(
-      'Error',
+      chooseToastTitle(state),
       text,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.black,
-      colorText: Colors.lightGreenAccent,
+      colorText: Colors.white,
+  overlayColor: chooseToastColor(state),
+
+
     );
 // Fluttertoast.showToast(
 // msg: text,
@@ -147,6 +150,22 @@ Color chooseToastColor(ToastStates state) {
       break;
   }
   return color;
+}
+
+chooseToastTitle(ToastStates state) {
+  String title;
+  switch (state) {
+    case ToastStates.success:
+      title = 'Success!';
+      break;
+    case ToastStates.error:
+      title = 'Error!';
+      break;
+    case ToastStates.warning:
+      title = 'Warning!';
+      break;
+  }
+  return title;
 }
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(

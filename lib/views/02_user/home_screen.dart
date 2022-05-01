@@ -130,6 +130,8 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
                         ),
                         onTap: () {
+                          controller.signOut(context);
+
                           // navigateAndFinish(context, SocialLoginScreen());
                           // todo: app mode
                           //  AppCubit.get(context).signOut(context);

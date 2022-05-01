@@ -7,12 +7,7 @@ import 'package:get/get.dart';
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
 
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
-  final ageController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final twitterController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -79,7 +74,7 @@ class RegisterScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         defaultFormField(
-                            controller: nameController,
+                            controller: controller.nameController,
                             type: TextInputType.text,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -94,7 +89,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
 
                         defaultFormField(
-                            controller: phoneController,
+                            controller: controller.phoneController,
                             type: TextInputType.number,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -108,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
                           height: 10,
                         ),
                         defaultFormField(
-                            controller: ageController,
+                            controller: controller.ageController,
                             type: TextInputType.number,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -123,7 +118,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
 
                         defaultFormField(
-                            controller: emailController,
+                            controller: controller.emailController,
                             type: TextInputType.emailAddress,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -138,7 +133,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
 
                         defaultFormField(
-                            controller: passwordController,
+                            controller: controller.passwordController,
                             type: TextInputType.visiblePassword,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -159,7 +154,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
 
                         defaultFormField(
-                            controller: twitterController,
+                            controller: controller.twitterController,
                             type: TextInputType.emailAddress,
                             validate: (String? value) {
                               if (value!.isEmpty) {
@@ -184,12 +179,12 @@ class RegisterScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     ///////////////////////
                                     controller.userRegister(
-                                        name: nameController.text,
-                                        phone: phoneController.text,
-                                        age: ageController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        twitter: twitterController.text);
+                                        name: controller.nameController.text,
+                                        phone: controller.phoneController.text,
+                                        age: controller.ageController.text,
+                                        email: controller.emailController.text,
+                                        password: controller.passwordController.text,
+                                        twitter: controller.twitterController.text);
                                     //////////////////////////////
                                   }
                                 },

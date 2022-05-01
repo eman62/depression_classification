@@ -39,10 +39,10 @@ class AdminHome extends StatelessWidget {
         ),
         body: Column(
           children: [
+            /// Users
             Expanded(
               child: InkWell(
                 onTap: () {
-                  //AppCubit.get(context).getUsers();
 
                   Navigator.push(
                     context,
@@ -91,6 +91,8 @@ class AdminHome extends StatelessWidget {
                 ),
               ),
             ),
+
+            /// Posts
             Expanded(
               child: InkWell(
                 onTap: () {
@@ -141,6 +143,8 @@ class AdminHome extends StatelessWidget {
                 ),
               ),
             ),
+
+            /// Feedback
             Expanded(
               child: InkWell(
                 onTap: () {
@@ -192,13 +196,15 @@ class AdminHome extends StatelessWidget {
                 ),
               ),
             ),
+
+            /// Logout
             Container(
               width: double.infinity,
               color: Colors.green,
               child: MaterialButton(
                 height: 50,
                 onPressed: () {
-                  navigateAndFinish(context, SocialLoginScreen());
+                  controller.signOut(context);
                 },
                 child: Text(
                   'Log Out',
@@ -208,8 +214,6 @@ class AdminHome extends StatelessWidget {
             )
           ],
         ),
-
-        /////////////////////////////////
       );
     });
   }

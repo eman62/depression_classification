@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
+import '../../views/01_auth/login_screen.dart';
 import '../../views/widgets/components.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
@@ -84,8 +87,56 @@ class UserController extends GetxController {
       print(e);
       print(stacktrace);
     }
-    update();
 
+    listenToNewPosts();
+
+    update();
+  }
+
+  listenToNewPosts() {
+    if (posts.isEmpty) {
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+        posts = [];
+        //postsId =[];
+        event.docs.forEach((element) {
+          //  posts =[];
+          element.reference.collection('likes').snapshots().listen((event) {
+            //   postsId =[];
+            //  likes = [];
+            likes.add(event.docs.length);
+            postsId.add(element.id);
+            posts.add(PostModel.fromJson(element.data()));
+          });
+          // posts =[];
+        });
+      });
+    }
+  }
+
+  /// todo: check method
+  void getLikes() async {
+    // try {
+    //   changeIsLoadingGettingPosts(true);
+    //   print('/// GETTING LIKES ...');
+    //   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
+    //   likes.addAll(snapshot.docs.map<int>((e) => )).toList());
+    //   print(posts);
+    //   print(posts.length);
+    //   changeIsLoadingGettingPosts(false);
+    //
+    // } catch (e, stacktrace) {
+    //   changeIsLoadingGettingPosts(false);
+    //   print(e);
+    //   print(stacktrace);
+    // }
+    //
+    // listenToNewLikes();
+    // update();
+    //
+
+  }
+
+  listenToNewLikes() {
     // if (posts.isEmpty) {
     //   FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
     //     posts = [];
@@ -103,43 +154,6 @@ class UserController extends GetxController {
     //     });
     //   });
     // }
-  }
-
-  /// todo: check method
-  void getLikes() async {
-  //   try {
-  //     changeIsLoadingGettingPosts(true);
-  //     print('/// GETTING POSTS ...');
-  //     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
-  //     likes.addAll(snapshot.docs.map<int>((e) => )).toList());
-  //     print(posts);
-  //     print(posts.length);
-  //     changeIsLoadingGettingPosts(false);
-  //
-  //   } catch (e, stacktrace) {
-  //     changeIsLoadingGettingPosts(false);
-  //     print(e);
-  //     print(stacktrace);
-  //   }
-  //   update();
-  //
-  //   // if (posts.isEmpty) {
-  //   //   FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-  //   //     posts = [];
-  //   //     //postsId =[];
-  //   //     event.docs.forEach((element) {
-  //   //       //  posts =[];
-  //   //       element.reference.collection('likes').snapshots().listen((event) {
-  //   //         //   postsId =[];
-  //   //         //  likes = [];
-  //   //         likes.add(event.docs.length);
-  //   //         postsId.add(element.id);
-  //   //         posts.add(PostModel.fromJson(element.data()));
-  //   //       });
-  //   //       // posts =[];
-  //   //     });
-  //   //   });
-  //   // }
   }
 
   changeIsLoadingCreatePost(bool state) {
@@ -299,6 +313,15 @@ class UserController extends GetxController {
       showToast(text: '$error', state: ToastStates.error);
     });
     update();
+  }
+
+  void signOut(context) async {
+    await FirebaseAuth.instance.signOut();
+    await CacheHelper.reset();
+    token = '';
+    uId = '';
+    isAdmin = null;
+    navigateAndFinish(context, SocialLoginScreen());
   }
 
   @override

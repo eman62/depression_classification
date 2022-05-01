@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:save/views/03_admin/admin_home_layout.dart';
+import 'package:save/views/03_admin/admin_home.dart';
 import 'package:save/models/feedback_model.dart';
 import 'package:save/models/post_model.dart';
 import 'package:save/models/user_model.dart';
@@ -17,6 +17,8 @@ import '../../views/02_user/friends_screen/friends_screen.dart';
 import '../../views/02_user/notification_screen/notification_screen.dart';
 import '../../views/02_user/posts_screen/posts_screen.dart';
 import '../cubit/state.dart';
+import '../views/01_auth/login_screen.dart';
+import '../views/widgets/components.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -443,11 +445,11 @@ class AppCubit extends Cubit<AppStates> {
 //   }
 //
 // ///////////////////////////////////////
-//   void signOut(context) async {
-//     await FirebaseAuth.instance.signOut();
-//     await CacheHelper.reset();
-//     navigateAndFinish(context, SocialLoginScreen());
-//   }
+  void signOut(context) async {
+    await FirebaseAuth.instance.signOut();
+    await CacheHelper.reset();
+    navigateAndFinish(context, SocialLoginScreen());
+  }
 
 ////////////////////
 }

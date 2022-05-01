@@ -12,47 +12,62 @@ class UsersScreen extends StatelessWidget {
     return GetBuilder<AdminController>(builder: (controller) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Users',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
+          title: Text(
+            'Users (${controller.userCount})',
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
           ),
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: ConditionalBuilder(
             condition: controller.users.isEmpty,
-            builder: (context) => ListView.separated(
+            builder: (context) => controller.isLoadingGettingUsers
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : const Text('No Items..'),
+            fallback: (context) => ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) => buildUsersItem(controller.users[index], context),
+                itemBuilder: (context, index) => UserItem(model: controller.users[index], context: context),
                 separatorBuilder: (context, index) => const SizedBox(
                       height: 20,
                     ),
                 itemCount: controller.users.length),
-            fallback: (context) => const Center(child: Scaffold()),
           ),
         ),
       );
     });
   }
+}
 
-  Widget buildUsersItem(AppUserModel model, context) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage('${model.image}'),
+class UserItem extends StatelessWidget {
+
+  final AppUserModel model;
+  final BuildContext context;
+
+  const UserItem({Key? key, required this.model, required this.context}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage('${model.image}'),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Text(
+            '${model.name}',
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              height: 1.3,
             ),
-            const SizedBox(
-              width: 15,
-            ),
-            Text(
-              '${model.name}',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    height: 1.3,
-                  ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

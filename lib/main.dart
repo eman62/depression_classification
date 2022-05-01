@@ -5,7 +5,7 @@ import 'package:save/helpers/cache_helper.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
 import 'package:save/views/02_user/home_screen.dart';
-import 'package:save/views/03_admin/admin_home_layout.dart';
+import 'package:save/views/03_admin/admin_home.dart';
 import 'helpers/globals.dart';
 import 'style/themes.dart';
 

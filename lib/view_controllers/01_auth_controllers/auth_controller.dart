@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:save/views/03_admin/admin_home_layout.dart';
-import '../../helpers/globals.dart';
+import 'package:save/views/03_admin/admin_home.dart';
+import '../../helpers/globals.dart' as globals;
 import '../../models/post_model.dart';
 import '../../views/widgets/components.dart';
 import '../../models/user_model.dart';
@@ -22,6 +22,13 @@ class AuthController extends GetxController {
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
   AppUserModel? userModel;
+
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final ageController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final twitterController = TextEditingController();
 
   changeIsLoadingLoginState(bool state) {
     isLoadingLogin = state;
@@ -75,11 +82,11 @@ class AuthController extends GetxController {
 
       if (user!.admin != null) {
         await CacheHelper.saveData(key: 'admin', value: user.admin);
-        isAdmin = user.admin;
+        globals.isAdmin = user.admin;
       }
       if (user.uId != null) {
         await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
-        uId = user.uId;
+        globals.uId = user.uId;
       }
 
       navigate(user.admin!);
@@ -127,8 +134,15 @@ class AuthController extends GetxController {
       email: email,
       password: password,
     )
-        .then((value) {
-      userCreate(name: name, phone: phone, age: age, email: email, twitter: twitter, uId: value.user!.uid);
+        .then((UserCredential value) {
+      userCreate(
+        name: name,
+        phone: phone,
+        age: age,
+        email: email,
+        twitter: twitter,
+        uId: value.user!.uid,
+      );
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
       print(e.toString());
@@ -158,12 +172,12 @@ class AuthController extends GetxController {
       admin: false,
     );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .set(model.toMap())
-        .then((value) {})
-        .catchError((e) {
+    await FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {
+      globals.uId = uId;
+      Get.offAll(HomeScreen());
+
+      showToast(text: 'Register Success!', state: ToastStates.success);
+    }).catchError((e) {
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingRegisterState(false);
     });

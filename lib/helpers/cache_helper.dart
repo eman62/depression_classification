@@ -44,5 +44,6 @@ class CacheHelper {
 
   static reset() async {
     await sharedPreferences!.clear();
+
   }
 }
