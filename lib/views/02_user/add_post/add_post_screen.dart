@@ -31,13 +31,8 @@ class NewPostScreen extends StatelessWidget {
                       onPressed: () {
                         //  AppCubit.get(context).currentIndex =0;
                         var now = DateTime.now();
-                        if (controller.postImage == null) {
-                          controller.createPost(
-                              dateTime: now.toString(), text: controller.textController.text);
-                        } else {
-                          controller.uploadPostImage(
-                              dateTime: now.toString(), text: controller.textController.text);
-                        }
+                        controller.createPost(
+                            dateTime: now.toString(), text: controller.textController.text);
                       },
                       child: const Text(' Save Post', style: TextStyle(color: defaultColor, fontSize: 20)),
                     ),

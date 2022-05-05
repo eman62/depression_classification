@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:save/helpers/date_helpers.dart';
 import '../../models/post_model.dart';
 import '../../view_controllers/02_user_controllers/user_controller.dart';
 
@@ -64,7 +65,7 @@ class PostItem extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      '${model.dateTime}',
+                      DateHelpers.parseDateTimeReturnDescriptionString(model.dateTime!),
                       style: Theme.of(context).textTheme.caption!.copyWith(
                             height: 1.3,
                           ),
@@ -106,51 +107,117 @@ class PostItem extends StatelessWidget {
 
             // /////////// error
             //
-            // if(model.postImage != null)
-            //     Container(
-            //   height: 120,
-            //   width: double.infinity,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(5),
-            //     image: DecorationImage(
-            //       image: NetworkImage('${model.postImage}'),
-            //       fit: BoxFit.cover,
-            //     ),
-            //     ),
-            // ),
+            if (model.postImage != null && model.postImage != '')
+              Container(
+                height: 120,
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  image: DecorationImage(
+                    image: NetworkImage('${model.postImage}'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
 
-            if(isAdmin == false)
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: Row(
+            if (isAdmin == false)
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      children: [
+                        /// ///////////////////////
+                        // Container(),
+                        Expanded(
+                          child: InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.favorite,
+                                    size: 17,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+
+                                  // todo: resolve likes
+                                  Text(
+                                    // '${controller.likes[index]}',
+                                    '${model.likes}',
+                                    style: Theme.of(context).textTheme.caption!,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+
+                        /// ///////////////////////
+                        // Container(),
+                        Expanded(
+                          child: InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    Icons.mode_comment_rounded,
+                                    size: 17,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    '120 comment',
+                                    style: Theme.of(context).textTheme.caption!,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey[300],
+                      width: double.infinity,
+                    ),
+                  ),
+                  Row(
                     children: [
                       /// ///////////////////////
                       // Container(),
                       Expanded(
                         child: InkWell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.favorite,
-                                  size: 17,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-
-                                // todo: resolve likes
-                                Text(
-                                  // '${controller.likes[index]}',
-                                  '${model.likes}',
-                                  style: Theme.of(context).textTheme.caption!,
-                                ),
-                              ],
-                            ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 18.0,
+                                backgroundImage: NetworkImage('${controller.userModel?.image}'),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                'write a comment ..',
+                                style: Theme.of(context).textTheme.caption!.copyWith(
+                                      height: 1.3,
+                                    ),
+                              ),
+                            ],
                           ),
                           onTap: () {},
                         ),
@@ -158,96 +225,31 @@ class PostItem extends StatelessWidget {
 
                       /// ///////////////////////
                       // Container(),
-                      Expanded(
-                        child: InkWell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Icon(
-                                  Icons.mode_comment_rounded,
-                                  size: 17,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '120 comment',
-                                  style: Theme.of(context).textTheme.caption!,
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Container(
-                    height: 1,
-                    color: Colors.grey[300],
-                    width: double.infinity,
-                  ),
-                ),
-                Row(
-                  children: [
-                    /// ///////////////////////
-                    // Container(),
-                    Expanded(
-                      child: InkWell(
+                      InkWell(
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              radius: 18.0,
-                              backgroundImage: NetworkImage('${controller.userModel?.image}'),
+                            const Icon(
+                              Icons.favorite,
+                              size: 17,
+                              color: Colors.grey,
                             ),
                             const SizedBox(
-                              width: 15,
+                              width: 5,
                             ),
                             Text(
-                              'write a comment ..',
-                              style: Theme.of(context).textTheme.caption!.copyWith(
-                                height: 1.3,
-                              ),
+                              'Like',
+                              style: Theme.of(context).textTheme.caption!,
                             ),
                           ],
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          controller.likePosts(controller.postsId[index]);
+                        },
                       ),
-                    ),
-
-                    /// ///////////////////////
-                    // Container(),
-                    InkWell(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.favorite,
-                            size: 17,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'Like',
-                            style: Theme.of(context).textTheme.caption!,
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        controller.likePosts(controller.postsId[index]);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  ),
+                ],
+              ),
           ],
         ),
       ),

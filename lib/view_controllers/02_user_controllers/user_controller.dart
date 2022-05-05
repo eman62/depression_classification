@@ -100,6 +100,7 @@ class UserController extends GetxController {
       event.docs.forEach((element) {
         postsId.add(element.id);
         posts.add(PostModel.fromJson(element.data()));
+        print(element.data());
         // posts =[];
         update();
       });
@@ -158,23 +159,58 @@ class UserController extends GetxController {
     update();
   }
 
+  _uploadPostImage(profileImage) async {
+    String path = 'post_pic-${DateTime.now()}';
+    print(path);
+
+    final ref = firebase_storage.FirebaseStorage.instance.ref('post_pics').child(path);
+    final uploadValue = await ref.putFile(profileImage!);
+    String imageUrl = await uploadValue.ref.getDownloadURL();
+    print(imageUrl);
+    return imageUrl;
+    // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
+
+    // firebase_storage.FirebaseStorage.instance
+    //     .ref()
+    //     .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+    //     .putFile(profileImage!)
+    //     .then((value) {
+    //   value.ref.getDownloadURL().then((value) {
+    //     print(value);
+    //     updateUser(name: name, email: email, age: age, phone: phone, image: value);
+    //   }).catchError((error) {});
+    // }).catchError((error) {});
+    // update();
+  }
+
   void createPost({
     required String dateTime,
     required String text,
-    String? postImage,
-  }) {
+  }) async {
     changeIsLoadingCreatePost(true);
+    String? imageUrl;
+
+    // add image to firestore
+    if (postImage != null) {
+      imageUrl = await _uploadPostImage(postImage);
+    }
+
+
+    // use the image link
     PostModel model = PostModel(
       name: userModel!.name,
       image: userModel!.image,
       uId: userModel!.uId,
       dateTime: dateTime,
       text: text,
-      postImage: postImage ?? '',
+      postImage: imageUrl ?? '',
+        likes: 0,
+
     );
+
     FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
       textController.text = '';
-
+      postImage = null;
       changeIsLoadingCreatePost(false);
     }).catchError((error) {
       changeIsLoadingCreatePost(false);
@@ -199,26 +235,26 @@ class UserController extends GetxController {
   }
 
 /////////////////////////////////// error
-  void uploadPostImage({
-    required String dateTime,
-    required String text,
-  }) {
-    changeIsLoadingCreatePost(true);
-    firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
-        .putFile(postImage!)
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        print(value);
-        createPost(dateTime: dateTime, text: text, postImage: value);
-      }).catchError((error) {
-        changeIsLoadingCreatePost(false);
-      });
-    }).catchError((error) {
-      changeIsLoadingCreatePost(false);
-    });
-  }
+//   void createPostWithImage({
+//     required String dateTime,
+//     required String text,
+//   }) {
+//     changeIsLoadingCreatePost(true);
+//     firebase_storage.FirebaseStorage.instance
+//         .ref()
+//         .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+//         .putFile(postImage!)
+//         .then((value) {
+//       value.ref.getDownloadURL().then((value) {
+//         print(value);
+//         createPost(dateTime: dateTime, text: text, postImage: value);
+//       }).catchError((error) {
+//         changeIsLoadingCreatePost(false);
+//       });
+//     }).catchError((error) {
+//       changeIsLoadingCreatePost(false);
+//     });
+//   }
 
   Future<void> getProfileImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -232,7 +268,7 @@ class UserController extends GetxController {
   }
 
   _uploadProfileImage(profileImage) async {
-    String path = '${userModel!.uId}';
+    String path = 'profile_pic-${DateTime.now()}';
     print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
@@ -265,7 +301,6 @@ class UserController extends GetxController {
     required String email,
     required String age,
     required String phone,
-    String? image,
   }) async {
     changeIsLoadingUpdateUser(true);
     String? imageUrl;
