@@ -6,8 +6,8 @@ import '../../widgets/components.dart';
 import '../../../helpers/constants.dart';
 import 'package:get/get.dart';
 
-class editProfileScreen extends StatelessWidget {
-  // const editProfileScreen({Key? key}) : super(key: key);
+class EditProfileScreen extends StatelessWidget {
+  const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

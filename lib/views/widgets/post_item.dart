@@ -20,9 +20,6 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('/// Index:');
-    print(index);
-    // return Text('$index');
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 5.0,

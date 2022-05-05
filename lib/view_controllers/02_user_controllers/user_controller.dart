@@ -35,7 +35,6 @@ class UserController extends GetxController {
   File? profileImage;
   bool isLoadingUpdateUser = false;
 
-
   void changeBottomNavBar(int index) {
     currentIndex = index;
     update();
@@ -70,9 +69,7 @@ class UserController extends GetxController {
   changeIsLoadingGettingPosts(bool state) {
     isLoadingGettingPosts = state;
     update();
-
   }
-
 
   // /// todo: check method
   // void getPosts() async {
@@ -109,31 +106,30 @@ class UserController extends GetxController {
     });
   }
 
-
-  likePost(String uId){
-    Map<String,Object?> data = {'likes':1};
+  likePost(String uId) {
+    Map<String, Object?> data = {'likes': 1};
     FirebaseFirestore.instance.collection('posts').doc(uId).update(data);
   }
 
   // void getLikes() async {
-    // try {
-    //   changeIsLoadingGettingPosts(true);
-    //   print('/// GETTING LIKES ...');
-    //   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
-    //   likes.addAll(snapshot.docs.map<int>((e) => )).toList());
-    //   print(posts);
-    //   print(posts.length);
-    //   changeIsLoadingGettingPosts(false);
-    //
-    // } catch (e, stacktrace) {
-    //   changeIsLoadingGettingPosts(false);
-    //   print(e);
-    //   print(stacktrace);
-    // }
-    //
-    // listenToNewLikes();
-    // update();
-    //
+  // try {
+  //   changeIsLoadingGettingPosts(true);
+  //   print('/// GETTING LIKES ...');
+  //   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
+  //   likes.addAll(snapshot.docs.map<int>((e) => )).toList());
+  //   print(posts);
+  //   print(posts.length);
+  //   changeIsLoadingGettingPosts(false);
+  //
+  // } catch (e, stacktrace) {
+  //   changeIsLoadingGettingPosts(false);
+  //   print(e);
+  //   print(stacktrace);
+  // }
+  //
+  // listenToNewLikes();
+  // update();
+  //
 
   // }
 
@@ -231,26 +227,32 @@ class UserController extends GetxController {
     } else {
       print('no image selected');
     }
+
     update();
   }
 
-  void uploadProfileImage({
-    required String name,
-    required String email,
-    required String age,
-    required String phone,
-  }) {
-    firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
-        .putFile(profileImage!)
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        print(value);
-        updateUser(name: name, email: email, age: age, phone: phone, image: value);
-      }).catchError((error) {});
-    }).catchError((error) {});
-    update();
+  _uploadProfileImage(profileImage) async {
+    String path = '${userModel!.uId}';
+    print(path);
+
+    final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
+    final uploadValue = await ref.putFile(profileImage!);
+    String imageUrl = await uploadValue.ref.getDownloadURL();
+    print(imageUrl);
+    return imageUrl;
+    // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
+
+    // firebase_storage.FirebaseStorage.instance
+    //     .ref()
+    //     .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+    //     .putFile(profileImage!)
+    //     .then((value) {
+    //   value.ref.getDownloadURL().then((value) {
+    //     print(value);
+    //     updateUser(name: name, email: email, age: age, phone: phone, image: value);
+    //   }).catchError((error) {});
+    // }).catchError((error) {});
+    // update();
   }
 
   changeIsLoadingUpdateUser(bool state) {
@@ -264,21 +266,44 @@ class UserController extends GetxController {
     required String age,
     required String phone,
     String? image,
-  }) {
+  }) async {
     changeIsLoadingUpdateUser(true);
-    // if (profileImage != null) {
-    //   uploadProfileImage();
-    // } else {
-    AppUserModel model = AppUserModel(
-      email: email,
-      name: name,
-      phone: phone,
-      age: age,
-      image: image ?? userModel!.image,
-      uId: userModel!.uId,
-      isEmailVerified: false,
-    );
-    FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update(model.toMap()).then((value) {
+    String? imageUrl;
+    if (profileImage != null) {
+      imageUrl = await _uploadProfileImage(profileImage);
+    }
+
+    // AppUserModel model = AppUserModel(
+    //         email: email,
+    //         name: name,
+    //         phone: phone,
+    //         age: age,
+    //         uId: userModel!.uId,
+    //         isEmailVerified: false,
+    //       );
+
+    Map<String, dynamic> model = imageUrl != null
+        ? AppUserModel(
+            email: email,
+            name: name,
+            phone: phone,
+            age: age,
+            image: imageUrl,
+            uId: userModel!.uId,
+            isEmailVerified: false,
+            admin: isAdmin,
+          ).toMap()
+        : {
+            'email': email,
+            'phone': phone,
+            'age': age,
+            'name': name,
+            'uId': userModel!.uId,
+            'admin': isAdmin,
+            'isEmailVerified': false,
+          };
+
+    FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update(model).then((value) {
       getUserData(uId: userModel?.uId);
       changeIsLoadingUpdateUser(false);
     }).catchError((error) {
