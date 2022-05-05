@@ -12,7 +12,6 @@ import '../../views/01_auth/login_screen.dart';
 import '../../views/02_user/home_screen.dart';
 
 class AuthController extends GetxController {
-  bool isDark = false;
 // ThemeMode appMode =ThemeMode.dark;
 
   IconData suffix = Icons.visibility;
@@ -48,16 +47,6 @@ class AuthController extends GetxController {
   changePasswordVisibility() {
     isPassword = !isPassword;
     suffix = isPassword ? Icons.visibility : Icons.visibility_off;
-    update();
-  }
-
-  void changeAppMode({bool? fromShared}) {
-    if (fromShared != null) {
-      isDark = fromShared;
-    } else {
-      isDark = !isDark;
-      CacheHelper.putData(key: 'isDark', value: isDark);
-    }
     update();
   }
 

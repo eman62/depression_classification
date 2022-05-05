@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:save/style/themes.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
@@ -32,6 +34,7 @@ class UserController extends GetxController {
   File? postImage;
   File? profileImage;
   bool isLoadingUpdateUser = false;
+
 
   void changeBottomNavBar(int index) {
     currentIndex = index;

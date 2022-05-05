@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save/helpers/cache_helper.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
+import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
 import 'package:save/views/02_user/home_screen.dart';
 import 'package:save/views/03_admin/admin_home.dart';
@@ -14,13 +15,13 @@ void main(context) async {
   await CacheHelper.init();
   // await CacheHelper.reset();
   await Firebase.initializeApp();
-  bool? isDark = await CacheHelper.getData(key: 'isDark');
   Widget widget;
 
   /// To clear the global variables upon hot restart
   uId = '';
   isAdmin = null;
   token = '';
+
   uId = await CacheHelper.getData(key: 'uId');
   isAdmin = await CacheHelper.getData(key: 'admin');
   // token = await CacheHelper.getData(key: 'token'); // todo: not yet implemented
@@ -38,18 +39,16 @@ void main(context) async {
     widget = SocialLoginScreen();
   }
 
-  // widget = SocialLoginScreen();
-
-
-  runApp(MyApp(isDark: isDark, startWidget: widget));
+  runApp(MyApp(startWidget: widget));
 }
 
 class MyApp extends StatelessWidget {
-  final bool? isDark;
+  // final bool isDark;
   final Widget? startWidget;
-  MyApp({Key? key, this.isDark, this.startWidget}) : super(key: key);
+  MyApp({Key? key, this.startWidget}) : super(key: key);
 
   final appController = Get.put(AuthController(), permanent: true);
+  final themeController = Get.put(ThemeController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +57,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightMode,
       darkTheme: darkMode,
-      themeMode: Get.find<AuthController>().isDark ? ThemeMode.light : ThemeMode.dark,
-
-      // home: startWidget,
+      themeMode: themeController.initialThemeMode!,
       home: startWidget,
     );
   }

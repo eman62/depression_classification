@@ -6,8 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../helpers/constants.dart';
 
 ThemeData darkMode = ThemeData(
-  iconTheme: IconThemeData(color: Colors.black54),
-  inputDecorationTheme: InputDecorationTheme(
+  iconTheme: const IconThemeData(color: Colors.black54),
+  inputDecorationTheme: const InputDecorationTheme(
     //  fillColor: Colors.white,
     // filled: true,
     labelStyle: TextStyle(color: Colors.grey),
@@ -19,19 +19,19 @@ ThemeData darkMode = ThemeData(
     backgroundColor: HexColor('333739'),
   ),
   primarySwatch: defaultColor,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: defaultColor),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: defaultColor),
   primaryColor: defaultColor,
   scaffoldBackgroundColor: HexColor('333739'),
   cardTheme: CardTheme(
     color: HexColor('#525252'),
   ),
   appBarTheme: AppBarTheme(
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: Colors.white,
     ),
     backgroundColor: HexColor('#525252'),
     elevation: 20,
-    iconTheme: IconThemeData(color: Colors.white),
+    iconTheme: const IconThemeData(color: Colors.white),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
       statusBarColor: HexColor('333739'),
@@ -45,7 +45,7 @@ ThemeData darkMode = ThemeData(
     //   ),
     // ),
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyText1: TextStyle(
       fontSize: 17.0,
       fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ ThemeData lightMode = ThemeData(
   primarySwatch: defaultColor,
   primaryColor: defaultColor,
   //  scaffoldBackgroundColor: Colors.white,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: defaultColor),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: defaultColor),
   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
   //   type: BottomNavigationBarType.fixed,
   //   backgroundColor: defaultColor,
@@ -89,7 +89,7 @@ ThemeData lightMode = ThemeData(
     ),
   ),
 
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyText1: TextStyle(
       fontSize: 17.0,
       color: Colors.black,

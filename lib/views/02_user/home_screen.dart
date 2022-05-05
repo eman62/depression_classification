@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
+import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
@@ -151,10 +152,8 @@ class HomeScreen extends StatelessWidget {
                     IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
                     IconButton(
                         onPressed: () {
-                          // todo: app mode
 
-                          // AppCubit.get(context).changeAppMode();
-                          // cubit.changeAppMode();
+                          Get.find<ThemeController>().changeAppThemeMode();
                         },
                         icon: const Icon(Icons.brightness_4_outlined)),
                   ],
