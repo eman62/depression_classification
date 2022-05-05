@@ -292,7 +292,7 @@ class UserController extends GetxController {
             uId: userModel!.uId,
             isEmailVerified: false,
             admin: isAdmin,
-          ).toMap()
+          ).toMap() // if we have the image add it =
         : {
             'email': email,
             'phone': phone,
@@ -301,7 +301,7 @@ class UserController extends GetxController {
             'uId': userModel!.uId,
             'admin': isAdmin,
             'isEmailVerified': false,
-          };
+          }; // if we don't have image don't make it = null, just leave its value
 
     FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update(model).then((value) {
       getUserData(uId: userModel?.uId);
