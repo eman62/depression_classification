@@ -16,8 +16,8 @@ class UserPostsScreen extends StatelessWidget {
         builder: (controller) {
           return ConditionalBuilder(
             condition: controller.isLoadingGettingPosts,
-            builder: (context) => Center(
-              child: Container(),
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(),
             ),
             fallback: (context) => SingleChildScrollView(
               physics: const BouncingScrollPhysics(),

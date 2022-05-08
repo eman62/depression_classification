@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:save/helpers/date_helpers.dart';
 import '../../models/post_model.dart';
 import '../../view_controllers/02_user_controllers/user_controller.dart';
+import 'package:get/get.dart';
 
 class PostItem extends StatelessWidget {
   final PostModel model;
@@ -66,6 +67,7 @@ class PostItem extends StatelessWidget {
                     ),
                     Text(
                       DateHelpers.parseDateTimeReturnDescriptionString(model.dateTime!),
+                      // model.dateTime!,
                       style: Theme.of(context).textTheme.caption!.copyWith(
                             height: 1.3,
                           ),
@@ -136,10 +138,10 @@ class PostItem extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.favorite,
                                     size: 17,
-                                    color: Colors.grey,
+                                    color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -147,9 +149,11 @@ class PostItem extends StatelessWidget {
 
                                   // todo: resolve likes
                                   Text(
-                                    // '${controller.likes[index]}',
-                                    '${model.likes}',
-                                    style: Theme.of(context).textTheme.caption!,
+                                    // '0',
+                                    '${controller.likesCounts[index]}',
+                                    style: Theme.of(context).textTheme.caption!.copyWith(
+                                      color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -228,22 +232,24 @@ class PostItem extends StatelessWidget {
                       InkWell(
                         child: Row(
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.favorite,
                               size: 17,
-                              color: Colors.grey,
+                              color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
                             ),
                             const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              'Like',
-                              style: Theme.of(context).textTheme.caption!,
+                              controller.likedByMe[index] ? 'Liked': 'Like',
+                              style: Theme.of(context).textTheme.caption!.copyWith(
+                                color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
+                              ),
                             ),
                           ],
                         ),
                         onTap: () {
-                          controller.likePosts(controller.postsId[index]);
+                          controller.likeOrUnlikePost(controller.postsId[index], index);
                         },
                       ),
                     ],

@@ -20,7 +20,8 @@ class UserController extends GetxController {
   int currentIndex = 0;
   List<PostModel> posts = [];
   List<String> postsId = [];
-  List<int> likes = [];
+  List<Map<String, dynamic>> likes = [];
+  List<int> likesCounts = [];
   AppUserModel? userModel;
   bool isLoadingGetUserData = false;
   bool isLoadingCreatePost = false;
@@ -34,6 +35,7 @@ class UserController extends GetxController {
   File? postImage;
   File? profileImage;
   bool isLoadingUpdateUser = false;
+  List<bool> likedByMe = [];
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -71,88 +73,104 @@ class UserController extends GetxController {
     update();
   }
 
-  // /// todo: check method
-  // void getPosts() async {
-  //   try {
-  //     changeIsLoadingGettingPosts(true);
-  //     print('/// GETTING POSTS ...');
-  //     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('posts').get();
-  //     posts.addAll(snapshot.docs.map<PostModel>((e) => PostModel.fromJson(e.data())).toList());
-  //     print(posts);
-  //     print(posts.length);
-  //     changeIsLoadingGettingPosts(false);
-  //
-  //   } catch (e, stacktrace) {
-  //     changeIsLoadingGettingPosts(false);
-  //     print(e);
-  //     print(stacktrace);
-  //   }
-  //
-  //   listenToNewPosts();
-  //
-  //   update();
-  // }
-
   getPosts() {
-    FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-      posts = [];
+    try {
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) async {
+        print('/// GET POSTS ...');
 
-      event.docs.forEach((element) {
-        postsId.add(element.id);
-        posts.add(PostModel.fromJson(element.data()));
-        print(element.data());
-        // posts =[];
+        /// Get Posts and likes counts
+        for (int i = 0; i < event.docs.length; i++) {
+          postsId.add(event.docs[i].id);
+          posts = [];
+          posts.add(PostModel.fromJson(event.docs[i].data()));
+        }
+
+        /// Get likes
+        for (int i = 0; i < event.docs.length; i++) {
+          var snapshot = await event.docs[i].reference.collection('likes').get();
+          likesCounts = [];
+
+          likesCounts.add(snapshot.docs.length);
+          likes = [];
+
+          if (snapshot.docs.isNotEmpty) likes.add(snapshot.docs[i].data());
+
+          await event.docs[i].reference.collection('likes').get().then((snapshot) {
+            if (snapshot.docs.isNotEmpty) {
+              for (var element in snapshot.docs) {
+                element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+              }
+            } else {
+              likedByMe.add(false);
+            }
+          });
+
+          // print(likedByMe);
+
+        }
+        changeIsLoadingGettingPosts(false);
+
         update();
       });
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+    }
+  }
+
+  likeOrUnlikePost(postUid, index) {
+    try {
+      FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          for (var element in snapshot.docs) {
+            print(element.data()['uId']);
+            print(userModel!.uId);
+            if (element.data()['uId'] == userModel!.uId) {
+              _unlikePost(postUid, index);
+            } else {
+              _likePost(postUid, index);
+            }
+          }
+        } else {
+          _likePost(postUid, index);
+        }
+      });
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+    }
+  }
+
+  _likePost(String postUid, index) {
+    print('/// LIKE');
+    Map<String, Object?> data = {'uId': userModel!.uId};
+    FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
+    changeLikedByMeState(true, index);
+    getPosts();
+  }
+
+  _unlikePost(String postUid, index) async {
+    print('/// UN-LIKE');
+    String likeIdToRemove = '';
+
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
+      likeIdToRemove = value.docs.singleWhere((element) => element.data()['uId'] == userModel!.uId).id;
     });
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('likes')
+        .doc(likeIdToRemove)
+        .delete();
+    changeLikedByMeState(false, index);
+
+    getPosts();
   }
 
-  likePost(String uId) {
-    Map<String, Object?> data = {'likes': 1};
-    FirebaseFirestore.instance.collection('posts').doc(uId).update(data);
+  changeLikedByMeState(bool state, index) {
+    likedByMe[index] = state;
+    update();
   }
-
-  // void getLikes() async {
-  // try {
-  //   changeIsLoadingGettingPosts(true);
-  //   print('/// GETTING LIKES ...');
-  //   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('likes').get();
-  //   likes.addAll(snapshot.docs.map<int>((e) => )).toList());
-  //   print(posts);
-  //   print(posts.length);
-  //   changeIsLoadingGettingPosts(false);
-  //
-  // } catch (e, stacktrace) {
-  //   changeIsLoadingGettingPosts(false);
-  //   print(e);
-  //   print(stacktrace);
-  // }
-  //
-  // listenToNewLikes();
-  // update();
-  //
-
-  // }
-
-  // getLikes() {
-  //   if (posts.isEmpty) {
-  //     FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-  //       posts = [];
-  //       //postsId =[];
-  //       event.docs.forEach((element) {
-  //         //  posts =[];
-  //         element.reference.collection('likes').snapshots().listen((event) {
-  //           //   postsId =[];
-  //           //  likes = [];
-  //           likes.add(event.docs.length);
-  //           postsId.add(element.id);
-  //           posts.add(PostModel.fromJson(element.data()));
-  //         });
-  //         // posts =[];
-  //       });
-  //     });
-  //   }
-  // }
 
   changeIsLoadingCreatePost(bool state) {
     isLoadingCreatePost = state;
@@ -195,7 +213,6 @@ class UserController extends GetxController {
       imageUrl = await _uploadPostImage(postImage);
     }
 
-
     // use the image link
     PostModel model = PostModel(
       name: userModel!.name,
@@ -204,17 +221,21 @@ class UserController extends GetxController {
       dateTime: dateTime,
       text: text,
       postImage: imageUrl ?? '',
-        likes: 0,
-
+      likesCount: 0,
     );
 
     FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
       textController.text = '';
       postImage = null;
+      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
+
       changeIsLoadingCreatePost(false);
     }).catchError((error) {
       changeIsLoadingCreatePost(false);
     });
+
+    FirebaseFirestore.instance.collection('posts').orderBy('dateTime');
+
     update();
   }
 
@@ -233,28 +254,6 @@ class UserController extends GetxController {
     postImage = null;
     update();
   }
-
-/////////////////////////////////// error
-//   void createPostWithImage({
-//     required String dateTime,
-//     required String text,
-//   }) {
-//     changeIsLoadingCreatePost(true);
-//     firebase_storage.FirebaseStorage.instance
-//         .ref()
-//         .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
-//         .putFile(postImage!)
-//         .then((value) {
-//       value.ref.getDownloadURL().then((value) {
-//         print(value);
-//         createPost(dateTime: dateTime, text: text, postImage: value);
-//       }).catchError((error) {
-//         changeIsLoadingCreatePost(false);
-//       });
-//     }).catchError((error) {
-//       changeIsLoadingCreatePost(false);
-//     });
-//   }
 
   Future<void> getProfileImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -365,16 +364,16 @@ class UserController extends GetxController {
     });
   }
 
-  void likePosts(String postId) {
-    FirebaseFirestore.instance.collection('posts').doc(postId).collection('likes').doc(userModel!.uId).set({
-      'like': true,
-    }).then((value) {
-      // todo: re-fetch the posts from the firebase
-    }).catchError((error) {
-      showToast(text: '$error', state: ToastStates.error);
-    });
-    update();
-  }
+  // void likePosts(String postId) {
+  //   FirebaseFirestore.instance.collection('posts').doc(postId).collection('likes').doc(userModel!.uId).set({
+  //     'like': true,
+  //   }).then((value) {
+  //     // todo: re-fetch the posts from the firebase
+  //   }).catchError((error) {
+  //     showToast(text: '$error', state: ToastStates.error);
+  //   });
+  //   update();
+  // }
 
   void signOut(context) async {
     await FirebaseAuth.instance.signOut();
@@ -387,6 +386,7 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
+    isLoadingGettingPosts = true;
     getPosts();
     // getLikes();
     getUserData(uId: uId);

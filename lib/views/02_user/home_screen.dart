@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
 
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
-    const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'),
+    const TabItem(icon: Icon(Icons.notifications), title: 'Notificatio..'), // todo: fix overflow
     const TabItem(icon: Icon(Icons.upload_file), title: 'Post'),
     const TabItem(icon: Icon(Icons.people_alt_rounded), title: 'Friends'),
     const TabItem(icon: Icon(Icons.person), title: 'Status'),
@@ -158,16 +158,15 @@ class HomeScreen extends StatelessWidget {
                         icon: const Icon(Icons.brightness_4_outlined)),
                   ],
                 ),
-                bottomNavigationBar: SizedBox(
-                  child: ConvexAppBar(
-                    items: bottomItems2,
-                    // activeColor: Colors.grey[100],
-                    initialActiveIndex: controller.currentIndex,
-                    backgroundColor: defaultColor,
-                    onTap: (index) {
-                      controller.changeBottomNavBar(index);
-                    },
-                  ),
+                bottomNavigationBar: ConvexAppBar(
+                  items: bottomItems2,
+                  // activeColor: Colors.grey[100],
+                  // height: 60,
+                  initialActiveIndex: controller.currentIndex,
+                  backgroundColor: defaultColor,
+                  onTap: (index) {
+                    controller.changeBottomNavBar(index);
+                  },
                 ),
                 body: ConditionalBuilder(
                   condition: (controller.posts.isNotEmpty || controller.userModel != null),
