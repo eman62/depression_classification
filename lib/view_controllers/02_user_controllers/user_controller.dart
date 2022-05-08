@@ -75,29 +75,28 @@ class UserController extends GetxController {
 
   getPosts() {
     try {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) async {
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
         print('/// GET POSTS ...');
-
+        // changeIsLoadingGettingPosts(true);
         /// Get Posts and likes counts
-        for (int i = 0; i < event.docs.length; i++) {
-          posts = [];
-          posts.add(PostModel.fromJson(event.docs[i].data()));
-        }
+        posts = [];
+        likes = [];
+        likesCounts = [];
+        postsId = [];
+        likedByMe = [];
 
-        /// Get likes
-        for (int i = 0; i < event.docs.length; i++) {
-          print('/// GET LIKES ...');
-          var snapshot = await event.docs[i].reference.collection('likes').get();
-          likesCounts = [];
+        for (var post in postEvent.docs) {
+          posts.add(PostModel.fromJson(post.data()));
+          postsId.add(post.id);
+          await post.reference.collection('likes').get().then((likesSnapshots) {
+            likesCounts.add(likesSnapshots.docs.length);
+            print(likesSnapshots.docs.length);
+            if (likesSnapshots.docs.isNotEmpty) {
+              for (var doc in likesSnapshots.docs) {
+                likes.add(doc.data());
+              }
 
-          likesCounts.add(snapshot.docs.length);
-          likes = [];
-
-          if (snapshot.docs.isNotEmpty) likes.add(snapshot.docs[i].data());
-
-          await event.docs[i].reference.collection('likes').get().then((snapshot) {
-            if (snapshot.docs.isNotEmpty) {
-              for (var element in snapshot.docs) {
+              for (var element in likesSnapshots.docs) {
                 element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
               }
             } else {
@@ -105,6 +104,7 @@ class UserController extends GetxController {
             }
           });
         }
+
         changeIsLoadingGettingPosts(false);
 
         update();

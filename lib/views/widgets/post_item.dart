@@ -141,7 +141,9 @@ class PostItem extends StatelessWidget {
                                   Icon(
                                     Icons.favorite,
                                     size: 17,
-                                    color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                    color: controller.likedByMe[index]
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Colors.grey,
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -152,8 +154,10 @@ class PostItem extends StatelessWidget {
                                     // '0',
                                     '${controller.likesCounts[index]}',
                                     style: Theme.of(context).textTheme.caption!.copyWith(
-                                      color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
-                                    ),
+                                          color: controller.likedByMe[index]
+                                              ? Theme.of(context).colorScheme.primary
+                                              : Colors.grey,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -234,21 +238,23 @@ class PostItem extends StatelessWidget {
                       InkWell(
                         child: Row(
                           children: [
-                             Icon(
-                               controller.likedByMe[index]
-                               ? Icons.check
-                               : Icons.favorite,
+                            Icon(
+                              controller.likedByMe[index] ? Icons.check : Icons.favorite,
                               size: 17,
-                              color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
+                              color: controller.likedByMe[index]
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Colors.grey,
                             ),
                             const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              controller.likedByMe[index] ? 'Liked': 'Like',
+                              controller.likedByMe[index] ? 'Liked' : 'Like',
                               style: Theme.of(context).textTheme.caption!.copyWith(
-                                color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
-                              ),
+                                    color: controller.likedByMe[index]
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Colors.grey,
+                                  ),
                             ),
                           ],
                         ),
