@@ -158,7 +158,9 @@ class PostItem extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              controller.likeOrUnlikePost(controller.postsId[index], index);
+                            },
                           ),
                         ),
 
@@ -233,7 +235,9 @@ class PostItem extends StatelessWidget {
                         child: Row(
                           children: [
                              Icon(
-                              Icons.favorite,
+                               controller.likedByMe[index]
+                               ? Icons.check
+                               : Icons.favorite,
                               size: 17,
                               color: controller.likedByMe[index] ? Theme.of(context).colorScheme.primary : Colors.grey,
                             ),
