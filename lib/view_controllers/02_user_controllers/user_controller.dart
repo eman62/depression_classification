@@ -104,9 +104,6 @@ class UserController extends GetxController {
               likedByMe.add(false);
             }
           });
-
-          // print(likedByMe);
-
         }
         changeIsLoadingGettingPosts(false);
 
