@@ -80,13 +80,13 @@ class UserController extends GetxController {
 
         /// Get Posts and likes counts
         for (int i = 0; i < event.docs.length; i++) {
-          postsId.add(event.docs[i].id);
           posts = [];
           posts.add(PostModel.fromJson(event.docs[i].data()));
         }
 
         /// Get likes
         for (int i = 0; i < event.docs.length; i++) {
+          print('/// GET LIKES ...');
           var snapshot = await event.docs[i].reference.collection('likes').get();
           likesCounts = [];
 
