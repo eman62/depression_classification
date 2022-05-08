@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:save/style/themes.dart';
 import '../../helpers/cache_helper.dart';
+import '../../helpers/constants.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
 import '../../models/post_model.dart';
@@ -59,8 +59,8 @@ class UserController extends GetxController {
       changeIsLoadingGetUserDataState(false);
       return userModel;
     } catch (e, stacktrace) {
-      print('XXX EXCEPTION');
-      print(stacktrace);
+      if(kDebugMode) print('XXX EXCEPTION');
+      if(kDebugMode) print(stacktrace);
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
@@ -76,7 +76,7 @@ class UserController extends GetxController {
   getPosts() {
     try {
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        print('/// GET POSTS ...');
+        if(kDebugMode) print('/// GET POSTS ...');
         // changeIsLoadingGettingPosts(true);
         /// Get Posts and likes counts
         posts = [];
@@ -90,7 +90,7 @@ class UserController extends GetxController {
           postsId.add(post.id);
           await post.reference.collection('likes').get().then((likesSnapshots) {
             likesCounts.add(likesSnapshots.docs.length);
-            print(likesSnapshots.docs.length);
+            if(kDebugMode) print(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
               for (var doc in likesSnapshots.docs) {
                 likes.add(doc.data());
@@ -110,8 +110,8 @@ class UserController extends GetxController {
         update();
       });
     } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
+      if(kDebugMode) print(e);
+      if(kDebugMode) print(stacktrace);
     }
   }
 
@@ -120,8 +120,8 @@ class UserController extends GetxController {
       FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
         if (snapshot.docs.isNotEmpty) {
           for (var element in snapshot.docs) {
-            print(element.data()['uId']);
-            print(userModel!.uId);
+            if(kDebugMode) print(element.data()['uId']);
+            if(kDebugMode) print(userModel!.uId);
             if (element.data()['uId'] == userModel!.uId) {
               _unlikePost(postUid, index);
             } else {
@@ -133,13 +133,13 @@ class UserController extends GetxController {
         }
       });
     } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
+      if(kDebugMode) print(e);
+      if(kDebugMode) print(stacktrace);
     }
   }
 
   _likePost(String postUid, index) {
-    print('/// LIKE');
+    if(kDebugMode) print('/// LIKE');
     Map<String, Object?> data = {'uId': userModel!.uId};
     FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
     changeLikedByMeState(true, index);
@@ -147,7 +147,7 @@ class UserController extends GetxController {
   }
 
   _unlikePost(String postUid, index) async {
-    print('/// UN-LIKE');
+    if(kDebugMode) print('/// UN-LIKE');
     String likeIdToRemove = '';
 
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
@@ -176,12 +176,12 @@ class UserController extends GetxController {
 
   _uploadPostImage(profileImage) async {
     String path = 'post_pic-${DateTime.now()}';
-    print(path);
+    if(kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('post_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    print(imageUrl);
+    if(kDebugMode) print(imageUrl);
     return imageUrl;
     // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
 
@@ -242,7 +242,7 @@ class UserController extends GetxController {
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
     } else {
-      print('no image selected');
+      if(kDebugMode) print('no image selected');
     }
     update();
   }
@@ -257,7 +257,7 @@ class UserController extends GetxController {
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
     } else {
-      print('no image selected');
+      if(kDebugMode) print('no image selected');
     }
 
     update();
@@ -265,12 +265,12 @@ class UserController extends GetxController {
 
   _uploadProfileImage(profileImage) async {
     String path = 'profile_pic-${DateTime.now()}';
-    print(path);
+    if(kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    print(imageUrl);
+    if(kDebugMode) print(imageUrl);
     return imageUrl;
     // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
 
