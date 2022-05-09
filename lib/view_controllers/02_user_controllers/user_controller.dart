@@ -378,8 +378,11 @@ class UserController extends GetxController {
     getPosts();
   }
 
-  commentOnPost(postUid, index, comment) {
-
+  commentOnPost(postUid, index, comment) async {
+    if(kDebugMode) print('/// COMMENT');
+    Map<String, Object?> data = {'uId': userModel!.uId, 'comment': commentController.text};
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
+    getPosts();
   }
 
   @override

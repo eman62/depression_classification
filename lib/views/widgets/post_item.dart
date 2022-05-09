@@ -193,7 +193,7 @@ class PostItem extends StatelessWidget {
                               ),
                             ),
                             onTap: () {
-                              controller.changeShowCommentsState(true);
+                              showCommentsBottomSheet(controller: controller, index: index);
                             },
                           ),
                         ),
@@ -231,12 +231,15 @@ class PostItem extends StatelessWidget {
                               ),
                             ],
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            controller.commentController.text = '';
+                            showCommentsBottomSheet(controller: controller, index: index);
+                          },
                         ),
                       ),
 
+                      /// like text
                       /// ///////////////////////
-                      // Container(),
                       InkWell(
                         child: Row(
                           children: [
@@ -271,6 +274,158 @@ class PostItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+showCommentsBottomSheet({required controller, required index}) {
+  Get.bottomSheet(
+    CommentsBottomSheet(controller: controller, index: index),
+    isScrollControlled: true,
+    enableDrag: true,
+    isDismissible: true,
+  );
+}
+
+class CommentsBottomSheet extends StatefulWidget {
+  final controller;
+  final index;
+  const CommentsBottomSheet({Key? key, required this.controller, required this.index}) : super(key: key);
+
+  @override
+  State<CommentsBottomSheet> createState() => _CommentsBottomSheetState();
+}
+
+class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.only(top: 8),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(14),
+            topRight: Radius.circular(14),
+          ),
+        ),
+        child: Column(
+          children: [
+            /// existing comments
+            SizedBox(
+              height: Get.height - 300,
+              child: ListView(
+                // physics: BouncingScrollPhysics(),
+                children: [
+                  CommentItem(controller: widget.controller),
+                  CommentItem(controller: widget.controller),
+                  CommentItem(controller: widget.controller),
+                  CommentItem(controller: widget.controller),
+                  CommentItem(controller: widget.controller),
+                  CommentItem(controller: widget.controller),
+                ],
+              ),
+              // child: ListView.builder(itemBuilder: itemBuilder),
+            ),
+
+            /// publishing comments
+            Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(7),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CommentField(controller: widget.controller),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// /////////////////////////////////////////////////////////////////////////////////
+class CommentItem extends StatelessWidget {
+  final controller;
+  const CommentItem({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// image // todo: set to commented user image
+          CircleAvatar(
+            radius: 18.0,
+            backgroundImage: NetworkImage('${controller.userModel?.image}'),
+          ),
+
+          Container(
+            width: Get.width - 70,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.circular(7),
+            ),
+            child: const Text(
+              'Comment goes here .. Comment goe .. Comment goese .. Comment goes here .. '
+              'Comment gere .. Comment  here .. Cot goes here .. Comment goes here .. '
+              'Comment goes e .. Comment goes here .. Comment g .. Comment gre .. ',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CommentField extends StatelessWidget {
+  final controller;
+  const CommentField({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        /// image
+        CircleAvatar(
+          radius: 18.0,
+          backgroundImage: NetworkImage('${controller.userModel?.image}'),
+        ),
+
+        /// text field
+        SizedBox(
+          width: Get.width - 140,
+          child: TextFormField(
+            controller: controller.commentController,
+            maxLines: 2,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+
+        /// button
+        InkWell(
+          // todo: do comment
+          onTap: () => null,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+            child: const Icon(
+              Icons.send_rounded,
+              size: 22,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
