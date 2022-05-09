@@ -17,6 +17,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+
   int currentIndex = 0;
   List<PostModel> posts = [];
   List<String> postsId = [];
@@ -32,10 +33,18 @@ class UserController extends GetxController {
   var ageController = TextEditingController();
   var phoneController = TextEditingController();
   var feedbackController = TextEditingController();
+  bool isLoadingGettingPosts = false;
   File? postImage;
   File? profileImage;
   bool isLoadingUpdateUser = false;
   List<bool> likedByMe = [];
+  var commentController = TextEditingController();
+  bool showComments = false;
+
+  changeShowCommentsState(bool state) {
+    showComments = state;
+    update();
+  }
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -67,101 +76,9 @@ class UserController extends GetxController {
     update();
   }
 
-  bool isLoadingGettingPosts = false;
   changeIsLoadingGettingPosts(bool state) {
     isLoadingGettingPosts = state;
     update();
-  }
-
-  getPosts() {
-    try {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        if(kDebugMode) print('/// GET POSTS ...');
-        // changeIsLoadingGettingPosts(true);
-        /// Get Posts and likes counts
-        posts = [];
-        likes = [];
-        likesCounts = [];
-        postsId = [];
-        likedByMe = [];
-
-        for (var post in postEvent.docs) {
-          posts.add(PostModel.fromJson(post.data()));
-          postsId.add(post.id);
-          await post.reference.collection('likes').get().then((likesSnapshots) {
-            likesCounts.add(likesSnapshots.docs.length);
-            if(kDebugMode) print(likesSnapshots.docs.length);
-            if (likesSnapshots.docs.isNotEmpty) {
-              for (var doc in likesSnapshots.docs) {
-                likes.add(doc.data());
-              }
-
-              for (var element in likesSnapshots.docs) {
-                element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
-              }
-            } else {
-              likedByMe.add(false);
-            }
-          });
-        }
-
-        changeIsLoadingGettingPosts(false);
-
-        update();
-      });
-    } catch (e, stacktrace) {
-      if(kDebugMode) print(e);
-      if(kDebugMode) print(stacktrace);
-    }
-  }
-
-  likeOrUnlikePost(postUid, index) {
-    try {
-      FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
-        if (snapshot.docs.isNotEmpty) {
-          for (var element in snapshot.docs) {
-            if(kDebugMode) print(element.data()['uId']);
-            if(kDebugMode) print(userModel!.uId);
-            if (element.data()['uId'] == userModel!.uId) {
-              _unlikePost(postUid, index);
-            } else {
-              _likePost(postUid, index);
-            }
-          }
-        } else {
-          _likePost(postUid, index);
-        }
-      });
-    } catch (e, stacktrace) {
-      if(kDebugMode) print(e);
-      if(kDebugMode) print(stacktrace);
-    }
-  }
-
-  _likePost(String postUid, index) {
-    if(kDebugMode) print('/// LIKE');
-    Map<String, Object?> data = {'uId': userModel!.uId};
-    FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
-    changeLikedByMeState(true, index);
-    getPosts();
-  }
-
-  _unlikePost(String postUid, index) async {
-    if(kDebugMode) print('/// UN-LIKE');
-    String likeIdToRemove = '';
-
-    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
-      likeIdToRemove = value.docs.singleWhere((element) => element.data()['uId'] == userModel!.uId).id;
-    });
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(postUid)
-        .collection('likes')
-        .doc(likeIdToRemove)
-        .delete();
-    changeLikedByMeState(false, index);
-
-    getPosts();
   }
 
   changeLikedByMeState(bool state, index) {
@@ -198,44 +115,6 @@ class UserController extends GetxController {
     // update();
   }
 
-  void createPost({
-    required String dateTime,
-    required String text,
-  }) async {
-    changeIsLoadingCreatePost(true);
-    String? imageUrl;
-
-    // add image to firestore
-    if (postImage != null) {
-      imageUrl = await _uploadPostImage(postImage);
-    }
-
-    // use the image link
-    PostModel model = PostModel(
-      name: userModel!.name,
-      image: userModel!.image,
-      uId: userModel!.uId,
-      dateTime: dateTime,
-      text: text,
-      postImage: imageUrl ?? '',
-      likesCount: 0,
-    );
-
-    FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
-      textController.text = '';
-      postImage = null;
-      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
-
-      changeIsLoadingCreatePost(false);
-    }).catchError((error) {
-      changeIsLoadingCreatePost(false);
-    });
-
-    FirebaseFirestore.instance.collection('posts').orderBy('dateTime');
-
-    update();
-  }
-
   Future<void> getPostImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -247,7 +126,7 @@ class UserController extends GetxController {
     update();
   }
 
-  void removePostImage() {
+  removePostImage() {
     postImage = null;
     update();
   }
@@ -361,17 +240,6 @@ class UserController extends GetxController {
     });
   }
 
-  // void likePosts(String postId) {
-  //   FirebaseFirestore.instance.collection('posts').doc(postId).collection('likes').doc(userModel!.uId).set({
-  //     'like': true,
-  //   }).then((value) {
-  //     // todo: re-fetch the posts from the firebase
-  //   }).catchError((error) {
-  //     showToast(text: '$error', state: ToastStates.error);
-  //   });
-  //   update();
-  // }
-
   void signOut(context) async {
     await FirebaseAuth.instance.signOut();
     await CacheHelper.reset();
@@ -379,6 +247,139 @@ class UserController extends GetxController {
     uId = '';
     isAdmin = null;
     navigateAndFinish(context, SocialLoginScreen());
+  }
+
+  void createPost({
+    required String dateTime,
+    required String text,
+  }) async {
+    changeIsLoadingCreatePost(true);
+    String? imageUrl;
+
+    // add image to firestore
+    if (postImage != null) {
+      imageUrl = await _uploadPostImage(postImage);
+    }
+
+    // use the image link
+    PostModel model = PostModel(
+      name: userModel!.name,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+      postImage: imageUrl ?? '',
+      likesCount: 0,
+    );
+
+    FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
+      textController.text = '';
+      postImage = null;
+      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
+
+      changeIsLoadingCreatePost(false);
+    }).catchError((error) {
+      changeIsLoadingCreatePost(false);
+    });
+
+    FirebaseFirestore.instance.collection('posts').orderBy('dateTime');
+
+    update();
+  }
+
+  getPosts() {
+    try {
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
+        if(kDebugMode) print('/// GET POSTS ...');
+        // changeIsLoadingGettingPosts(true);
+        /// Get Posts and likes counts
+        posts = [];
+        likes = [];
+        likesCounts = [];
+        postsId = [];
+        likedByMe = [];
+
+        for (var post in postEvent.docs) {
+          posts.add(PostModel.fromJson(post.data()));
+          postsId.add(post.id);
+          await post.reference.collection('likes').get().then((likesSnapshots) {
+            likesCounts.add(likesSnapshots.docs.length);
+            if(kDebugMode) print(likesSnapshots.docs.length);
+            if (likesSnapshots.docs.isNotEmpty) {
+              for (var doc in likesSnapshots.docs) {
+                likes.add(doc.data());
+              }
+
+              for (var element in likesSnapshots.docs) {
+                element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+              }
+            } else {
+              likedByMe.add(false);
+            }
+          });
+        }
+
+        changeIsLoadingGettingPosts(false);
+
+        update();
+      });
+    } catch (e, stacktrace) {
+      if(kDebugMode) print(e);
+      if(kDebugMode) print(stacktrace);
+    }
+  }
+
+  likeOrUnlikePost(postUid, index) {
+    try {
+      FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          for (var element in snapshot.docs) {
+            if(kDebugMode) print(element.data()['uId']);
+            if(kDebugMode) print(userModel!.uId);
+            if (element.data()['uId'] == userModel!.uId) {
+              _unlikePost(postUid, index);
+            } else {
+              _likePost(postUid, index);
+            }
+          }
+        } else {
+          _likePost(postUid, index);
+        }
+      });
+    } catch (e, stacktrace) {
+      if(kDebugMode) print(e);
+      if(kDebugMode) print(stacktrace);
+    }
+  }
+
+  _likePost(String postUid, index) async {
+    if(kDebugMode) print('/// LIKE');
+    Map<String, Object?> data = {'uId': userModel!.uId};
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
+    changeLikedByMeState(true, index);
+    getPosts();
+  }
+
+  _unlikePost(String postUid, index) async {
+    if(kDebugMode) print('/// UN-LIKE');
+    String likeIdToRemove = '';
+
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
+      likeIdToRemove = value.docs.singleWhere((element) => element.data()['uId'] == userModel!.uId).id;
+    });
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('likes')
+        .doc(likeIdToRemove)
+        .delete();
+    changeLikedByMeState(false, index);
+
+    getPosts();
+  }
+
+  commentOnPost(postUid, index, comment) {
+
   }
 
   @override

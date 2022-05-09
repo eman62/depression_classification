@@ -192,7 +192,9 @@ class PostItem extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              controller.changeShowCommentsState(true);
+                            },
                           ),
                         ),
                       ],
