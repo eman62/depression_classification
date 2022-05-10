@@ -292,8 +292,10 @@ class UserController extends GetxController {
   getPosts() {
     try {
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
+        print('/// Docs Changes ...');
+        print(postEvent.docChanges);
         if(kDebugMode) print('/// GET POSTS ...');
-        // changeIsLoadingGettingPosts(true);
+        changeIsLoadingGettingPosts(true);
         /// Get Posts and likes counts
         posts = [];
         likes = [];

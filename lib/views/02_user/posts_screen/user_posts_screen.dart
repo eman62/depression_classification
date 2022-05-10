@@ -22,7 +22,7 @@ class UserPostsScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             ),
-            fallback: (context) => SingleChildScrollView(
+            fallback: (builder) => SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
@@ -31,20 +31,22 @@ class UserPostsScreen extends StatelessWidget {
                     elevation: 10.0,
                     margin: EdgeInsets.all(8.0),
                   ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.posts.length,
-                    itemBuilder: (context, index) {
-                      return UserPostItem(
-                          controller: controller,
-                          model: controller.posts[index],
-                          context: context,
-                          postIndex: index,
-                      );
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(height: 15),
-                  ),
+                  controller.posts.isEmpty
+                      ? const Text('No posts ..')
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: controller.posts.length,
+                          itemBuilder: (context, index) {
+                            return UserPostItem(
+                              controller: controller,
+                              model: controller.posts[index],
+                              context: context,
+                              postIndex: index,
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(height: 15),
+                        ),
                   const SizedBox(height: 25),
                 ],
               ),
