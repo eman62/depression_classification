@@ -316,10 +316,30 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
               builder: (controller) => SizedBox(
                 height: Get.height - 300,
                 child: controller.comments[widget.postIndex].isEmpty
-                    ? const Text(
-                        'no comments',
-                        style: TextStyle(
-                          color: Colors.white,
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.mode_comment,
+                              color: Colors.grey,
+                              size: 100,
+                            ),
+                            Text(
+                              'No comments yet',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Be the first.',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     : ListView.builder(
@@ -338,15 +358,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
             ),
 
             /// publishing comments
-            Container(
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(7),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CommentField(controller: widget.controller, index: widget.postIndex),
-            ),
+            CommentField(controller: widget.controller, index: widget.postIndex),
           ],
         ),
       ),
@@ -415,39 +427,54 @@ class CommentField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        /// image
-        CircleAvatar(
-          radius: 18.0,
-          backgroundImage: NetworkImage('${controller.userModel?.image}'),
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white12,
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          /// image
+          CircleAvatar(
+            radius: 18.0,
+            backgroundImage: NetworkImage('${controller.userModel?.image}'),
+          ),
 
-        /// text field
-        SizedBox(
-          width: Get.width - 140,
-          child: TextFormField(
-            controller: controller.commentController,
-            maxLines: 2,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
+          /// text field
+          SizedBox(
+            width: Get.width - 140,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.white.withOpacity(0.1),
+              child: TextFormField(
+                controller: controller.commentController,
+                minLines: 1,
+                maxLines: 5,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+              ),
             ),
           ),
-        ),
 
-        /// button
-        InkWell(
-          onTap: () => controller.commentOnPost(controller.postsId[index], index),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-            child: const Icon(
-              Icons.send_rounded,
-              size: 22,
+          /// button
+          InkWell(
+            onTap: () => controller.commentOnPost(controller.postsId[index], index),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: const Icon(
+                Icons.send_rounded,
+                size: 22,
+                color: Colors.green,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
