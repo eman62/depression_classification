@@ -316,9 +316,12 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
               builder: (controller) => SizedBox(
                 height: Get.height - 300,
                 child: controller.comments[widget.postIndex].isEmpty
-                    ? const Text('no comments', style: TextStyle(
-                  color: Colors.white,
-                ),)
+                    ? const Text(
+                        'no comments',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: controller.comments[widget.postIndex].length,
                         itemBuilder: (context, commentIndex) {
@@ -367,18 +370,11 @@ class CommentItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// image // todo: set to commented user image
           CircleAvatar(
             radius: 18.0,
             backgroundImage: NetworkImage('${controller.userModel?.image}'),
             backgroundColor: Colors.grey,
-            // child: Icon(
-            //   Icons.person,
-            //   size: 22,
-            //   color: Colors.black,
-            // ),
           ),
-
           Container(
             width: Get.width - 70,
             padding: const EdgeInsets.all(12),
