@@ -4,7 +4,7 @@ import 'package:save/models/post_model.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/post_item.dart';
+import '../../widgets/user_post_item.dart';
 
 class UserPostsScreen extends StatelessWidget {
   const UserPostsScreen({Key? key}) : super(key: key);
@@ -36,11 +36,11 @@ class UserPostsScreen extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     itemCount: controller.posts.length,
                     itemBuilder: (context, index) {
-                      return PostItem(
+                      return UserPostItem(
                           controller: controller,
                           model: controller.posts[index],
                           context: context,
-                          index: index,
+                          postIndex: index,
                       );
                     },
                     separatorBuilder: (context, index) => const SizedBox(height: 15),

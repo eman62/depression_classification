@@ -22,7 +22,9 @@ class UserController extends GetxController {
   List<PostModel> posts = [];
   List<String> postsId = [];
   List<Map<String, dynamic>> likes = [];
+  List<List<Map<String, dynamic>>> comments = [];
   List<int> likesCounts = [];
+  List<int> commentsCounts = [];
   AppUserModel? userModel;
   bool isLoadingGetUserData = false;
   bool isLoadingCreatePost = false;
@@ -298,13 +300,18 @@ class UserController extends GetxController {
         likesCounts = [];
         postsId = [];
         likedByMe = [];
+        comments = [];
 
+        int i = 0;
         for (var post in postEvent.docs) {
+          print('/// POST NUMBER $i');
           posts.add(PostModel.fromJson(post.data()));
           postsId.add(post.id);
+
+          /// Likes
           await post.reference.collection('likes').get().then((likesSnapshots) {
             likesCounts.add(likesSnapshots.docs.length);
-            if(kDebugMode) print(likesSnapshots.docs.length);
+            // if(kDebugMode) print(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
               for (var doc in likesSnapshots.docs) {
                 likes.add(doc.data());
@@ -317,6 +324,37 @@ class UserController extends GetxController {
               likedByMe.add(false);
             }
           });
+
+          /// comments
+          await post.reference.collection('comments').get().then((commentsSnapshots) {
+            commentsCounts.add(commentsSnapshots.docs.length);
+
+            List<Map<String, dynamic>> postComments = [];
+            for (var doc in commentsSnapshots.docs) {
+              postComments.add(doc.data());
+              // print('comments|');
+            }
+            comments.add(postComments);
+            print('/// comments length');
+            if(kDebugMode) print(commentsSnapshots.docs.length);
+            // if (commentsSnapshots.docs.isNotEmpty) {
+            //   print('xxxx');
+            //   for (var doc in commentsSnapshots.docs) {
+            //     comments[i][commentsSnapshots.docs.indexOf(doc)].add(doc.data());
+            //   }
+            //
+            //   // todo: comment by me
+            //   // for (var element in commentsSnapshots.docs) {
+            //   //   element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+            //   // }
+            // } else {
+            //   print('yyyy');
+            //   // comments.add({});
+            // }
+          });
+          print(comments);
+          print(comments.length);
+          i++;
         }
 
         changeIsLoadingGettingPosts(false);
@@ -378,10 +416,13 @@ class UserController extends GetxController {
     getPosts();
   }
 
-  commentOnPost(postUid, index, comment) async {
+  commentOnPost(postUid, index) async {
     if(kDebugMode) print('/// COMMENT');
-    Map<String, Object?> data = {'uId': userModel!.uId, 'comment': commentController.text};
+    Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
+    'userImageUrl' : userModel!.image,
+    };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
+    commentController.text = '';
     getPosts();
   }
 
