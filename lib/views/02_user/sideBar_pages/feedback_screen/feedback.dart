@@ -37,6 +37,8 @@ class FeedbackScreen extends StatelessWidget {
 
   Widget feedbackDialog(context) => GetBuilder<UserController>(
         builder: (controller) => AlertDialog(
+          //contentTextStyle:Theme.of(context).textTheme.bodyText1,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           content: Form(
             key: formKey,
             child: TextFormField(

@@ -66,6 +66,7 @@ class UserItem extends StatelessWidget {
               height: 1.3,
             ),
           ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
         ],
       ),
     );

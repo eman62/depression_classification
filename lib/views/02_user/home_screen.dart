@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
+import 'package:save/views/02_user/staticVars.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
 import '../../views/02_user/sideBar_pages/feedback_screen/feedback.dart';
@@ -13,16 +14,126 @@ import 'add_post/add_post_screen.dart';
 import 'depressionState_screen/depression_screen.dart';
 import 'friends_screen/friends_screen.dart';
 import 'notification_screen/notification_screen.dart';
+////////////////////// notifications
+import 'dart:math';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:workmanager/workmanager.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
 
+FlutterLocalNotificationsPlugin? flutterLocalNotificationPlugin;
+//FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+Future showNotification() async {
+
+  int rndmIndex = Random().nextInt(StaticVars().quots.length-1);
+
+  AndroidNotificationDetails androidPlatformChannelSpecifics =
+  AndroidNotificationDetails(
+    '$rndmIndex.0',
+    'depression app',
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+    enableVibration: true,
+
+  );
+  var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+    threadIdentifier: 'thread_id',
+  );
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics
+  );
+
+  await flutterLocalNotificationPlugin?.show(
+    rndmIndex,
+    'App Name',
+    StaticVars().quots[rndmIndex],
+    platformChannelSpecifics,
+  );
+
+
+}
+
+
+
+void callbackDispatcher() {
+
+  // initial notifications
+  var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initializationSettingsIOS = const IOSInitializationSettings();
+
+  var initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+
+  flutterLocalNotificationPlugin = FlutterLocalNotificationsPlugin();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  flutterLocalNotificationPlugin?.initialize(
+    initializationSettings,
+  );
+
+
+  Workmanager().executeTask((task, inputData) {
+    showNotification();
+    return Future.value(true);
+  });
+}
+
+
+
+
+
+
+
+//////////////////////////////////
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  /////////////////////////////
+  @override
+  void initState() {
+    // Future.delayed(Duration(seconds: 2) ,(){
+    //   Navigator.pushReplacement(context, MaterialPageRoute(
+    //       builder:(_) => MainScreen()
+    //   ));
+    // });
+
+    Workmanager().initialize(
+        callbackDispatcher,
+        isInDebugMode: true
+    );
+    Workmanager().registerPeriodicTask(
+      "1",
+      "periodic Notification",
+      frequency: const Duration(minutes: 15),
+    );
+
+    Workmanager().registerPeriodicTask(
+      "2",
+      "periodic Notification at day",
+      frequency: const Duration(days: 1),
+    );
+
+
+    super.initState();
+  }
+
+  ////////////////////////////
   final homeController = Get.put(UserController(), permanent: true);
 
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
-    const TabItem(icon: Icon(Icons.notifications), title: 'Notificatio..'), // todo: fix overflow
-    const TabItem(icon: Icon(Icons.upload_file), title: 'Post'),
+    const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'), // todo: fix overflow
+   // const TabItem(icon: Icon(Icons.upload_file), title: 'Post'),
     const TabItem(icon: Icon(Icons.people_alt_rounded), title: 'Friends'),
     const TabItem(icon: Icon(Icons.person), title: 'Status'),
   ];
@@ -30,7 +141,7 @@ class HomeScreen extends StatelessWidget {
   final List<Widget> screens = [
     const UserPostsScreen(),
     const NotificationScreen(),
-    const NewPostScreen(),
+    //const NewPostScreen(),
     //addPostsScreen(),
     const FriendsScreen(),
     const DepressionStateScreen(),
@@ -39,14 +150,14 @@ class HomeScreen extends StatelessWidget {
   final List<String> name = [
     'Home',
     'Notifications',
-    'Add Post',
+   // 'Add Post',
     'Friends',
     'Status',
   ];
 
   @override
   Widget build(BuildContext context) {
-    Size? size = MediaQuery.of(context).size;
+   // Size? size = MediaQuery.of(context).size;
     return GetBuilder<UserController>(
       builder: (controller) {
         return Scaffold(
@@ -83,6 +194,24 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.upload_file,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'New Post',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          // AppCubit.get(context).getUserData();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NewPostScreen()),
                           );
                         },
                       ),
@@ -149,7 +278,6 @@ class HomeScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   actions: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
                     IconButton(
                         onPressed: () {
 

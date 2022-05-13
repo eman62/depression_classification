@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import '../../widgets/components.dart';
 import '../../../helpers/constants.dart';
@@ -104,22 +102,22 @@ class EditProfileScreen extends StatelessWidget {
                         color: defaultColor,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: MaterialButton(
-                        onPressed: () {
-                          controller.updateUser(
-                              name: controller.nameController.text,
-                              email: controller.emailController.text,
-                              age: controller.ageController.text,
-                              phone: controller.phoneController.text);
-                        },
-                        child: const Text(
-                          'upload profile',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
+                      // child: MaterialButton(
+                      //   onPressed: () {
+                      //     controller.updateUser(
+                      //         name: controller.nameController.text,
+                      //         email: controller.emailController.text,
+                      //         age: controller.ageController.text,
+                      //         phone: controller.phoneController.text);
+                      //   },
+                      //   child: const Text(
+                      //     'upload profile',
+                      //     style: TextStyle(
+                      //       color: Colors.white,
+                      //       fontSize: 20,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                   ],
                 ),

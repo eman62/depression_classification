@@ -47,12 +47,42 @@ class ProfileScreen extends StatelessWidget {
                           backgroundImage: NetworkImage('${userModel?.image}'),
                         ),
                       ),
+
                     ],
                   ),
                 ),
-                Text(
-                  '${userModel?.name}',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                    '${userModel?.name}',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 25),
+                  ),
+                   const SizedBox(width: 5,),
+                    IconButton(
+                      onPressed: (){
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        color: defaultColor,
+                      ),
+                    ),
+                    // TextButton(
+                    //   onPressed: (){
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                    //     );
+                    //   },
+                    //   child: Text(
+                    //     'edit',
+                    //     style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 20,color: defaultColor),
+                    //   ),
+                    // ),
+                  ]
                 ),
                 const SizedBox(
                   height: 50,
@@ -143,50 +173,50 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 150,
-                ),
+                // const SizedBox(
+                //   height: 150,
+                // ),
                 // Spacer(),
-                Row(
-                  //mainAxisAlignment: ,
-                  children: [
-                    Expanded(
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditProfileScreen()),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Edit profile',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(color: Colors.white, fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        color: defaultColor,
-                        height: 60,
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   //mainAxisAlignment: ,
+                //   children: [
+                //     Expanded(
+                //       child: MaterialButton(
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                //           );
+                //         },
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             const Icon(
+                //               Icons.edit,
+                //               color: Colors.white,
+                //             ),
+                //             const SizedBox(
+                //               width: 20,
+                //             ),
+                //             Text(
+                //               'Edit profile',
+                //               style: Theme.of(context)
+                //                   .textTheme
+                //                   .bodyText1!
+                //                   .copyWith(color: Colors.white, fontSize: 20),
+                //             ),
+                //           ],
+                //         ),
+                //         color: defaultColor,
+                //         height: 60,
+                //       ),
+                //     )
+                //   ],
+                // ),
               ],
             ),
           ),
-          fallback: (context) => Center(child: Scaffold()),
+          fallback: (context) => const Center(child: Scaffold()),
         ),
       );
     });

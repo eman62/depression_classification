@@ -25,6 +25,8 @@ class AdminController extends GetxController {
     update();
   }
 
+
+/////////////////////////////////////
   // void getUsers() async {
   //   try {
   //     changeIsLoadingGettingUsers(true);
@@ -49,7 +51,7 @@ class AdminController extends GetxController {
   //   update();
   // }
 
-  getUsers() {
+ getUsers() {
     if (users.isEmpty) {
       print('/// GETTING USERS ..');
       FirebaseFirestore.instance
@@ -58,15 +60,14 @@ class AdminController extends GetxController {
           .listen((event) {
         print('/// NEW USER LISTENER TRIGGERED ..');
         print('${event.docs}');
-
-
         users = [];
         event.docs.forEach((element) {
-          print(element.data()['admin']);
+         // print(element.data()['admin']);
+          print ("هنا");
+         // print(element.data()['uId']);
 
           if(element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
-
-
+          return element.data()['uId'];
         });
 
         userCount = users.length;

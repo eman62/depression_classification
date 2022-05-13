@@ -6,6 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../helpers/constants.dart';
 
 ThemeData darkMode = ThemeData(
+  scaffoldBackgroundColor: HexColor('333739'),
   iconTheme: const IconThemeData(color: Colors.black54),
   inputDecorationTheme: const InputDecorationTheme(
     //  fillColor: Colors.white,
@@ -21,7 +22,7 @@ ThemeData darkMode = ThemeData(
   primarySwatch: defaultColor,
   floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: defaultColor),
   primaryColor: defaultColor,
-  scaffoldBackgroundColor: HexColor('333739'),
+
   cardTheme: CardTheme(
     color: HexColor('#525252'),
   ),
@@ -67,7 +68,7 @@ ThemeData darkMode = ThemeData(
 ThemeData lightMode = ThemeData(
   primarySwatch: defaultColor,
   primaryColor: defaultColor,
-  //  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white,
   floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: defaultColor),
   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
   //   type: BottomNavigationBarType.fixed,

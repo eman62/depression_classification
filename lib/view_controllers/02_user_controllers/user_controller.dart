@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../helpers/cache_helper.dart';
-import '../../helpers/constants.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
 import '../../models/post_model.dart';
@@ -58,17 +57,21 @@ class UserController extends GetxController {
     update();
   }
 
-  getUserData({String? uId}) async {
+  getUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
-      userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
-      nameController.text = userModel!.name!;
-      emailController.text = userModel!.email!;
-      ageController.text = userModel!.age!;
-      phoneController.text = userModel!.phone!;
-      changeIsLoadingGetUserDataState(false);
+       FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
+        userModel = AppUserModel.fromJson(event.data()! );
+        nameController.text = userModel!.name!;
+        emailController.text = userModel!.email!;
+        ageController.text = userModel!.age!;
+        phoneController.text = userModel!.phone!;
+        changeIsLoadingGetUserDataState(false);
+
+      });
+
       return userModel;
+
     } catch (e, stacktrace) {
       if(kDebugMode) print('XXX EXCEPTION');
       if(kDebugMode) print(stacktrace);
