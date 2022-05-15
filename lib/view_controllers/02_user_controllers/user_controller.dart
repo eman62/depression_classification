@@ -381,6 +381,9 @@ class UserController extends GetxController {
           for (var element in snapshot.docs) {
             if(kDebugMode) print(element.data()['uId']);
             if(kDebugMode) print(userModel!.uId);
+            print(' on xxxxxxxxxxxxxxxxxxxxxxxxx');
+            print (element.data()['uId']);
+            print (userModel!.uId);
             if (element.data()['uId'] == userModel!.uId) {
               _unlikePost(postUid, index);
             } else {
