@@ -69,8 +69,9 @@ class UserController extends GetxController {
         changeIsLoadingGetUserDataState(false);
 
       });
+      update();
 
-      return userModel;
+      // return userModel;
 
     } catch (e, stacktrace) {
       if(kDebugMode) print('XXX EXCEPTION');
@@ -78,7 +79,6 @@ class UserController extends GetxController {
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
-    update();
   }
 
   changeIsLoadingGettingPosts(bool state) {
