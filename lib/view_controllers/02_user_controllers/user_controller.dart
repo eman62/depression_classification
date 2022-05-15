@@ -251,6 +251,8 @@ class UserController extends GetxController {
     token = '';
     uId = '';
     isAdmin = null;
+    print (uId);
+    Get.delete(tag: "homeController",force: true);
     navigateAndFinish(context, SocialLoginScreen());
   }
 
@@ -436,6 +438,7 @@ class UserController extends GetxController {
     isLoadingGettingPosts = true;
     getPosts();
     // getLikes();
+    print (uId);
     getUserData(uId: uId);
     super.onInit();
   }

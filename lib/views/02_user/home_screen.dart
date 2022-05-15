@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ////////////////////////////
-  final homeController = Get.put(UserController(), permanent: true);
+  final homeController = Get.put(UserController(),tag: "homeController");
 
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
@@ -159,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
    // Size? size = MediaQuery.of(context).size;
     return GetBuilder<UserController>(
+      init: UserController(),
       builder: (controller) {
         return Scaffold(
                 drawer: Drawer(

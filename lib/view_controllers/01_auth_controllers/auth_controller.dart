@@ -76,6 +76,7 @@ class AuthController extends GetxController {
       if (user.uId != null) {
         await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
         globals.uId = user.uId;
+        print (credential.user!.uid);
       }
 
       navigate(user.admin!);

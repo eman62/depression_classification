@@ -168,10 +168,4 @@ chooseToastTitle(ToastStates state) {
   return title;
 }
 
-void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => widget,
-      ),
-      (Route<dynamic> route) => false,
-    );
+void navigateAndFinish(context, widget) => Get.offAll(widget);
