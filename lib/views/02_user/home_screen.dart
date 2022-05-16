@@ -5,6 +5,8 @@ import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
 import 'package:save/views/02_user/staticVars.dart';
+import 'package:workmanager/workmanager.dart';
+import '../../fcm/fcm_manager.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';
 import '../../views/02_user/sideBar_pages/feedback_screen/feedback.dart';
@@ -15,74 +17,6 @@ import 'depressionState_screen/depression_screen.dart';
 import 'friends_screen/friends_screen.dart';
 import 'notification_screen/notification_screen.dart';
 ////////////////////// notifications
-import 'dart:math';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:workmanager/workmanager.dart';
-
-
-FlutterLocalNotificationsPlugin? flutterLocalNotificationPlugin;
-//FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-Future showNotification() async {
-
-  int rndmIndex = Random().nextInt(StaticVars().quots.length-1);
-
-  AndroidNotificationDetails androidPlatformChannelSpecifics =
-  AndroidNotificationDetails(
-    '$rndmIndex.0',
-    'depression app',
-    importance: Importance.max,
-    priority: Priority.high,
-    playSound: true,
-    enableVibration: true,
-
-  );
-  var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
-    threadIdentifier: 'thread_id',
-  );
-  var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics
-  );
-
-  await flutterLocalNotificationPlugin?.show(
-    rndmIndex,
-    'App Name',
-    StaticVars().quots[rndmIndex],
-    platformChannelSpecifics,
-  );
-
-
-}
-
-
-
-void callbackDispatcher() {
-
-  // initial notifications
-  var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
-  var initializationSettingsIOS = const IOSInitializationSettings();
-
-  var initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsIOS,
-  );
-
-  flutterLocalNotificationPlugin = FlutterLocalNotificationsPlugin();
-
-  WidgetsFlutterBinding.ensureInitialized();
-
-  flutterLocalNotificationPlugin?.initialize(
-    initializationSettings,
-  );
-
-
-  Workmanager().executeTask((task, inputData) {
-    showNotification();
-    return Future.value(true);
-  });
-}
-
 
 
 
@@ -98,37 +32,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final homeController = Get.put(UserController(),tag: "homeController");
   /////////////////////////////
   @override
   void initState() {
+
     // Future.delayed(Duration(seconds: 2) ,(){
     //   Navigator.pushReplacement(context, MaterialPageRoute(
     //       builder:(_) => MainScreen()
     //   ));
     // });
 
-    Workmanager().initialize(
-        callbackDispatcher,
-        isInDebugMode: true
-    );
-    Workmanager().registerPeriodicTask(
-      "1",
-      "periodic Notification",
-      frequency: const Duration(minutes: 15),
-    );
-
-    Workmanager().registerPeriodicTask(
-      "2",
-      "periodic Notification at day",
-      frequency: const Duration(days: 1),
-    );
+  FcmManager().initialize();
 
 
     super.initState();
   }
 
   ////////////////////////////
-  final homeController = Get.put(UserController(),tag: "homeController");
+
 
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),

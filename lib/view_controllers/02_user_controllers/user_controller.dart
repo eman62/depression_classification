@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
+import '../../models/notification_model.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../views/01_auth/login_screen.dart';
@@ -27,6 +28,8 @@ class UserController extends GetxController {
   AppUserModel? userModel;
   bool isLoadingGetUserData = false;
   bool isLoadingCreatePost = false;
+  bool isLoadingSetNotification =false;
+  bool isLoadingSendFeedback =false;
   var textController = TextEditingController();
   var picker = ImagePicker();
   var nameController = TextEditingController();
@@ -56,7 +59,17 @@ class UserController extends GetxController {
     isLoadingGetUserData = state;
     update();
   }
+/////////////////////
+  changeIsLoadingSetNotification(bool state) {
+    isLoadingSetNotification = state;
+    update();
+  }
+  changeIsLoadingSendFeedback(bool state) {
+    isLoadingSendFeedback = state;
+    update();
+  }
 
+  ///////////////////////////
   getUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);
@@ -226,11 +239,11 @@ class UserController extends GetxController {
     });
     //}
   }
-
+//////////////////////////////////////////////state wrong
   void sendFeedback({
     required String text,
   }) {
-    changeIsLoadingCreatePost(true);
+    changeIsLoadingSendFeedback(true);
     FeedbackModel model = FeedbackModel(
       name: userModel!.name,
       image: userModel!.image,
@@ -238,10 +251,10 @@ class UserController extends GetxController {
       text: text,
     );
     FirebaseFirestore.instance.collection('feedback').add(model.toMap()).then((value) {
-      changeIsLoadingCreatePost(false);
+      changeIsLoadingSendFeedback(false);
       Get.back();
     }).catchError((error) {
-      changeIsLoadingCreatePost(false);
+      changeIsLoadingSendFeedback(false);
     });
   }
 
@@ -435,7 +448,25 @@ class UserController extends GetxController {
     commentController.text = '';
     getPosts();
   }
+//////////////////////////////////
+//   void saveNotification({
+//     required String text,
+//   }) {
+//     changeIsLoadingSetNotification(true);
+//     NotificationModel model = NotificationModel(
+//       text: text,
+//     );
+//     FirebaseFirestore.instance.collection('notifications').add(model.toMap()).then((value) {
+//       changeIsLoadingSetNotification(false);
+//     }).catchError((error) {
+//       changeIsLoadingSetNotification(false);
+//     });
+//   }
 
+
+
+
+  ////////////////////////////////////////////
   @override
   void onInit() {
     isLoadingGettingPosts = true;
