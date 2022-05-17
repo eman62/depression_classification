@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
+import 'package:save/views/02_user/sideBar_pages/aboutDepression_screens/depressionScreens.dart';
 import 'package:save/views/02_user/staticVars.dart';
 import 'package:workmanager/workmanager.dart';
 import '../../fcm/fcm_manager.dart';
@@ -152,6 +153,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const FavouriteScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        minLeadingWidth: 70,
+                        leading: const Icon(
+                          Icons.local_hospital,
+                          color: defaultColor,
+                        ),
+                        title: const Text(
+                          'Treatment',
+                          style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  screen()),
                           );
                         },
                       ),
