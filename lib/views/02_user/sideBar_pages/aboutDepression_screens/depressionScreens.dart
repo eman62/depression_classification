@@ -31,7 +31,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                   Expanded(
                     child:GestureDetector(
                       onTap:(){
-                        Navigator.push(context, MaterialPageRoute(builder:(context)=>deprssion()));
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>Depression()));
                       },
                       child: Container(
                         child: Column(
@@ -111,7 +111,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                   Expanded(
                     child:GestureDetector(
                       onTap:(){
-                        Navigator.push(context, MaterialPageRoute(builder:(context)=>people()));
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>People()));
                       },
                       child: Container(
                         child: Column(
