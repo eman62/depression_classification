@@ -59,24 +59,24 @@ class _AdminHomeState extends State<AdminHome> {
                   color: defaultColor,
                 ),
               ),
-              ListTile(
-                minLeadingWidth: 70,
-                leading: const Icon(
-                  Icons.upload_file,
-                  color: defaultColor,
-                ),
-                title: const Text(
-                  'New Post',
-                  style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-                onTap: () {
-                  // AppCubit.get(context).getUserData();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NewPostScreen()),
-                  );
-                },
-              ),
+              // ListTile(
+              //   minLeadingWidth: 70,
+              //   leading: const Icon(
+              //     Icons.upload_file,
+              //     color: defaultColor,
+              //   ),
+              //   title: const Text(
+              //     'New Post',
+              //     style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+              //   ),
+              //   onTap: () {
+              //     // AppCubit.get(context).getUserData();
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => const NewPostScreen()),
+              //     );
+              //   },
+              // ),
               ListTile(
                 minLeadingWidth: 70,
                 leading: const Icon(
