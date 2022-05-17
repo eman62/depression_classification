@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save/models/post_model.dart';
 import '../../helpers/cache_helper.dart';
@@ -121,8 +123,57 @@ class AdminController extends GetxController {
     token = '';
     uId = '';
     isAdmin = null;
+    Get.delete(tag: "homeController",force: true);
     navigateAndFinish(context, SocialLoginScreen());
   }
+  /////////////////////////
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var ageController = TextEditingController();
+  var phoneController = TextEditingController();
+  bool isLoadingGetUserData = false;
+  changeIsLoadingGetUserDataState(bool state) {
+    isLoadingGetUserData = state;
+    update();
+  }
+  getUserData({String? uId}) {
+    try {
+      changeIsLoadingGetUserDataState(true);
+      FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
+        userModel = AppUserModel.fromJson(event.data()! );
+        nameController.text = userModel!.name!;
+        emailController.text = userModel!.email!;
+        ageController.text = userModel!.age!;
+        phoneController.text = userModel!.phone!;
+        changeIsLoadingGetUserDataState(false);
+
+      });
+      update();
+
+      // return userModel;
+
+    } catch (e, stacktrace) {
+      if(kDebugMode) print('XXX EXCEPTION');
+      if(kDebugMode) print(stacktrace);
+      showToast(text: e.toString(), state: ToastStates.error);
+      changeIsLoadingGetUserDataState(false);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /////////////////////////////
 
   @override
   void onInit() {
@@ -130,7 +181,7 @@ class AdminController extends GetxController {
     getPosts();
     // getUsers();
     getUsers();
-
+    getUserData(uId: uId);
     super.onInit();
   }
 }
