@@ -68,7 +68,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                   Expanded(
                     child:GestureDetector(
                       onTap:(){
-                        Navigator.push(context, MaterialPageRoute(builder:(context)=>treament()));
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>Treament()));
                       },
                       child: Container(
                         child: Column(
