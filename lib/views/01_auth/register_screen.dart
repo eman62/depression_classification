@@ -77,8 +77,8 @@ class RegisterScreen extends StatelessWidget {
                             controller: controller.nameController,
                             type: TextInputType.text,
                             validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'username must not be empty';
+                              if ((value!.isEmpty || ! RegExp  (r'^[a-z A-Z]+$').hasMatch(value)) ) {
+                                return 'enter correct name';
                               }
                               return null;
                             },
@@ -92,8 +92,8 @@ class RegisterScreen extends StatelessWidget {
                             controller: controller.phoneController,
                             type: TextInputType.number,
                             validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'number must not be empty';
+                              if (value!.isEmpty || ! RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
+                                return 'enter correct number';
                               }
                               return null;
                             },
@@ -106,8 +106,8 @@ class RegisterScreen extends StatelessWidget {
                             controller: controller.ageController,
                             type: TextInputType.number,
                             validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'age must not be empty';
+                              if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
+                                return 'enter correct age';
                               }
                               return null;
                             },
@@ -121,7 +121,7 @@ class RegisterScreen extends StatelessWidget {
                             controller: controller.emailController,
                             type: TextInputType.emailAddress,
                             validate: (String? value) {
-                              if (value!.isEmpty) {
+                              if (value!.isEmpty || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)) {
                                 return 'email address must not be empty';
                               }
                               return null;
