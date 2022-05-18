@@ -12,7 +12,9 @@ class _sessionsState extends State<sessions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title:Text('sessions'),
+        title:Text('sessions',
+        style: TextStyle(fontSize: 20),
+        ),
         backgroundColor:Colors.green,
         leading: BackButton(
           color: Colors.white,
@@ -43,7 +45,7 @@ class _sessionsState extends State<sessions> {
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -94,7 +96,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -106,12 +108,12 @@ class _sessionsState extends State<sessions> {
                       ),
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -161,7 +163,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -174,12 +176,12 @@ class _sessionsState extends State<sessions> {
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
                           // color: Colors.grey[800].withOpacity(0.5),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -229,7 +231,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -242,12 +244,12 @@ class _sessionsState extends State<sessions> {
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
                           // color: Colors.grey[800].withOpacity(0.5),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -297,7 +299,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -310,12 +312,12 @@ class _sessionsState extends State<sessions> {
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
                           // color: Colors.grey[800].withOpacity(0.5),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -365,7 +367,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -377,12 +379,12 @@ class _sessionsState extends State<sessions> {
                       ),
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -426,7 +428,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -438,12 +440,12 @@ class _sessionsState extends State<sessions> {
                       ),
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -493,7 +495,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -505,12 +507,12 @@ class _sessionsState extends State<sessions> {
                       ),
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
@@ -566,7 +568,7 @@ class _sessionsState extends State<sessions> {
                                 ),
                               ],
                               style: TextStyle(
-                                color:Colors.black,
+                                color:Theme.of(context).textTheme.bodyText1?.color,
                                 fontSize:20,
                                 height: 1.8,
                               ),
@@ -579,12 +581,12 @@ class _sessionsState extends State<sessions> {
                       decoration:BoxDecoration(
                           borderRadius:BorderRadius.all(Radius.circular(18)),
                           // color: Colors.grey[800].withOpacity(0.5),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow:[
                             BoxShadow(
                               color:Colors.grey,
                               blurRadius:10,
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 2),
                             )
                           ]
                       ),
