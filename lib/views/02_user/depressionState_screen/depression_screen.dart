@@ -12,7 +12,7 @@ class DepressionStateScreen extends StatefulWidget {
 
 class _DepressionStateScreenState extends State<DepressionStateScreen> {
   var textController = TextEditingController();
-
+  var tweetsController = TextEditingController();
   //String SentimentResult = "";
   String SentimentScore = "";
   final _forkey = GlobalKey<FormState>();
@@ -27,12 +27,12 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
         // ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 Container(
@@ -41,8 +41,14 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                     key: _forkey,
                     child: Column(
                       children: [
-                        TextField(
+                        TextFormField(
                         controller: textController,
+                          validator: (value){
+                            if (value!.isEmpty){
+                              return "enter correct twitter account";
+                            }
+                            return null;
+                          },
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white.withOpacity(.3),
@@ -51,36 +57,42 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                               borderSide: BorderSide(
                                   color: Colors.black87.withOpacity(0.2),
                                   width: 2),
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(20),
                               )),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: Colors.black87.withOpacity(0.2), width: 2),
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(20),
                             ),
                           ),
                         ),
                       ),
-                        SizedBox (height: 10,),
-                        TextField(
-                          controller: textController,
+                        const SizedBox (height: 20,),
+                        TextFormField(
+                          controller: tweetsController,
+                          validator: (value){
+                            if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)){
+                              return "enter valid number ";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white.withOpacity(.3),
-                            hintText: "Enter your twitter Username",
+                            hintText: "Enter number of last tweets",
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black87.withOpacity(0.2),
                                     width: 2),
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(20),
                                 )),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Colors.black87.withOpacity(0.2), width: 2),
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(20),
                               ),
                             ),
@@ -91,7 +103,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
 
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
 
@@ -100,7 +112,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                       primary: Colors.green,
                       backgroundColor: Colors.black.withOpacity(0.05),
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.sentiment_neutral,
                       color: Colors.green,
                       size: 20,
@@ -110,10 +122,10 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
-                          .apply(color: Colors.black87),
+                          .apply(color: Theme.of(context).textTheme.bodyText1?.color),
                     ),
                     onPressed: () => tellMeMethod()),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 /* Text(
@@ -139,7 +151,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                 Text(
                   "your score :$SentimentScore",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Theme.of(context).textTheme.bodyText1?.color,
                       fontSize: 17,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w400),
