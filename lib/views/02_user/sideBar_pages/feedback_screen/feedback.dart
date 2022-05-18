@@ -12,7 +12,15 @@ class FeedbackScreen extends StatelessWidget {
     Size? size = MediaQuery.of(context).size;
     return GetBuilder<UserController>(builder: (controller) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text(
+            'Feedback',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),),
+        ),
         body: Center(
           child: SizedBox(
             height: 50,

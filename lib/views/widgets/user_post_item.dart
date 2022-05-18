@@ -6,14 +6,14 @@ import 'package:get/get.dart';
 
 class UserPostItem extends StatelessWidget {
   final PostModel model;
-  final int postIndex;
+  final int postIndex ;
   final BuildContext context;
   final UserController controller;
 
   const UserPostItem({
     Key? key,
     required this.context,
-    required this.postIndex,
+    required this.postIndex ,
     required this.model,
     required this.controller,
   }) : super(key: key);
@@ -42,46 +42,48 @@ class UserPostItem extends StatelessWidget {
                 ),
                 Expanded(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${model.name}',
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        Row(
+                          children: [
+                            Text(
+                              '${model.name}',
+                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                 height: 1.3,
                               ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        // Icon(
-                        //   Icons.check_circle,
-                        //   color: Colors.blue,
-                        //   size: 16,
-                        //
-                        // ),
-                      ],
-                    ),
-                    Text(
-                      DateHelpers.parseDateTimeReturnDescriptionString(model.dateTime!),
-                      // model.dateTime!,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
+                        Text(
+                          DateHelpers.parseDateTimeReturnDescriptionString(model.dateTime!),
+                          // model.dateTime!,
+                          style: Theme.of(context).textTheme.caption!.copyWith(
                             height: 1.3,
                           ),
-                    ),
-                  ],
-                )),
+                        ),
+                      ],
+                    )),
                 const SizedBox(
                   width: 15,
                 ),
+
+
+
+                /// Add Icon Delete
+                /////////////////////////////
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.checkAndDeletePost(id: controller.postsId[postIndex]);
+                    },
                     icon: const Icon(
-                      Icons.more_horiz,
-                      size: 18,
+                      Icons.delete,
+                      size: 22,
                       color: Colors.grey,
                     )),
+                /////////////////////////////
               ],
             ),
 
@@ -136,11 +138,9 @@ class UserPostItem extends StatelessWidget {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.favorite,
-                                  size: 17,
-                                  color: controller.likedByMe[postIndex]
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey,
+                                  Icons.thumb_up_alt,  /// change Icon
+                                  size: 22,            /// change Size
+                                  color: controller.likedindex.contains(postIndex) ? Theme.of(context).colorScheme.primary : Colors.grey,
                                 ),
                                 const SizedBox(
                                   width: 5,
@@ -151,17 +151,14 @@ class UserPostItem extends StatelessWidget {
                                   // '0',
                                   controller.likesCounts[postIndex].toString(),
                                   style: Theme.of(context).textTheme.caption!.copyWith(
-                                        color: controller.likedByMe[postIndex]
-                                            ? Theme.of(context).colorScheme.primary
-                                            : Colors.grey,
-                                      ),
+
+                                    color: controller.likedindex.contains(postIndex) ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          onTap: () {
-                            controller.likeOrUnlikePost(controller.postsId[postIndex], postIndex);
-                          },
+
                         ),
                       ),
 
@@ -186,6 +183,21 @@ class UserPostItem extends StatelessWidget {
                                   controller.commentsCounts[postIndex].toString(),
                                   style: Theme.of(context).textTheme.caption!,
                                 ),
+
+
+                                /// Add Icon Favourite
+                                //////////////////////////////
+                                IconButton(
+                                  onPressed: () {
+                                    controller.favouriteOrUnFavouritePost(controller.postsId[postIndex], postIndex);
+                                  },
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    size: 18,
+                                    color:controller.favouriteByMeIndex.contains(postIndex) ? Colors.red : Colors.grey,
+                                  ),
+                                ),
+                                ///////////////////////////////////
                               ],
                             ),
                           ),
@@ -223,8 +235,8 @@ class UserPostItem extends StatelessWidget {
                             Text(
                               'write a comment ..',
                               style: Theme.of(context).textTheme.caption!.copyWith(
-                                    height: 1.3,
-                                  ),
+                                height: 1.3,
+                              ),
                             ),
                           ],
                         ),
@@ -241,22 +253,20 @@ class UserPostItem extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(
-                            controller.likedByMe[postIndex] ? Icons.check : Icons.favorite,
+                            controller.likedindex.contains(postIndex)? Icons.check : Icons.thumb_up_alt,   ///change icon
                             size: 17,
-                            color: controller.likedByMe[postIndex]
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.grey,
+                            color: controller.likedindex.contains(postIndex) ? Theme.of(context).colorScheme.primary : Colors.grey,
                           ),
                           const SizedBox(
                             width: 5,
                           ),
                           Text(
-                            controller.likedByMe[postIndex] ? 'Liked' : 'Like',
+                            controller.likedindex.contains(postIndex) ? 'Liked' : 'Like',
                             style: Theme.of(context).textTheme.caption!.copyWith(
-                                  color: controller.likedByMe[postIndex]
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey,
-                                ),
+                              color: controller.likedindex.contains(postIndex)
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -317,43 +327,43 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                 height: Get.height - 300,
                 child: controller.comments[widget.postIndex].isEmpty
                     ? Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(
-                              Icons.mode_comment,
-                              color: Colors.grey,
-                              size: 100,
-                            ),
-                            Text(
-                              'No comments yet',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Be the first.',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: controller.comments[widget.postIndex].length,
-                        itemBuilder: (context, commentIndex) {
-                          print('/// post index ${widget.postIndex} comment index $commentIndex');
-                          // print(widget.postIndex);
-                          return CommentItem(
-                            controller: controller,
-                            postIndex: widget.postIndex,
-                            commentIndex: commentIndex,
-                          );
-                        },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(
+                        Icons.mode_comment,
+                        color: Colors.grey,
+                        size: 100,
                       ),
+                      Text(
+                        'No comments yet',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Be the first.',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                    : ListView.builder(
+                  itemCount: controller.comments[widget.postIndex].length,
+                  itemBuilder: (context, commentIndex) {
+                    //print('/// post index ${widget.postIndex} comment index $commentIndex');
+                    // print(widget.postIndex);
+                    return CommentItem(
+                      controller: controller,
+                      postIndex: widget.postIndex,
+                      commentIndex: commentIndex,
+                    );
+                  },
+                ),
               ),
             ),
 

@@ -5,8 +5,6 @@ import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/02_user/posts_screen/user_posts_screen.dart';
 import 'package:save/views/02_user/sideBar_pages/aboutDepression_screens/depressionScreens.dart';
-import 'package:save/views/02_user/staticVars.dart';
-import 'package:workmanager/workmanager.dart';
 import '../../fcm/fcm_manager.dart';
 import '../../helpers/constants.dart';
 import '../../views/02_user/sideBar_pages/favourite_screen/favourite_screen.dart';

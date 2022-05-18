@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
-import '../../models/notification_model.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../views/01_auth/login_screen.dart';
@@ -264,7 +262,7 @@ class UserController extends GetxController {
     token = '';
     uId = '';
     isAdmin = null;
-    print (uId);
+    //print (uId);
     Get.delete(tag: "homeController",force: true);
     navigateAndFinish(context, SocialLoginScreen());
   }
@@ -307,147 +305,146 @@ class UserController extends GetxController {
     update();
   }
 
-  getPosts() {
-    try {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        print('/// Docs Changes ...');
-        print(postEvent.docChanges);
-        if(kDebugMode) print('/// GET POSTS ...');
-        changeIsLoadingGettingPosts(true);
-        /// Get Posts and likes counts
-        posts = [];
-        likes = [];
-        likesCounts = [];
-        postsId = [];
-        likedByMe = [];
-        comments = [];
+  // getPosts() {
+  //   try {
+  //     FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
+  //       print('/// Docs Changes ...');
+  //       print(postEvent.docChanges);
+  //       if(kDebugMode) print('/// GET POSTS ...');
+  //       changeIsLoadingGettingPosts(true);
+  //       /// Get Posts and likes counts
+  //       posts = [];
+  //       likes = [];
+  //       likesCounts = [];
+  //       postsId = [];
+  //       likedByMe = [];
+  //       comments = [];
+  //
+  //       int i = 0;
+  //       for (var post in postEvent.docs) {
+  //         print('/// POST NUMBER $i');
+  //         posts.add(PostModel.fromJson(post.data()));
+  //         postsId.add(post.id);
+  //
+  //         /// Likes
+  //         await post.reference.collection('likes').get().then((likesSnapshots) {
+  //           likesCounts.add(likesSnapshots.docs.length);
+  //           // if(kDebugMode) print(likesSnapshots.docs.length);
+  //           if (likesSnapshots.docs.isNotEmpty) {
+  //             for (var doc in likesSnapshots.docs) {
+  //               likes.add(doc.data());
+  //             }
+  //
+  //             for (var element in likesSnapshots.docs) {
+  //               element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+  //             }
+  //           } else {
+  //             likedByMe.add(false);
+  //           }
+  //         });
+  //
+  //         /// comments
+  //         await post.reference.collection('comments').get().then((commentsSnapshots) {
+  //           commentsCounts.add(commentsSnapshots.docs.length);
+  //
+  //           List<Map<String, dynamic>> postComments = [];
+  //           for (var doc in commentsSnapshots.docs) {
+  //             postComments.add(doc.data());
+  //             // print('comments|');
+  //           }
+  //           comments.add(postComments);
+  //           print('/// comments length');
+  //           if(kDebugMode) print(commentsSnapshots.docs.length);
+  //           // if (commentsSnapshots.docs.isNotEmpty) {
+  //           //   for (var doc in commentsSnapshots.docs) {
+  //           //     comments[i][commentsSnapshots.docs.indexOf(doc)].add(doc.data());
+  //           //   }
+  //           //
+  //           //   // todo: comment by me
+  //           //   // for (var element in commentsSnapshots.docs) {
+  //           //   //   element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+  //           //   // }
+  //           // } else {
+  //           //   print('yyyy');
+  //           //   // comments.add({});
+  //           // }
+  //         });
+  //         print(comments);
+  //         print(comments.length);
+  //         i++;
+  //       }
+  //
+  //       changeIsLoadingGettingPosts(false);
+  //
+  //       update();
+  //     });
+  //   } catch (e, stacktrace) {
+  //     if(kDebugMode) print(e);
+  //     if(kDebugMode) print(stacktrace);
+  //   }
+  // }
 
-        int i = 0;
-        for (var post in postEvent.docs) {
-          print('/// POST NUMBER $i');
-          posts.add(PostModel.fromJson(post.data()));
-          postsId.add(post.id);
+  // likeOrUnlikePost(postUid, index) {
+  //   try {
+  //     FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
+  //       if (snapshot.docs.isNotEmpty) {
+  //         for (var element in snapshot.docs) {
+  //           if(kDebugMode) print(element.data()['uId']);
+  //           if(kDebugMode) print(userModel!.uId);
+  //           print(' on xxxxxxxxxxxxxxxxxxxxxxxxx');
+  //           print (element.data()['uId']);
+  //           print (userModel!.uId);
+  //           if (element.data()['uId'] == userModel!.uId) {
+  //             _unlikePost(postUid, index);
+  //           } else {
+  //             _likePost(postUid, index);
+  //           }
+  //         }
+  //       } else {
+  //         _likePost(postUid, index);
+  //       }
+  //     });
+  //   } catch (e, stacktrace) {
+  //     if(kDebugMode) print(e);
+  //     if(kDebugMode) print(stacktrace);
+  //   }
+  // }
 
-          /// Likes
-          await post.reference.collection('likes').get().then((likesSnapshots) {
-            likesCounts.add(likesSnapshots.docs.length);
-            // if(kDebugMode) print(likesSnapshots.docs.length);
-            if (likesSnapshots.docs.isNotEmpty) {
-              for (var doc in likesSnapshots.docs) {
-                likes.add(doc.data());
-              }
+  // _likePost(String postUid, index) async {
+  //   if(kDebugMode) print('/// LIKE');
+  //   Map<String, Object?> data = {'uId': userModel!.uId};
+  //   await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
+  //   changeLikedByMeState(true, index);
+  //   getPosts();
+  // }
 
-              for (var element in likesSnapshots.docs) {
-                element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
-              }
-            } else {
-              likedByMe.add(false);
-            }
-          });
+  // _unlikePost(String postUid, index) async {
+  //   if(kDebugMode) print('/// UN-LIKE');
+  //   String likeIdToRemove = '';
+  //
+  //   await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
+  //     likeIdToRemove = value.docs.singleWhere((element) => element.data()['uId'] == userModel!.uId).id;
+  //   });
+  //   await FirebaseFirestore.instance
+  //       .collection('posts')
+  //       .doc(postUid)
+  //       .collection('likes')
+  //       .doc(likeIdToRemove)
+  //       .delete();
+  //   changeLikedByMeState(false, index);
+  //
+  //   getPosts();
+  // }
 
-          /// comments
-          await post.reference.collection('comments').get().then((commentsSnapshots) {
-            commentsCounts.add(commentsSnapshots.docs.length);
-
-            List<Map<String, dynamic>> postComments = [];
-            for (var doc in commentsSnapshots.docs) {
-              postComments.add(doc.data());
-              // print('comments|');
-            }
-            comments.add(postComments);
-            print('/// comments length');
-            if(kDebugMode) print(commentsSnapshots.docs.length);
-            // if (commentsSnapshots.docs.isNotEmpty) {
-            //   print('xxxx');
-            //   for (var doc in commentsSnapshots.docs) {
-            //     comments[i][commentsSnapshots.docs.indexOf(doc)].add(doc.data());
-            //   }
-            //
-            //   // todo: comment by me
-            //   // for (var element in commentsSnapshots.docs) {
-            //   //   element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
-            //   // }
-            // } else {
-            //   print('yyyy');
-            //   // comments.add({});
-            // }
-          });
-          print(comments);
-          print(comments.length);
-          i++;
-        }
-
-        changeIsLoadingGettingPosts(false);
-
-        update();
-      });
-    } catch (e, stacktrace) {
-      if(kDebugMode) print(e);
-      if(kDebugMode) print(stacktrace);
-    }
-  }
-
-  likeOrUnlikePost(postUid, index) {
-    try {
-      FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((snapshot) {
-        if (snapshot.docs.isNotEmpty) {
-          for (var element in snapshot.docs) {
-            if(kDebugMode) print(element.data()['uId']);
-            if(kDebugMode) print(userModel!.uId);
-            print(' on xxxxxxxxxxxxxxxxxxxxxxxxx');
-            print (element.data()['uId']);
-            print (userModel!.uId);
-            if (element.data()['uId'] == userModel!.uId) {
-              _unlikePost(postUid, index);
-            } else {
-              _likePost(postUid, index);
-            }
-          }
-        } else {
-          _likePost(postUid, index);
-        }
-      });
-    } catch (e, stacktrace) {
-      if(kDebugMode) print(e);
-      if(kDebugMode) print(stacktrace);
-    }
-  }
-
-  _likePost(String postUid, index) async {
-    if(kDebugMode) print('/// LIKE');
-    Map<String, Object?> data = {'uId': userModel!.uId};
-    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').add(data);
-    changeLikedByMeState(true, index);
-    getPosts();
-  }
-
-  _unlikePost(String postUid, index) async {
-    if(kDebugMode) print('/// UN-LIKE');
-    String likeIdToRemove = '';
-
-    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').get().then((value) {
-      likeIdToRemove = value.docs.singleWhere((element) => element.data()['uId'] == userModel!.uId).id;
-    });
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(postUid)
-        .collection('likes')
-        .doc(likeIdToRemove)
-        .delete();
-    changeLikedByMeState(false, index);
-
-    getPosts();
-  }
-
-  commentOnPost(postUid, index) async {
-    if(kDebugMode) print('/// COMMENT');
-    Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
-    'userImageUrl' : userModel!.image,
-    };
-    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
-    commentController.text = '';
-    getPosts();
-  }
+  // commentOnPost(postUid, index) async {
+  //   if(kDebugMode) print('/// COMMENT');
+  //   Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
+  //   'userImageUrl' : userModel!.image,
+  //   };
+  //   await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
+  //   commentController.text = '';
+  //   getPosts();
+  // }
 //////////////////////////////////
 //   void saveNotification({
 //     required String text,
@@ -462,7 +459,327 @@ class UserController extends GetxController {
 //       changeIsLoadingSetNotification(false);
 //     });
 //   }
+  List<Map<String, dynamic>> favourites = [];
+  List<bool> favouriteByMe = [];
+  List<int> favouriteByMeIndex=[];
+  int favcounter = 0;
+  List<int> likedindex=[];
+  likeOrUnlikePost(postUid, index) async {
+    try {
+      await FirebaseFirestore.instance.collection('posts')
+          .doc(postUid)
+          .collection('likes')
+          .get().then((snapshot) {
 
+        if (snapshot.docs.isNotEmpty) {
+          int x = 0;
+          for (var element in snapshot.docs) {
+
+            if (element.data()['uId']! == uId) {
+              x=1;
+              _unlikePost(postUid, index);
+              likedindex.remove(index);
+            }
+          }
+          if(x==0){
+            _likePost(postUid, index);
+            likedindex.add(index);
+            likedindex.sort();
+
+          }
+        } else {
+          _likePost(postUid, index);
+          likedindex.add(index);
+          likedindex.sort();
+        }
+      });
+    } catch (e, stacktrace) {
+      if(kDebugMode) print(e);
+      if(kDebugMode) print(stacktrace);
+    }
+  }
+
+  _likePost(String postUid, index) async {
+    //print('/// LIKE');
+
+    await FirebaseFirestore.instance.collection('posts')
+        .doc(postUid)
+        .collection('likes')
+        .doc(uId)
+        .set({'uId': uId});
+    likesCounts[index]++;
+    changeLikedByMeState(true, index);
+
+    update();
+    // getPosts();
+  }
+
+  _unlikePost(String postUid, index) async {
+    //print('/// UN-LIKE');
+
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('likes')
+        .doc(uId)
+        .delete();
+
+    likesCounts[index]--;
+    changeLikedByMeState(false, index);
+
+    update();
+
+  }
+
+  commentOnPost(postUid, index) async {
+    if(kDebugMode) print('/// COMMENT');
+    Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
+      'userImageUrl' : userModel!.image,
+    };
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
+    commentController.text = '';
+    getPosts();
+  }  /// not change
+
+
+  ////////////////////////////////////////////////////////////////////
+
+  changeFavouriteByMeState(bool state, index) {
+    favouriteByMe[index] = state;
+    update();
+  }
+
+  favouriteOrUnFavouritePost(postUid, index) async {
+    try {
+      await FirebaseFirestore.instance.collection('posts')
+          .doc(postUid)
+          .collection('favourites')
+          .get().then((value) {
+        if (value.docs.isNotEmpty) {
+          int y= 0;
+          for (var element in value.docs)
+          {
+            if (element.data()['uId'] == uId)
+            {
+              _unfavouritePost(postUid, index);
+              y=1;
+            }
+          }
+          if(y==0){_favouritePost(postUid, index);}
+        }
+        else {
+          _favouritePost(postUid, index);
+        }
+      });
+
+    } catch (e, stacktrace) {
+      //print(e);
+      //print(stacktrace);
+    }
+  }
+
+  _favouritePost(String postUid, index) async  {
+    //print('/// Favourite');
+    await FirebaseFirestore.instance.collection('posts').
+    doc(postUid).
+    collection('favourites').
+    doc(uId).
+    set({'uId': uId});
+    changeFavouriteByMeState(true, index);
+    favouriteByMeIndex.add(index);
+    favouriteByMeIndex.sort();
+
+    //print(favouriteByMeIndex);
+
+    update();
+  }
+
+  _unfavouritePost(String postUid, index) async {
+    //print('/// UN-Favourite');
+
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('favourites')
+        .doc(uId)
+        .delete();
+    favouriteByMeIndex.remove(index);
+    changeFavouriteByMeState(false, index);
+
+    //print(favouriteByMeIndex);
+    update();
+  }
+
+  ////////////////////////////////////////////////////////////////////
+
+  checkAndDeletePost({required String id}) async {
+
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(id)
+        .get()
+        .then((value) {
+      if(value.data()!['uId'] == uId){
+        deletePost(id: id);
+
+        Get.snackbar(' Post Deleted', 'Successfully',colorText: Colors.white);
+      }
+      update();
+    })
+        .catchError((error){
+      showToast(text: '$error', state: ToastStates.error);
+    });
+
+  }
+
+  deletePost({required String id}) async {
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(id)
+        .delete();
+  }
+
+  getPosts() {
+    try {
+      int i = 0;
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
+
+       // print('/// Docs Changes ...');
+        //print(postEvent.docChanges);
+
+       // print('/// GET POSTS ...');
+
+        changeIsLoadingGettingPosts(true);
+
+        /// Get Posts and likes counts
+
+        posts = [];
+        likes = [];
+        likesCounts = [];
+        likedByMe = [];
+        postsId = [];
+        comments = [];
+
+        /////////////////////
+
+        favourites = [];
+        favouriteByMe = [];
+        favouriteByMeIndex=[];
+        favcounter=0;
+        likedindex=[];
+        /////////////////////
+
+
+        for (var post in postEvent.docs) {
+          //print('/// POST NUMBER $i');
+          posts.add(PostModel.fromJson(post.data()));
+          postsId.add(post.id);
+
+
+          ///////////////////////////////////////////////////////////////
+
+          /// Likes
+          await   post.reference.collection('likes')
+              .get()
+              .then((likesSnapshots) {
+
+            //print(likesSnapshots.docs.length);
+            likesCounts.add(likesSnapshots.docs.length);
+            if (likesSnapshots.docs.isNotEmpty) {
+
+              for (var doc in likesSnapshots.docs)
+              {
+
+                likes.add(doc.data());
+                if(doc.data()['uId']! == uId) {
+                  likedByMe.add(true) ;
+                  likedindex.add(i);
+                } else {
+                  likedByMe.add(false);
+                }
+              }
+            }
+            else {
+              likedByMe.add(false);
+            }
+
+            //print(likedindex);
+          });
+
+
+          ///////////////////////////////////////////////////////////////
+
+          /// Favourites
+          await    post.reference.collection('favourites')
+              .get()
+              .then((favouritesSnapshots) {
+
+            if (favouritesSnapshots.docs.isNotEmpty) {
+
+              for (var doc in favouritesSnapshots.docs) {
+                favourites.add(doc.data());
+
+                if ( doc.data()['uId']! == uId ) {
+                  favouriteByMe.add(true);
+                  favouriteByMeIndex.add(i);
+
+                }
+                else{
+                  favouriteByMe.add(false);
+                }
+              }
+            }
+            else {
+              favouriteByMe.add(false);
+            }
+            //print( favouriteByMeIndex);
+          });
+
+          i++;
+
+
+          //////////////////////////////////////////////////////////////
+          // comments
+                  await post.reference.collection('comments').get().then((commentsSnapshots) {
+                    commentsCounts.add(commentsSnapshots.docs.length);
+
+                    List<Map<String, dynamic>> postComments = [];
+                    for (var doc in commentsSnapshots.docs) {
+                      postComments.add(doc.data());
+                      // print('comments|');
+                    }
+                    comments.add(postComments);
+                    //print('/// comments length');
+                   // if(kDebugMode) print(commentsSnapshots.docs.length);
+                    // if (commentsSnapshots.docs.isNotEmpty) {
+                    //   print('xxxx');
+                    //   for (var doc in commentsSnapshots.docs) {
+                    //     comments[i][commentsSnapshots.docs.indexOf(doc)].add(doc.data());
+                    //   }
+                    //
+                    //   // todo: comment by me
+                    //   // for (var element in commentsSnapshots.docs) {
+                    //   //   element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
+                    //   // }
+                    // } else {
+                    //   print('yyyy');
+                    //   // comments.add({});
+                    // }
+                  });
+                  //print(comments);
+                 // print(comments.length);
+                  //i++;
+                }
+
+                changeIsLoadingGettingPosts(false);
+
+                update();
+              });
+            } catch (e, stacktrace) {
+              if(kDebugMode) print(e);
+              if(kDebugMode) print(stacktrace);
+            }
+          }
 
 
 
@@ -472,7 +789,7 @@ class UserController extends GetxController {
     isLoadingGettingPosts = true;
     getPosts();
     // getLikes();
-    print (uId);
+    //print (uId);
     getUserData(uId: uId);
     super.onInit();
   }

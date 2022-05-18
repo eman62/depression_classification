@@ -15,6 +15,22 @@ class ProfileScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10,top: 5),
+              child: IconButton(
+                onPressed: (){
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                  );
+                },
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
           elevation: 0,
         ),
         body: ConditionalBuilder(
@@ -59,17 +75,17 @@ class ProfileScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 25),
                   ),
                    const SizedBox(width: 5,),
-                    IconButton(
-                      onPressed: (){
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.edit,
-                        color: defaultColor,
-                      ),
-                    ),
+                    // IconButton(
+                    //   onPressed: (){
+                    //     Navigator.push(context,
+                    //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                    //     );
+                    //   },
+                    //   icon: const Icon(
+                    //     Icons.edit,
+                    //     color: defaultColor,
+                    //   ),
+                    // ),
                     // TextButton(
                     //   onPressed: (){
                     //     Navigator.push(

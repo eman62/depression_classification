@@ -16,7 +16,8 @@ class NewPostScreen extends StatelessWidget {
           condition: controller.userModel != null,
           builder: (context) => Scaffold(
             appBar: AppBar(
-              title: Text('New Post',style: TextStyle(fontSize: 20),),
+              elevation: 0,
+              title: Text('Add Post',style: TextStyle(fontSize: 20),),
               backgroundColor: Colors.green,
               actions: [
                 MaterialButton(
