@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'), // todo: fix overflow
    // const TabItem(icon: Icon(Icons.upload_file), title: 'Post'),
     const TabItem(icon: Icon(Icons.people_alt_rounded), title: 'Friends'),
-    const TabItem(icon: Icon(Icons.person), title: 'Status'),
+    const TabItem(icon: Icon(Icons.person), title: 'Test'),
   ];
 
   final List<Widget> screens = [
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Notifications',
    // 'Add Post',
     'Friends',
-    'Status',
+    'Depression Test',
   ];
 
   @override
