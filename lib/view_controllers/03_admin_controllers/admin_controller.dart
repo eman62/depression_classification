@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:save/models/post_model.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
@@ -10,6 +13,7 @@ import '../../models/feedback_model.dart';
 import '../../models/user_model.dart';
 import '../../views/01_auth/login_screen.dart';
 import '../../views/widgets/components.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AdminController extends GetxController {
   List<FeedbackModel> feedback = [];
@@ -19,14 +23,20 @@ class AdminController extends GetxController {
   List<AppUserModel> users = [];
   AppUserModel? userModel;
   int userCount = 0;
+  File? postImage;
+  var picker = ImagePicker();
+  var textController = TextEditingController();
 
   bool isLoadingGettingUsers = false;
-
+  bool isLoadingCreatePost = false;
   changeIsLoadingGettingUsers(bool state) {
     isLoadingGettingUsers = state;
     update();
   }
-
+  changeIsLoadingCreatePost(bool state) {
+    isLoadingCreatePost = state;
+    update();
+  }
 
 /////////////////////////////////////
   // void getUsers() async {
@@ -55,17 +65,17 @@ class AdminController extends GetxController {
 
  getUsers() {
     if (users.isEmpty) {
-      print('/// GETTING USERS ..');
+     // print('/// GETTING USERS ..');
       FirebaseFirestore.instance
           .collection('users')
           .snapshots()
           .listen((event) {
-        print('/// NEW USER LISTENER TRIGGERED ..');
-        print('${event.docs}');
+       // print('/// NEW USER LISTENER TRIGGERED ..');
+       // print('${event.docs}');
         users = [];
         event.docs.forEach((element) {
          // print(element.data()['admin']);
-          print ("هنا");
+         // print ("هنا");
          // print(element.data()['uId']);
 
           if(element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
@@ -75,7 +85,7 @@ class AdminController extends GetxController {
         userCount = users.length;
         update();
 
-        print(users.length);
+        //print(users.length);
       });
     }
 
@@ -159,8 +169,86 @@ class AdminController extends GetxController {
       changeIsLoadingGetUserDataState(false);
     }
   }
+///////////////////////////////////////////////
 
 
+  _uploadPostImage(profileImage) async {
+    String path = 'post_pic-${DateTime.now()}';
+    if(kDebugMode) print(path);
+
+    final ref = firebase_storage.FirebaseStorage.instance.ref('post_pics').child(path);
+    final uploadValue = await ref.putFile(profileImage!);
+    String imageUrl = await uploadValue.ref.getDownloadURL();
+    if(kDebugMode) print(imageUrl);
+    return imageUrl;
+    // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
+
+    // firebase_storage.FirebaseStorage.instance
+    //     .ref()
+    //     .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+    //     .putFile(profileImage!)
+    //     .then((value) {
+    //   value.ref.getDownloadURL().then((value) {
+    //     print(value);
+    //     updateUser(name: name, email: email, age: age, phone: phone, image: value);
+    //   }).catchError((error) {});
+    // }).catchError((error) {});
+    // update();
+  }
+
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+    } else {
+      if(kDebugMode) print('no image selected');
+    }
+    update();
+  }
+
+  removePostImage() {
+    postImage = null;
+    update();
+  }
+
+  void createPost({
+    required String dateTime,
+    required String text,
+  }) async {
+    changeIsLoadingCreatePost(true);
+    String? imageUrl;
+
+    // add image to firestore
+    if (postImage != null) {
+      imageUrl = await _uploadPostImage(postImage);
+    }
+
+    // use the image link
+    PostModel model = PostModel(
+      name: userModel!.name,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+      postImage: imageUrl ?? '',
+      likesCount: 0,
+    );
+
+    FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
+      textController.text = '';
+      postImage = null;
+      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
+
+      changeIsLoadingCreatePost(false);
+    }).catchError((error) {
+      changeIsLoadingCreatePost(false);
+    });
+
+    FirebaseFirestore.instance.collection('posts').orderBy('dateTime');
+
+    update();
+  }
 
 
 

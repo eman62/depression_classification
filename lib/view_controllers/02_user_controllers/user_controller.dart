@@ -43,6 +43,15 @@ class UserController extends GetxController {
   var commentController = TextEditingController();
   bool showComments = false;
 
+  bool isDark = true;
+  IconData suffix = Icons.brightness_7_outlined;
+  changeDarkModeIcon() {
+    isDark = !isDark;
+    suffix = isDark ? Icons.brightness_7_outlined : Icons.dark_mode;
+    update();
+  }
+
+
   changeShowCommentsState(bool state) {
     showComments = state;
     update();

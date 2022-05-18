@@ -60,14 +60,14 @@ class AuthController extends GetxController {
       UserCredential credential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-      print('/// UID: ${credential.user!.uid}');
+    //  print('/// UID: ${credential.user!.uid}');
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
 
-      print('/// NAME: ${user?.name}');
-      print('/// ADMIN: ${user?.admin}');
-      print('/// EMAIL: ${user?.email}');
+    //  print('/// NAME: ${user?.name}');
+    //  print('/// ADMIN: ${user?.admin}');
+    //  print('/// EMAIL: ${user?.email}');
 
       if (user!.admin != null) {
         await CacheHelper.saveData(key: 'admin', value: user.admin);
@@ -76,7 +76,7 @@ class AuthController extends GetxController {
       if (user.uId != null) {
         await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
         globals.uId = user.uId;
-        print (credential.user!.uid);
+      //  print (credential.user!.uid);
       }
 
       navigate(user.admin!);
@@ -98,9 +98,9 @@ class AuthController extends GetxController {
       DocumentSnapshot? snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
       userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
       changeIsLoadingGetUserDataState(false);
-      print('/// NAME1: ${userModel?.name}');
-      print('/// ADMIN1: ${userModel?.admin}');
-      print('/// EMAIL1: ${userModel?.email}');
+    //  print('/// NAME1: ${userModel?.name}');
+    //  print('/// ADMIN1: ${userModel?.admin}');
+   //   print('/// EMAIL1: ${userModel?.email}');
       return userModel;
     } catch (e, stacktrace) {
       showToast(text: e.toString(), state: ToastStates.error);
@@ -135,7 +135,7 @@ class AuthController extends GetxController {
       );
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
-      print(e.toString());
+     // print(e.toString());
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingRegisterState(false);
     });

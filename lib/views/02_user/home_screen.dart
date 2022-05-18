@@ -36,14 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
 
-    // Future.delayed(Duration(seconds: 2) ,(){
-    //   Navigator.pushReplacement(context, MaterialPageRoute(
-    //       builder:(_) => MainScreen()
-    //   ));
-    // });
-
   FcmManager().initialize();
-
 
     super.initState();
   }
@@ -218,11 +211,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   actions: [
                     IconButton(
+                      icon:  Icon(controller.suffix),
                         onPressed: () {
+                          controller.changeDarkModeIcon();
 
                           Get.find<ThemeController>().changeAppThemeMode();
                         },
-                        icon: const Icon(Icons.brightness_4_outlined)),
+
+                    ),
                   ],
                 ),
                 bottomNavigationBar: ConvexAppBar(

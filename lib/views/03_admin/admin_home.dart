@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:save/helpers/constants.dart';
 import 'package:save/view_controllers/03_admin_controllers/admin_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
-import 'package:save/views/02_user/add_post/add_post_screen.dart';
-import '../widgets/components.dart';
-import '../01_auth/login_screen.dart';
+import 'package:save/views/03_admin/posts/add_post_screen.dart';
 import 'feedback/get_feedback.dart';
 import 'posts/admin_posts_screen.dart';
 import 'users/users_screen.dart';
@@ -21,7 +19,7 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   final adminController = Get.put(AdminController(), permanent: true);
 
-  var _value =false;
+  var _value =true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +57,24 @@ class _AdminHomeState extends State<AdminHome> {
                   color: defaultColor,
                 ),
               ),
-              // ListTile(
-              //   minLeadingWidth: 70,
-              //   leading: const Icon(
-              //     Icons.upload_file,
-              //     color: defaultColor,
-              //   ),
-              //   title: const Text(
-              //     'New Post',
-              //     style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
-              //   ),
-              //   onTap: () {
-              //     // AppCubit.get(context).getUserData();
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => const NewPostScreen()),
-              //     );
-              //   },
-              // ),
+              ListTile(
+                minLeadingWidth: 70,
+                leading: const Icon(
+                  Icons.upload_file,
+                  color: defaultColor,
+                ),
+                title: const Text(
+                  'New Post',
+                  style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                onTap: () {
+                  // AppCubit.get(context).getUserData();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AdminNewPostScreen()),
+                  );
+                },
+              ),
               ListTile(
                 minLeadingWidth: 70,
                 leading: const Icon(
