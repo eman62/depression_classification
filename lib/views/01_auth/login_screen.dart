@@ -116,7 +116,7 @@ class SocialLoginScreen extends StatelessWidget {
                                           },
                                           label: 'password',
                                           prefix: Icons.lock,
-                                          suffix: controller.suffix,
+                                          suffixIcon: controller.suffixIcon,
                                           isPassword: controller.isPassword,
                                           suffixPressed: () {
                                             controller.changePasswordVisibility();

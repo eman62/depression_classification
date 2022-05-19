@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import '../widgets/components.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,8 @@ class RegisterScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: GetBuilder<AuthController>(
+            init: AuthController(),
+            autoRemove: true,
             builder: (controller) => Form(
               key: formKey,
               child: Column(
@@ -90,7 +93,8 @@ class RegisterScreen extends StatelessWidget {
 
                         defaultFormField(
                             controller: controller.phoneController,
-                            type: TextInputType.number,
+                            type: TextInputType.phone,
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
                             validate: (String? value) {
                               if (value!.isEmpty || ! RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
                                 return 'enter correct number';
@@ -105,6 +109,7 @@ class RegisterScreen extends StatelessWidget {
                         defaultFormField(
                             controller: controller.ageController,
                             type: TextInputType.number,
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
                             validate: (String? value) {
                               if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
                                 return 'enter correct age';
@@ -119,16 +124,20 @@ class RegisterScreen extends StatelessWidget {
 
                         defaultFormField(
                             controller: controller.emailController,
+                           // suffix: Text('h' , style: TextStyle(color: Colors.green),) ,
                             type: TextInputType.emailAddress,
                             // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
                             validate: (String? value) {
-                              if (value!.isEmpty ) {
+                              if (value!.isEmpty || !RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value!) ) {
                                 return 'email address must not be empty';
                               }
                               return null;
                             },
                             label: 'email address',
-                            prefix: Icons.email_outlined),
+                            prefix: Icons.email_outlined,
+                        ),
+                           
+                            
                         const SizedBox(
                           height: 10,
                         ),
@@ -144,7 +153,7 @@ class RegisterScreen extends StatelessWidget {
                             },
                             label: 'password',
                             prefix: Icons.lock,
-                            suffix: controller.suffix,
+                            suffixIcon: controller.suffixIcon,
                             isPassword: controller.isPassword,
                             suffixPressed: () {
                               controller.changePasswordVisibility();

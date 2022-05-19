@@ -35,6 +35,7 @@ class UserController extends GetxController {
   var ageController = TextEditingController();
   var phoneController = TextEditingController();
   var feedbackController = TextEditingController();
+  var twitterController = TextEditingController();
   bool isLoadingGettingPosts = false;
   File? postImage;
   File? profileImage;
@@ -87,6 +88,7 @@ class UserController extends GetxController {
         emailController.text = userModel!.email!;
         ageController.text = userModel!.age!;
         phoneController.text = userModel!.phone!;
+        twitterController.text = userModel!.twitter!;
         changeIsLoadingGetUserDataState(false);
 
       });
@@ -202,6 +204,7 @@ class UserController extends GetxController {
     required String email,
     required String age,
     required String phone,
+    required String twitter,
   }) async {
     changeIsLoadingUpdateUser(true);
     String? imageUrl;
@@ -225,6 +228,7 @@ class UserController extends GetxController {
             phone: phone,
             age: age,
             image: imageUrl,
+            twitter: twitter,
             uId: userModel!.uId,
             isEmailVerified: false,
             admin: isAdmin,
@@ -234,6 +238,7 @@ class UserController extends GetxController {
             'phone': phone,
             'age': age,
             'name': name,
+            'twitter' : twitter,
             'uId': userModel!.uId,
             'admin': isAdmin,
             'isEmailVerified': false,

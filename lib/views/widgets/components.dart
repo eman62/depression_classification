@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 Widget defaultButton({
@@ -32,18 +33,20 @@ Widget defaultButton({
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
-
+  Widget? suffix,
   /// required Function validate,
   required String? Function(String?) validate,
 ///////  Function ? onsubmit,
   required String label,
   required IconData prefix,
   bool isPassword = false,
-  IconData? suffix,
+  IconData? suffixIcon,
   Function? suffixPressed,
+  List <TextInputFormatter>? inputFormatters ,
 }) =>
     TextFormField(
       controller: controller,
+      inputFormatters: inputFormatters != null ? inputFormatters:null,
 //////onFieldSubmitted: (s){onsubmit!(s);},
 //validator: (s){validate();},
       validator: validate,
@@ -59,9 +62,10 @@ Widget defaultFormField({
         ),
         // fillColor: Colors.grey[100],
         //    filled: true,
-        suffixIcon: suffix != null
+        suffix: suffix!= null ? suffix : null,
+        suffixIcon: suffixIcon != null
             ? IconButton(
-                icon: Icon(suffix),
+                icon: Icon(suffixIcon),
                 onPressed: () {
                   suffixPressed!();
                 },

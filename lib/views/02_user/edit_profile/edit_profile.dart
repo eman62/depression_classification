@@ -26,7 +26,10 @@ class EditProfileScreen extends StatelessWidget {
                     name: controller.nameController.text,
                     email: controller.emailController.text,
                     age: controller.ageController.text,
-                    phone: controller.phoneController.text);
+                    phone: controller.phoneController.text,
+                  twitter: controller.twitterController.text,
+                );
+
               },
               child: const Text('Update', style: TextStyle(color: Colors.amber, fontSize: 18)),
             ),
@@ -193,6 +196,25 @@ class EditProfileScreen extends StatelessWidget {
                   prefix: Icons.phone,
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: defaultFormField2(
+                  controller: controller.twitterController,
+                  type: TextInputType.emailAddress,
+                  validate: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'twitter must not be empty';
+                    }
+                    return null;
+                  },
+                  hint: 'Twitter account',
+                  prefix: Icons.email,
+                ),
+              ),
+
             ],
           ),
         ),
