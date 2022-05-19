@@ -43,6 +43,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                       children: [
                         TextFormField(
                         controller: textController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value){
                             if (value!.isEmpty){
                               return "enter correct twitter account";
@@ -72,6 +73,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                         const SizedBox (height: 20,),
                         TextFormField(
                           controller: tweetsController,
+                          keyboardType: TextInputType.number,
                           validator: (value){
                             if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)){
                               return "enter valid number ";
