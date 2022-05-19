@@ -120,8 +120,9 @@ class RegisterScreen extends StatelessWidget {
                         defaultFormField(
                             controller: controller.emailController,
                             type: TextInputType.emailAddress,
+                            // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
                             validate: (String? value) {
-                              if (value!.isEmpty || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)) {
+                              if (value!.isEmpty ) {
                                 return 'email address must not be empty';
                               }
                               return null;
