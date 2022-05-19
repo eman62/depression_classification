@@ -74,15 +74,38 @@ class UserPostItem extends StatelessWidget {
 
                 /// Add Icon Delete
                 /////////////////////////////
-                IconButton(
+
+                controller.myPost[postIndex] == true ? IconButton(
                     onPressed: () {
-                      controller.checkAndDeletePost(id: controller.postsId[postIndex]);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                              title: Text('Delete Post', style: Theme.of(context).textTheme.bodyText1,),
+                              content: Text('Are you sure to delete post ?', style: Theme.of(context).textTheme.bodyText1,),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child:  Text('Cancel', style: Theme.of(context).textTheme.bodyText1,),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    controller.checkAndDeletePost(id: controller.postsId[postIndex]);
+                                  },
+                                  child: Text('Delete',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),),
+                                ),
+                              ],
+                            );
+                          }
+                      );
                     },
                     icon: const Icon(
                       Icons.delete,
                       size: 22,
                       color: Colors.grey,
-                    )),
+                    )) : const Text(''),
                 /////////////////////////////
               ],
             ),

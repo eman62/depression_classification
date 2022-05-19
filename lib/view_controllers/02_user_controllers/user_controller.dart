@@ -40,6 +40,7 @@ class UserController extends GetxController {
   File? profileImage;
   bool isLoadingUpdateUser = false;
   List<bool> likedByMe = [];
+  List<bool> myPost = [];
   var commentController = TextEditingController();
   bool showComments = false;
 
@@ -670,7 +671,7 @@ class UserController extends GetxController {
         comments = [];
 
         /////////////////////
-
+        myPost = [];
         favourites = [];
         favouriteByMe = [];
         favouriteByMeIndex=[];
@@ -683,7 +684,12 @@ class UserController extends GetxController {
           //print('/// POST NUMBER $i');
           posts.add(PostModel.fromJson(post.data()));
           postsId.add(post.id);
-
+          if(post.data()['uId'] == uId) {
+            myPost.add(true);
+          }
+          else {
+            myPost.add(false);
+          }
 
           ///////////////////////////////////////////////////////////////
 
