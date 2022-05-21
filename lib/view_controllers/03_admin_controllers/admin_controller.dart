@@ -134,7 +134,7 @@ class AdminController extends GetxController {
     uId = '';
     isAdmin = null;
     Get.delete(tag: "homeController",force: true);
-    navigateAndFinish(context, SocialLoginScreen());
+    navigateAndFinish(context, LoginScreen());
   }
   /////////////////////////
   var nameController = TextEditingController();

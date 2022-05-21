@@ -279,7 +279,7 @@ class UserController extends GetxController {
     isAdmin = null;
     //print (uId);
     Get.delete(tag: "homeController",force: true);
-    navigateAndFinish(context, SocialLoginScreen());
+    navigateAndFinish(context, LoginScreen());
   }
 
   void createPost({

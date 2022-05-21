@@ -448,7 +448,7 @@ class AppCubit extends Cubit<AppStates> {
   void signOut(context) async {
     await FirebaseAuth.instance.signOut();
     await CacheHelper.reset();
-    navigateAndFinish(context, SocialLoginScreen());
+    navigateAndFinish(context, LoginScreen());
   }
 
 ////////////////////

@@ -137,7 +137,7 @@ class AuthController extends GetxController {
         name: name,
         phone: phone,
         age: age,
-        email: '$email@helper.com',
+        email: '$email',
         twitter: twitter,
         uId: value.user!.uid,
       );
@@ -185,6 +185,6 @@ class AuthController extends GetxController {
   void signOut(context) async {
     await FirebaseAuth.instance.signOut();
     await CacheHelper.reset();
-    navigateAndFinish(context, SocialLoginScreen());
+    navigateAndFinish(context, LoginScreen());
   }
 }
