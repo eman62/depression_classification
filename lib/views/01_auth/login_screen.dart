@@ -1,12 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
+import 'package:save/views/01_auth/reset_password.dart';
 import '../widgets/components.dart';
 import 'register_screen.dart';
 import 'package:get/get.dart';
 
-class SocialLoginScreen extends StatelessWidget {
-  SocialLoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget {
+  LoginScreen({Key? key}) : super(key: key);
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -116,7 +117,7 @@ class SocialLoginScreen extends StatelessWidget {
                                           },
                                           label: 'password',
                                           prefix: Icons.lock,
-                                          suffix: controller.suffix,
+                                          suffixIcon: controller.suffixIcon,
                                           isPassword: controller.isPassword,
                                           suffixPressed: () {
                                             controller.changePasswordVisibility();
@@ -152,6 +153,24 @@ class SocialLoginScreen extends StatelessWidget {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
+                                          const Text('Forget password ? '),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ResetScreen()),
+                                                );
+                                                //
+                                              },
+                                              child: const Text(
+                                                'Reset password',
+                                                style: TextStyle(color: Colors.green, fontSize: 15),
+                                              )),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
                                           const Text('Don\'t have an account ? '),
                                           TextButton(
                                               onPressed: () {
@@ -167,6 +186,7 @@ class SocialLoginScreen extends StatelessWidget {
                                               )),
                                         ],
                                       ),
+
                                     ],
                                   ),
                                 ),

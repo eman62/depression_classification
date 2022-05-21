@@ -36,7 +36,7 @@ void main(context) async {
       widget = HomeScreen();
     }
   } else {
-    widget = SocialLoginScreen();
+    widget = LoginScreen();
   }
 
   runApp(MyApp(startWidget: widget));

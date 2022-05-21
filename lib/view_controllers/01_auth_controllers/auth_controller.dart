@@ -14,9 +14,9 @@ import '../../views/02_user/home_screen.dart';
 class AuthController extends GetxController {
 // ThemeMode appMode =ThemeMode.dark;
 
-  IconData suffix = Icons.visibility;
+  IconData suffixIcon = Icons.visibility;
   bool isPassword = true;
-
+  bool isLoadingReset =false;
   bool isLoadingLogin = false;
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
@@ -43,10 +43,13 @@ class AuthController extends GetxController {
     isLoadingRegister = state;
     update();
   }
-
+  changeIsLoadingResetState(bool state) {
+    isLoadingReset = state;
+    update();
+  }
   changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix = isPassword ? Icons.visibility : Icons.visibility_off;
+    suffixIcon = isPassword ? Icons.visibility : Icons.visibility_off;
     update();
   }
 
@@ -109,6 +112,14 @@ class AuthController extends GetxController {
       changeIsLoadingGetUserDataState(false);
     }
   }
+// Future <bool> getEmail()async{
+//  await FirebaseFirestore.instance.collection('emails').get().then((value) {
+//    List <String> emails =[] ;
+//    for(var item in value.docs){
+//      emails.add(item())
+//    }
+//     });
+//  }
 
   void userRegister({
     required String name,
@@ -141,7 +152,6 @@ class AuthController extends GetxController {
     });
   }
 
-////////////////////////////////
   void userCreate({
     required String name,
     required String phone,
@@ -172,11 +182,25 @@ class AuthController extends GetxController {
       changeIsLoadingRegisterState(false);
     });
   }
+  //////////////////////////////
+  void resetPassword ({required String Email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: Email).then((value) {
+      Get.offAll(LoginScreen());
+
+      showToast(text: 'check your email to change password', state: ToastStates.success);
+    }).catchError((e) {
+      showToast(text: e.toString(), state: ToastStates.error);
+      changeIsLoadingResetState(false);
+    });
+
+  }
+
+////////////////////////////////
 
 ///////////////////////////////////////
   void signOut(context) async {
     await FirebaseAuth.instance.signOut();
     await CacheHelper.reset();
-    navigateAndFinish(context, SocialLoginScreen());
+    navigateAndFinish(context, LoginScreen());
   }
 }
