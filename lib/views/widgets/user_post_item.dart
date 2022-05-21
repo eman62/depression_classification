@@ -394,7 +394,7 @@ class CommentItem extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 18.0,
-            backgroundImage: NetworkImage('${controller.userModel?.image}'),
+            backgroundImage: NetworkImage('${controller.comments[postIndex][commentIndex]['userImageUrl']}'),
             backgroundColor: Colors.grey,
           ),
           Container(
