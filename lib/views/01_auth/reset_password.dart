@@ -115,7 +115,8 @@ class ResetScreen extends StatelessWidget {
                                                     function: () async{
                                                      if (formKey.currentState!.validate()) {
                                                   //   if (AppCubit.get(context).)
-                                                      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+                                                       controller.resetPassword(Email: emailController.text);
+                                                    //  await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
                                                       }
                                                      },
                                                     text: 'Reset',

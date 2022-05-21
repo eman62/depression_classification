@@ -16,7 +16,7 @@ class AuthController extends GetxController {
 
   IconData suffixIcon = Icons.visibility;
   bool isPassword = true;
-
+  bool isLoadingReset =false;
   bool isLoadingLogin = false;
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
@@ -43,7 +43,10 @@ class AuthController extends GetxController {
     isLoadingRegister = state;
     update();
   }
-
+  changeIsLoadingResetState(bool state) {
+    isLoadingReset = state;
+    update();
+  }
   changePasswordVisibility() {
     isPassword = !isPassword;
     suffixIcon = isPassword ? Icons.visibility : Icons.visibility_off;
@@ -137,7 +140,7 @@ class AuthController extends GetxController {
         name: name,
         phone: phone,
         age: age,
-        email: '$email',
+        email: email,
         twitter: twitter,
         uId: value.user!.uid,
       );
@@ -149,7 +152,6 @@ class AuthController extends GetxController {
     });
   }
 
-////////////////////////////////
   void userCreate({
     required String name,
     required String phone,
@@ -180,6 +182,20 @@ class AuthController extends GetxController {
       changeIsLoadingRegisterState(false);
     });
   }
+  //////////////////////////////
+  void resetPassword ({required String Email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: Email).then((value) {
+      Get.offAll(LoginScreen());
+
+      showToast(text: 'check your email to change password', state: ToastStates.success);
+    }).catchError((e) {
+      showToast(text: e.toString(), state: ToastStates.error);
+      changeIsLoadingResetState(false);
+    });
+
+  }
+
+////////////////////////////////
 
 ///////////////////////////////////////
   void signOut(context) async {
