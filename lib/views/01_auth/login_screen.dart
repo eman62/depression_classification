@@ -87,6 +87,7 @@ class LoginScreen extends StatelessWidget {
                               SizedBox(
                                 width: double.infinity,
                                 child: GetBuilder<AuthController>(
+                                  init: AuthController(),
                                   builder: (controller) => Column(
                                     children: [
                                       const SizedBox(

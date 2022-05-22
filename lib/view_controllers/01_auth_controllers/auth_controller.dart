@@ -16,7 +16,7 @@ class AuthController extends GetxController {
 
   IconData suffixIcon = Icons.visibility;
   bool isPassword = true;
-  bool isLoadingReset =false;
+  bool isLoadingReset = false;
   bool isLoadingLogin = false;
   bool isLoadingGetUserData = false;
   bool isLoadingRegister = false;
@@ -43,10 +43,12 @@ class AuthController extends GetxController {
     isLoadingRegister = state;
     update();
   }
+
   changeIsLoadingResetState(bool state) {
     isLoadingReset = state;
     update();
   }
+
   changePasswordVisibility() {
     isPassword = !isPassword;
     suffixIcon = isPassword ? Icons.visibility : Icons.visibility_off;
@@ -63,14 +65,14 @@ class AuthController extends GetxController {
       UserCredential credential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-    //  print('/// UID: ${credential.user!.uid}');
+      //  print('/// UID: ${credential.user!.uid}');
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
 
-    //  print('/// NAME: ${user?.name}');
-    //  print('/// ADMIN: ${user?.admin}');
-    //  print('/// EMAIL: ${user?.email}');
+      //  print('/// NAME: ${user?.name}');
+      //  print('/// ADMIN: ${user?.admin}');
+      //  print('/// EMAIL: ${user?.email}');
 
       if (user!.admin != null) {
         await CacheHelper.saveData(key: 'admin', value: user.admin);
@@ -79,7 +81,7 @@ class AuthController extends GetxController {
       if (user.uId != null) {
         await CacheHelper.saveData(key: 'uId', value: credential.user!.uid);
         globals.uId = user.uId;
-      //  print (credential.user!.uid);
+        //  print (credential.user!.uid);
       }
 
       navigate(user.admin!);
@@ -101,9 +103,9 @@ class AuthController extends GetxController {
       DocumentSnapshot? snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
       userModel = AppUserModel.fromJson(snapshot.data()! as Map<String, dynamic>);
       changeIsLoadingGetUserDataState(false);
-    //  print('/// NAME1: ${userModel?.name}');
-    //  print('/// ADMIN1: ${userModel?.admin}');
-   //   print('/// EMAIL1: ${userModel?.email}');
+      //  print('/// NAME1: ${userModel?.name}');
+      //  print('/// ADMIN1: ${userModel?.admin}');
+      //   print('/// EMAIL1: ${userModel?.email}');
       return userModel;
     } catch (e, stacktrace) {
       showToast(text: e.toString(), state: ToastStates.error);
@@ -146,7 +148,7 @@ class AuthController extends GetxController {
       );
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
-     // print(e.toString());
+      // print(e.toString());
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingRegisterState(false);
     });
@@ -161,7 +163,7 @@ class AuthController extends GetxController {
     required String uId,
   }) async {
     AppUserModel model = AppUserModel(
-      email: '$email@helper.com',
+      email: email,
       name: name,
       phone: phone,
       age: age,
@@ -172,6 +174,7 @@ class AuthController extends GetxController {
       admin: false,
     );
 
+    print(model.email);
     await FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {
       globals.uId = uId;
       Get.offAll(HomeScreen());
@@ -182,8 +185,9 @@ class AuthController extends GetxController {
       changeIsLoadingRegisterState(false);
     });
   }
+
   //////////////////////////////
-  void resetPassword ({required String Email}) async {
+  void resetPassword({required String Email}) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: Email).then((value) {
       Get.offAll(LoginScreen());
 
@@ -192,7 +196,6 @@ class AuthController extends GetxController {
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingResetState(false);
     });
-
   }
 
 ////////////////////////////////
@@ -202,5 +205,20 @@ class AuthController extends GetxController {
     await FirebaseAuth.instance.signOut();
     await CacheHelper.reset();
     navigateAndFinish(context, LoginScreen());
+  }
+
+  @override
+  void onInit() {
+    isLoadingReset = false;
+    isLoadingLogin = false;
+    isLoadingGetUserData = false;
+    isLoadingRegister = false;
+    nameController.text = '';
+    phoneController.text = '';
+    ageController.text = '';
+    emailController.text = '';
+    passwordController.text = '';
+    twitterController.text = '';
+    super.onInit();
   }
 }

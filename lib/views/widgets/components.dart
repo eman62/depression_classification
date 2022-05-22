@@ -34,6 +34,7 @@ Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
   Widget? suffix,
+
   /// required Function validate,
   required String? Function(String?) validate,
 ///////  Function ? onsubmit,
@@ -42,11 +43,11 @@ Widget defaultFormField({
   bool isPassword = false,
   IconData? suffixIcon,
   Function? suffixPressed,
-  List <TextInputFormatter>? inputFormatters ,
+  List<TextInputFormatter>? inputFormatters,
 }) =>
     TextFormField(
       controller: controller,
-      inputFormatters: inputFormatters != null ? inputFormatters:null,
+      inputFormatters: inputFormatters != null ? inputFormatters : null,
 //////onFieldSubmitted: (s){onsubmit!(s);},
 //validator: (s){validate();},
       validator: validate,
@@ -62,7 +63,7 @@ Widget defaultFormField({
         ),
         // fillColor: Colors.grey[100],
         //    filled: true,
-        suffix: suffix!= null ? suffix : null,
+        suffix: suffix != null ? suffix : null,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 icon: Icon(suffixIcon),
@@ -123,9 +124,7 @@ void showToast({required String text, required ToastStates state}) => Get.snackb
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.black,
       colorText: Colors.white,
-  overlayColor: chooseToastColor(state),
-
-
+      overlayColor: chooseToastColor(state),
     );
 // Fluttertoast.showToast(
 // msg: text,

@@ -5,11 +5,22 @@ import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import '../widgets/components.dart';
 import 'package:get/get.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
+
+  @override
+  void initState() {
+    Get.find<AuthController>().onInit();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size? size = MediaQuery.of(context).size;
@@ -30,7 +41,6 @@ class RegisterScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: GetBuilder<AuthController>(
             init: AuthController(),
-            autoRemove: true,
             builder: (controller) => Form(
               key: formKey,
               child: Column(
@@ -135,23 +145,22 @@ class RegisterScreen extends StatelessWidget {
                           type: TextInputType.emailAddress,
                           // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
                           validate: (String? value) {
-                            if (value!.isEmpty ||
-                                !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)) {
+                            if (value!.isEmpty) {
                               return 'email address must not be empty';
                             }
                             return null;
                           },
                           label: 'email address',
-                          inputFormatters: [
-                            FilteringTextInputFormatter.deny('@'),
-                          ],
+                          // inputFormatters: [
+                          //   FilteringTextInputFormatter.deny('@'),
+                          // ],
                           prefix: Icons.email_outlined,
-                          suffix: const Text(
-                            '@helper.com',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
+                          // suffix: const Text(
+                          //   '@helper.com',
+                          //   style: TextStyle(
+                          //     color: Colors.black,
+                          //   ),
+                          // ),
                         ),
 
                         const SizedBox(
