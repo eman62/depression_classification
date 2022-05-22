@@ -12,109 +12,64 @@ class DepressionStateScreen extends StatefulWidget {
 
 class _DepressionStateScreenState extends State<DepressionStateScreen> {
   var textController = TextEditingController();
-  var tweetsController = TextEditingController();
+
   //String SentimentResult = "";
   String SentimentScore = "";
+  //String text = "";
   final _forkey = GlobalKey<FormState>();
+
+  get text => null;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text("Depression Test"),
-        //   centerTitle: true,
-        //   backgroundColor: Colors.green,
-        // ),
-        body: SingleChildScrollView(
+        body: Container(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 100,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Form(
                     key: _forkey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                        controller: textController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value){
-                            if (value!.isEmpty){
-                              return "enter correct twitter account";
-                            }
-                            return null;
-                          },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(.3),
-                          hintText: "Enter your twitter Username",
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black87.withOpacity(0.2),
-                                  width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
-                              )),
-                          enabledBorder: OutlineInputBorder(
+                    child: TextField(
+                      controller: textController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(.3),
+                        hintText: "Enter your twitter Username",
+                        focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.black87.withOpacity(0.2), width: 2),
-                            borderRadius: const BorderRadius.all(
+                                color: Colors.black87.withOpacity(0.2),
+                                width: 2),
+                            borderRadius: BorderRadius.all(
                               Radius.circular(20),
-                            ),
+                            )),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.black87.withOpacity(0.2), width: 2),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
                           ),
                         ),
                       ),
-                        const SizedBox (height: 20,),
-                        TextFormField(
-                          controller: tweetsController,
-                          keyboardType: TextInputType.number,
-                          validator: (value){
-                            if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)){
-                              return "enter valid number ";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(.3),
-                            hintText: "Enter number of last tweets",
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black87.withOpacity(0.2),
-                                    width: 2),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                )),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black87.withOpacity(0.2), width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                     ]
                     ),
-
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-
                 TextButton.icon(
                     style: TextButton.styleFrom(
                       primary: Colors.green,
                       backgroundColor: Colors.black.withOpacity(0.05),
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.sentiment_neutral,
                       color: Colors.green,
                       size: 20,
@@ -124,36 +79,16 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
-                          .apply(color: Theme.of(context).textTheme.bodyText1?.color),
+                          .apply(color: Colors.black87),
                     ),
                     onPressed: () => tellMeMethod()),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
-                /* Text(
-                  "The enterd username: $text",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: 7,
-                ),*/
-                /*Text(
-                  "sentenintal : $text",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: 5,
-                ),*/
                 Text(
-                  "your score :$SentimentScore",
+                  "$SentimentScore",
                   style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1?.color,
+                      color: Colors.black,
                       fontSize: 17,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w400),
@@ -167,8 +102,9 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
   tellMeMethod() async {
     try {
       print('object');
-      final url = Uri.parse("http://localhost:8000/depression-detection");
-      final body = {'username': "TeslaDuBois"};
+      final url =
+      Uri.parse("https://gp-depapp.herokuapp.com/depression-detection");
+      final body = {'username': textController.text};
       final headers = {
         'Content-Type': 'application/json',
         "Accept": "application/json",
@@ -176,6 +112,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
       };
       print(body);
       print(headers);
+
       final response = await http.post(
         url,
         headers: headers,
@@ -186,9 +123,9 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
         //SentimentResult = jsonResponse['sentiment'];
-        SentimentScore = jsonResponse['score'];
+        //SentimentScore = jsonResponse['score'].toString();
         //print(SentimentResult);
-        print(SentimentScore);
+        //print(SentimentScore);
         setState(() {
           SentimentScore = jsonResponse['score'].toString();
           //SentimentScore = jsonResponse['score'].toStringAsFixed(2);
@@ -203,3 +140,5 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
     }
   }
 }
+
+
