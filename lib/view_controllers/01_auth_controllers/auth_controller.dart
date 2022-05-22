@@ -161,7 +161,7 @@ class AuthController extends GetxController {
     required String uId,
   }) async {
     AppUserModel model = AppUserModel(
-      email: email,
+      email: '$email@helper.com',
       name: name,
       phone: phone,
       age: age,
