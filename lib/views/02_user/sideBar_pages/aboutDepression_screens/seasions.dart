@@ -14,8 +14,11 @@ class SessionsState extends State<Sessions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title:const Text('sessions',
-        style: TextStyle(fontSize: 20),
+        title:const Text('Sessions',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
         ),
         backgroundColor:Colors.green,
         leading: const BackButton(

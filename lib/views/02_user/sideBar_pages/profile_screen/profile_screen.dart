@@ -169,14 +169,14 @@ class ProfileScreen extends StatelessWidget {
                           Row(
                             children: [
                               const Icon(
-                                Icons.phone,
+                                Icons.email_outlined,
                                 color: Colors.black54,
                               ),
                               const SizedBox(
                                 width: 10,
                               ),
                               Text(
-                                'Phone Number :' + ' ${userModel?.phone}',
+                                'Twitter :' + ' ${userModel?.twitter}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!

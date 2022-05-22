@@ -36,19 +36,27 @@ class RegisterScreen extends StatelessWidget {
               key: formKey,
               child: Column(
                 children: [
-                  //  SizedBox(height:size.width *0.01 ,),
+                  if (controller.isLoadingRegister) const LinearProgressIndicator(),
+                  if ( controller.isLoadingRegister)
+                    const SizedBox(
+                      height: 10,
+                    ),
+
                   Stack(
                     children: [
                       Center(
                           child: CircleAvatar(
-                        backgroundColor: Colors.green.withOpacity(.7),
-                        radius: size.width * 0.14,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: size.width * 0.1,
-                        ),
-                      )),
+                            backgroundColor: Colors.green.withOpacity(.9),
+                            radius: size.width * 0.14,
+                            backgroundImage: controller.profileImage == null
+                                ? const NetworkImage('https://www.colorbook.io/imagecreator.php?hex=4CAF50&width=1920&height=1080')
+                                :  FileImage(controller.profileImage!) as ImageProvider,
+                            child: controller.profileImage != null ? const Text('') : Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: size.width * 0.1,
+                            ) ,
+                          )),
                       Positioned(
                         top: size.height * 0.09,
                         left: size.width * .55,
@@ -60,9 +68,12 @@ class RegisterScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2),
                           ),
-                          child: const Icon(
-                            Icons.camera_alt_rounded,
-                            color: Colors.white,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.camera_alt_rounded,
+                              color: Colors.white,
+                            ),
+                            onPressed: (){controller.getProfileImage();},
                           ),
                         ),
                       ),
@@ -91,21 +102,21 @@ class RegisterScreen extends StatelessWidget {
                           height: 10,
                         ),
 
-                        defaultFormField(
-                            controller: controller.phoneController,
-                            type: TextInputType.phone,
-                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
-                            validate: (String? value) {
-                              if (value!.isEmpty || ! RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
-                                return 'enter correct number';
-                              }
-                              return null;
-                            },
-                            label: 'phone number',
-                            prefix: Icons.phone),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        // defaultFormField(
+                        //     controller: controller.phoneController,
+                        //     type: TextInputType.phone,
+                        //     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
+                        //     validate: (String? value) {
+                        //       if (value!.isEmpty || ! RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
+                        //         return 'enter correct number';
+                        //       }
+                        //       return null;
+                        //     },
+                        //     label: 'phone number',
+                        //     prefix: Icons.phone),
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
                         defaultFormField(
                             controller: controller.ageController,
                             type: TextInputType.number,
@@ -190,7 +201,6 @@ class RegisterScreen extends StatelessWidget {
                                     ///////////////////////
                                     controller.userRegister(
                                         name: controller.nameController.text,
-                                        phone: controller.phoneController.text,
                                         age: controller.ageController.text,
                                         email: controller.emailController.text,
                                         password: controller.passwordController.text,

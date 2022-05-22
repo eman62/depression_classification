@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:save/views/03_admin/admin_home.dart';
 import '../../helpers/globals.dart' as globals;
-import '../../models/post_model.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../views/widgets/components.dart';
 import '../../models/user_model.dart';
 import '../../helpers/cache_helper.dart';
@@ -23,7 +26,6 @@ class AuthController extends GetxController {
   AppUserModel? userModel;
 
   final nameController = TextEditingController();
-  final phoneController = TextEditingController();
   final ageController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -43,6 +45,7 @@ class AuthController extends GetxController {
     isLoadingRegister = state;
     update();
   }
+
   changeIsLoadingResetState(bool state) {
     isLoadingReset = state;
     update();
@@ -52,6 +55,33 @@ class AuthController extends GetxController {
     suffixIcon = isPassword ? Icons.visibility : Icons.visibility_off;
     update();
   }
+  File? profileImage;
+
+  var picker = ImagePicker();
+
+  uploadProfileImage(profileImage) async {
+    String path = 'profile_pic-${DateTime.now()}';
+    if(kDebugMode) print(path);
+
+    final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
+    final uploadValue = await ref.putFile(profileImage!);
+    String imageUrl = await uploadValue.ref.getDownloadURL();
+    if(kDebugMode) print(imageUrl);
+    return imageUrl;
+
+  }
+
+  Future<void> getProfileImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+    } else {
+      if(kDebugMode) print('no image selected');
+    }
+
+    update();
+  }
+
 
   Future<void> userLogin(
     context, {
@@ -107,8 +137,8 @@ class AuthController extends GetxController {
       return userModel;
     } catch (e, stacktrace) {
       showToast(text: e.toString(), state: ToastStates.error);
-      print(e);
-      print(stacktrace);
+     // print(e);
+   //   print(stacktrace);
       changeIsLoadingGetUserDataState(false);
     }
   }
@@ -123,13 +153,20 @@ class AuthController extends GetxController {
 
   void userRegister({
     required String name,
-    required String phone,
     required String age,
     required String email,
     required String password,
     required String twitter,
+    String? imageUrl,
   }) async {
     changeIsLoadingRegisterState(true);
+    if (profileImage != null) {        ///CHANGE
+      imageUrl = await uploadProfileImage(profileImage);
+    }
+    else {
+
+      imageUrl = 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg';
+    }
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
       email: email,
@@ -138,11 +175,11 @@ class AuthController extends GetxController {
         .then((UserCredential value) {
       userCreate(
         name: name,
-        phone: phone,
         age: age,
         email: email,
         twitter: twitter,
         uId: value.user!.uid,
+        image: imageUrl,
       );
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
@@ -154,22 +191,21 @@ class AuthController extends GetxController {
 
   void userCreate({
     required String name,
-    required String phone,
     required String age,
     required String email,
     required String twitter,
     required String uId,
+    String? image,
   }) async {
     AppUserModel model = AppUserModel(
       email: email,
       name: name,
-      phone: phone,
       age: age,
       twitter: twitter,
       uId: uId,
-      image: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg',
       isEmailVerified: false,
       admin: false,
+      image: image,
     );
 
     await FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {

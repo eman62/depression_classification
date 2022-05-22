@@ -23,6 +23,7 @@ class _AdminHomeState extends State<AdminHome> {
 
   @override
   Widget build(BuildContext context) {
+    Size? size = MediaQuery.of(context).size;
     return GetBuilder<AdminController>(builder: (controller) {
       return Scaffold(
         drawer: Drawer(
@@ -122,159 +123,153 @@ class _AdminHomeState extends State<AdminHome> {
         body: Column(
           children: [
             /// Users
-            Expanded(
-              child: InkWell(
-                onTap: () {
+            InkWell(
+              onTap: () {
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UsersScreen()),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          // clipBehavior: Clip.antiAlias,
-                          shadowColor: Colors.grey[200],
-                          elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              //  icon
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.people,
-                                    size: 80,
-                                    color: Colors.green,
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    'Users',
-                                    style: Theme.of(context).textTheme.headline4!,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UsersScreen()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        // clipBehavior: Clip.antiAlias,
+                        shadowColor: Colors.grey[200],
+                        elevation: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //  icon
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.people,
+                                  size: 80,
+                                  color: Colors.green,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  'Users',
+                                  style: Theme.of(context).textTheme.headline4!,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
 
             /// Posts
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  //  AppCubit.get(context).getPosts();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdminPostsScreen()),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          // clipBehavior: Clip.antiAlias,
-                          shadowColor: Colors.grey[200],
-                          elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.post_add,
-                                    size: 80,
-                                    color: Colors.green,
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    'Posts',
-                                    style: Theme.of(context).textTheme.headline4!,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+            InkWell(
+              onTap: () {
+                //  AppCubit.get(context).getPosts();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AdminPostsScreen()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        // clipBehavior: Clip.antiAlias,
+                        shadowColor: Colors.grey[200],
+                        elevation: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.post_add,
+                                  size: 80,
+                                  color: Colors.green,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  'Posts',
+                                  style: Theme.of(context).textTheme.headline4!,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
 
             /// Feedback
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  //  AppCubit.get(context).getFeedbacks();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const GetFeedbackScreen()),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          // clipBehavior: Clip.antiAlias,
-                          shadowColor: Colors.grey[200],
-                          elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              //  icon
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.feedback,
-                                    size: 70,
-                                    color: Colors.green,
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    'Feedback',
-                                    style: Theme.of(context).textTheme.headline4!,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+            InkWell(
+              onTap: () {
+                //  AppCubit.get(context).getFeedbacks();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GetFeedbackScreen()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        // clipBehavior: Clip.antiAlias,
+                        shadowColor: Colors.grey[200],
+                        elevation: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //  icon
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.feedback,
+                                  size: 70,
+                                  color: Colors.green,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  'Feedback',
+                                  style: Theme.of(context).textTheme.headline4!,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

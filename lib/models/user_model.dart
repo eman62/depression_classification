@@ -1,6 +1,5 @@
 class AppUserModel {
   String? name;
-  String? phone;
   String? age;
   String? email;
   String? image;
@@ -10,7 +9,6 @@ class AppUserModel {
   bool? isEmailVerified;
   AppUserModel({
     this.email,
-    this.phone,
     this.age,
     this.name,
     this.twitter,
@@ -21,7 +19,6 @@ class AppUserModel {
   });
   AppUserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
-    phone = json['phone'];
     age = json['age'];
     name = json['name'];
     twitter = json['twitter'];
@@ -33,7 +30,6 @@ class AppUserModel {
   Map<String, dynamic> toMap() {
     return {
       'email': email,
-      'phone': phone,
       'age': age,
       'name': name,
       'image': image,

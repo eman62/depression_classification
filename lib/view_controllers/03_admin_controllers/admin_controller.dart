@@ -154,7 +154,6 @@ class AdminController extends GetxController {
         nameController.text = userModel!.name!;
         emailController.text = userModel!.email!;
         ageController.text = userModel!.age!;
-        phoneController.text = userModel!.phone!;
         changeIsLoadingGetUserDataState(false);
 
       });

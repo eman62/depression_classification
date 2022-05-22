@@ -11,7 +11,8 @@ ThemeData darkMode = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
     //  fillColor: Colors.white,
     // filled: true,
-    labelStyle: TextStyle(color: Colors.grey),
+
+    labelStyle: TextStyle(color: Colors.green),
     hintStyle: TextStyle(color: Colors.white),
 
     //hintStyle: TextStyle(color: Colors.grey),

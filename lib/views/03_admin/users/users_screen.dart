@@ -23,15 +23,33 @@ class UsersScreen extends StatelessWidget {
             condition: controller.users.isEmpty,
             builder: (context) => controller.isLoadingGettingUsers
                 ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : const Text('No Items..'),
+              child: CircularProgressIndicator(),
+            )
+                : Center(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.menu,
+                  size: 100,
+                  color: Colors.grey,
+                ),
+                Text(
+                  'There are no users..',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),),
             fallback: (context) => ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => UserItem(model: controller.users[index], context: context),
                 separatorBuilder: (context, index) => const SizedBox(
-                      height: 20,
-                    ),
+                  height: 15,
+                ),
                 itemCount: controller.users.length),
           ),
         ),
@@ -49,26 +67,68 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage('${model.image}'),
+    return Column(
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          const SizedBox(
-            width: 15,
-          ),
-          Text(
-            '${model.name}',
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-              height: 1.3,
+          shadowColor: Colors.grey[200],
+          elevation: 7,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: ListTile(
+              minLeadingWidth: 70,
+              leading:  CircleAvatar(
+                radius: 35,
+                backgroundImage: NetworkImage('${model.image}'),
+              ),
+              title: Text(
+                '${model.name}',
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  height: 1.3,
+                ),
+              ),
+              subtitle: Text(
+                '${model.email}',
+                maxLines: 1,
+                overflow: TextOverflow.clip,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  height: 1.3,color: Colors.grey,
+                ),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete,size: 30,color: Colors.red,),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          title: Text('Delete User', style: Theme.of(context).textTheme.bodyText1,),
+                          content: Text('Are you sure to delete this account?', style: Theme.of(context).textTheme.bodyText1,),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child:  Text('Cancel', style: Theme.of(context).textTheme.bodyText1,),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+
+                              },
+                              child: Text('Delete',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),),
+                            ),
+                          ],
+                        );
+                      }
+                  );
+                },),
+
             ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

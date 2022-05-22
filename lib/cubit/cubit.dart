@@ -114,7 +114,7 @@ class AppCubit extends Cubit<AppStates> {
       value.ref.getDownloadURL().then((value) {
         emit(updateProfileImageSuccessState());
         print(value);
-        updateUser(name: name, email: email, age: age, phone: phone, image: value);
+        updateUser(name: name, email: email, age: age, image: value);
       }).catchError((error) {
         emit(updateProfileImageErrorState());
       });
@@ -127,7 +127,6 @@ class AppCubit extends Cubit<AppStates> {
     required String name,
     required String email,
     required String age,
-    required String phone,
     String? image,
   }) {
     emit(updateUserLoadingState());
@@ -137,7 +136,6 @@ class AppCubit extends Cubit<AppStates> {
     AppUserModel model = AppUserModel(
       email: email,
       name: name,
-      phone: phone,
       age: age,
       image: image ?? userModel!.image,
       uId: userModel!.uId,

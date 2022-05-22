@@ -54,6 +54,23 @@ Widget defaultFormField({
       obscureText: isPassword,
       decoration: InputDecoration(
 // hintText: 'Email Adress',
+        filled: true,
+        fillColor: Colors.white.withOpacity(.3),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.black87.withOpacity(0.2),
+                width: 2),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(20),
+            )),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Colors.black87.withOpacity(0.2), width: 2),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+
         labelText: label,
         border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
         prefixIcon: Icon(

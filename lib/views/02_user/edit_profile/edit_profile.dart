@@ -181,24 +181,24 @@ class EditProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: defaultFormField2(
-                  controller: controller.phoneController,
-                  type: TextInputType.number,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'phone must not be empty';
-                    }
-                    return null;
-                  },
-                  hint: 'Phone',
-                  prefix: Icons.phone,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: defaultFormField2(
+              //     controller: controller.phoneController,
+              //     type: TextInputType.number,
+              //     validate: (String? value) {
+              //       if (value!.isEmpty) {
+              //         return 'phone must not be empty';
+              //       }
+              //       return null;
+              //     },
+              //     hint: 'Phone',
+              //     prefix: Icons.phone,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 5,
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: defaultFormField2(

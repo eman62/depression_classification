@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:save/models/friend_model.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
@@ -87,7 +88,6 @@ class UserController extends GetxController {
         nameController.text = userModel!.name!;
         emailController.text = userModel!.email!;
         ageController.text = userModel!.age!;
-        phoneController.text = userModel!.phone!;
         twitterController.text = userModel!.twitter!;
         changeIsLoadingGetUserDataState(false);
 
@@ -225,7 +225,6 @@ class UserController extends GetxController {
         ? AppUserModel(
             email: email,
             name: name,
-            phone: phone,
             age: age,
             image: imageUrl,
             twitter: twitter,
@@ -235,7 +234,6 @@ class UserController extends GetxController {
           ).toMap() // if we have the image add it =
         : {
             'email': email,
-            'phone': phone,
             'age': age,
             'name': name,
             'twitter' : twitter,
@@ -800,6 +798,101 @@ class UserController extends GetxController {
               if(kDebugMode) print(stacktrace);
             }
           }
+////////////////////////////////////////
+  List<FriendModel> friends = [];
+  List<String> friendsId = [];
+  FriendModel? friendsModel;
+  bool isLoadingGettingFriends = false;
+  bool isLoadingAddFriend = false;
+  var nameFriendController = TextEditingController();
+  var phoneFriendController = TextEditingController();
+
+  changeIsLoadingGettingFriends(bool state) {
+    isLoadingGettingFriends = state;
+    update();
+  }
+
+  changeIsLoadingAddFriend(bool state) {
+    isLoadingCreatePost = state;
+    update();
+  }
+
+  addFriend(
+      {
+        required String name,
+        required String phone,
+      }
+      ) async {
+
+    changeIsLoadingAddFriend(true);
+
+    FriendModel model = FriendModel(
+      name: name,
+      phone: phone,
+    );
+    await FirebaseFirestore.instance.collection('users')
+        .doc(uId)
+        .collection('friends')
+        .add(model.toMap()).then((value)
+    {
+      nameFriendController.text;
+      phoneFriendController.text;
+
+      changeIsLoadingAddFriend(false);
+
+      Get.snackbar('Add Friend ', 'Done',colorText: Colors.white);
+    }).catchError((error) {
+      changeIsLoadingAddFriend(false);
+      showToast(text: '$error', state: ToastStates.error);
+    });
+
+    update();
+  }
+
+  getFriends() {
+    if (friends.isEmpty) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('friends')
+          .snapshots()
+          .listen((event) {
+
+        friends = [];
+        friendsId =[];
+
+        event.docs.forEach((element) {
+
+          friends.add(FriendModel.fromJson(element.data()));
+          friendsId.add(element.id);
+        });
+
+        update();
+
+      });
+    }
+
+    update();
+  }
+
+  deleteFriend({required String id}) async {
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('friends')
+        .doc(id)
+        .delete()
+        .then((value) {
+
+      Get.snackbar(' Friend Deleted', 'Successfully',colorText: Colors.white);
+      update();
+    })
+        .catchError((error){
+      showToast(text: '$error', state: ToastStates.error);
+    });
+
+  }
 
 
 
@@ -811,6 +904,7 @@ class UserController extends GetxController {
     // getLikes();
     //print (uId);
     getUserData(uId: uId);
+    getFriends();
     super.onInit();
   }
 }

@@ -67,8 +67,11 @@ class _ExercisesState extends State<Exercises> {
     return Scaffold(
 
       appBar:AppBar(
-        title:const Text('exercises',
-        style: TextStyle(fontSize: 20),
+        title:const Text('Exercises',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
         ),
         backgroundColor:Colors.green,
         leading: const BackButton(

@@ -19,7 +19,11 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:Colors.green,
+        elevation: 0,
+        title: const Text('Treatment', style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 22,
+        ),),
       ),
       body:Column(
         children: [
@@ -37,7 +41,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
 
-                          children:[
+                          children:const [
                             Image(
                                 image:NetworkImage('https://cdn-icons-png.flaticon.com/128/3603/3603740.png'),
                                 height:90, width: 90, color:Colors.white, fit:BoxFit.fill
@@ -46,7 +50,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                               height:15,
                             ),
                             Text(
-                              'depression',
+                              'Depression',
                               style:TextStyle(
                                 fontSize:25,
                                 fontWeight:FontWeight.bold,
@@ -62,7 +66,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
 
                       ),
                     ),),
-                  SizedBox(
+                  const SizedBox(
                     width:20,
                   ),
                   Expanded(
@@ -73,7 +77,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       child: Container(
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Image(
                               image:NetworkImage('https://cdn-icons-png.flaticon.com/128/1971/1971503.png'),
                               height:90, width: 90, color:Colors.white,fit:BoxFit.fill,
@@ -82,7 +86,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                               height:15,
                             ),
                             Text(
-                              'treatment',
+                              'Treatment',
                               style:TextStyle(
                                 fontSize:25,
                                 fontWeight:FontWeight.bold,
@@ -116,7 +120,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       child: Container(
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Image(
                               image:NetworkImage('https://cdn-icons-png.flaticon.com/128/681/681494.png'),
                               height:90, width: 90, color:Colors.white,fit:BoxFit.fill,
@@ -125,7 +129,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                               height:15,
                             ),
                             Text(
-                              'people',
+                              'People',
                               style:TextStyle(
                                 fontSize:25,
                                 fontWeight:FontWeight.bold,
@@ -141,7 +145,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width:20,
                   ),
                   Expanded(
@@ -152,7 +156,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       child: Container(
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Image(
                               image:NetworkImage('https://cdn-icons-png.flaticon.com/128/2807/2807685.png'),
                               height:90, width: 90, color:Colors.white,fit:BoxFit.fill,
@@ -161,7 +165,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                               height:15,
                             ),
                             Text(
-                              'sessions',
+                              'Sessions',
                               style:TextStyle(
                                 fontSize:25,
                                 fontWeight:FontWeight.bold,
@@ -195,7 +199,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       child: Container(
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Image(
                               image:NetworkImage('https://cdn-icons-png.flaticon.com/128/3022/3022315.png'),
                               height:90, width: 90, color:Colors.white,fit: BoxFit.fill,
@@ -204,7 +208,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                               height:15,
                             ),
                             Text(
-                              'exercises',
+                              'Exercises',
                               style:TextStyle(
                                 fontSize:25,
                                 fontWeight:FontWeight.bold,
@@ -220,7 +224,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width:20,
                   ),
                   Expanded(
@@ -231,7 +235,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
                       child: Container(
                         child: Column(
                           mainAxisAlignment:MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Image(
                               image:NetworkImage('https://cdn-icons-png.flaticon.com/128/94/94183.png'),
                               height:90, width: 90, color:Colors.white,fit:BoxFit.fill,
