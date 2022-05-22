@@ -205,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 appBar: AppBar(
-                  title: Text(
+                  title:
+                  Text(
                     name[controller.currentIndex],
                     style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),

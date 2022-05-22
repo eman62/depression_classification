@@ -84,11 +84,11 @@ class UserController extends GetxController {
       changeIsLoadingGetUserDataState(true);
        FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
         userModel = AppUserModel.fromJson(event.data()! );
-        nameController.text = userModel!.name!;
-        emailController.text = userModel!.email!;
-        ageController.text = userModel!.age!;
-        phoneController.text = userModel!.phone!;
-        twitterController.text = userModel!.twitter!;
+        nameController.text = userModel!.name ?? '';
+        emailController.text = userModel!.email ?? '';
+        ageController.text = userModel!.age ?? '';
+        phoneController.text = userModel!.phone ?? '';
+        twitterController.text = userModel!.twitter ?? '';
         changeIsLoadingGetUserDataState(false);
 
       });
