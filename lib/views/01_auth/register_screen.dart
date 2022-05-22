@@ -5,12 +5,22 @@ import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import '../widgets/components.dart';
 import 'package:get/get.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
 
+class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
+
+  @override
+  void initState() {
+    Get.find<AuthController>().onInit();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size? size = MediaQuery.of(context).size;
@@ -31,7 +41,6 @@ class RegisterScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: GetBuilder<AuthController>(
             init: AuthController(),
-            autoRemove: true,
             builder: (controller) => Form(
               key: formKey,
               child: Column(
@@ -91,8 +100,10 @@ class RegisterScreen extends StatelessWidget {
                             controller: controller.nameController,
                             type: TextInputType.text,
                             validate: (String? value) {
-                              if ((value!.isEmpty || ! RegExp  (r'^[a-z A-Z]+$').hasMatch(value)) ) {
+                              if ((value!.isEmpty)) {
                                 return 'enter correct name';
+                              } else if(RegExp(r'^-?[0-9]+$').hasMatch(value)) {
+                                return 'Name cannot be only numbers';
                               }
                               return null;
                             },
@@ -102,27 +113,15 @@ class RegisterScreen extends StatelessWidget {
                           height: 10,
                         ),
 
-                        // defaultFormField(
-                        //     controller: controller.phoneController,
-                        //     type: TextInputType.phone,
-                        //     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
-                        //     validate: (String? value) {
-                        //       if (value!.isEmpty || ! RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
-                        //         return 'enter correct number';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     label: 'phone number',
-                        //     prefix: Icons.phone),
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
                         defaultFormField(
                             controller: controller.ageController,
                             type: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                            ],
                             validate: (String? value) {
-                              if (value!.isEmpty || ! RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
+                              if (value!.isEmpty ||
+                                  !RegExp(r'^[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$').hasMatch(value)) {
                                 return 'enter correct age';
                               }
                               return null;
@@ -134,21 +133,29 @@ class RegisterScreen extends StatelessWidget {
                         ),
 
                         defaultFormField(
-                            controller: controller.emailController,
-                           // suffix: Text('h' , style: TextStyle(color: Colors.green),) ,
-                            type: TextInputType.emailAddress,
-                            // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
-                            validate: (String? value) {
-                              if (value!.isEmpty || !RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value!) ) {
-                                return 'email address must not be empty';
-                              }
-                              return null;
-                            },
-                            label: 'email address',
-                            prefix: Icons.email_outlined,
+                          controller: controller.emailController,
+                          // suffix: Text('h' , style: TextStyle(color: Colors.green),) ,
+                          type: TextInputType.emailAddress,
+                          // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'email address must not be empty';
+                            }
+                            return null;
+                          },
+                          label: 'email address',
+                          // inputFormatters: [
+                          //   FilteringTextInputFormatter.deny('@'),
+                          // ],
+                          prefix: Icons.email_outlined,
+                          // suffix: const Text(
+                          //   '@helper.com',
+                          //   style: TextStyle(
+                          //     color: Colors.black,
+                          //   ),
+                          // ),
                         ),
-                           
-                            
+
                         const SizedBox(
                           height: 10,
                         ),

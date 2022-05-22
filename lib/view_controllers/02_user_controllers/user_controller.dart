@@ -89,6 +89,7 @@ class UserController extends GetxController {
         emailController.text = userModel!.email!;
         ageController.text = userModel!.age!;
         twitterController.text = userModel!.twitter!;
+
         changeIsLoadingGetUserDataState(false);
 
       });

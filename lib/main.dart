@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
   final Widget? startWidget;
   MyApp({Key? key, this.startWidget}) : super(key: key);
 
-  final appController = Get.put(AuthController(),);
+  final authController = Get.put(AuthController(), permanent: false);
   final themeController = Get.put(ThemeController(), permanent: true);
 
   @override
