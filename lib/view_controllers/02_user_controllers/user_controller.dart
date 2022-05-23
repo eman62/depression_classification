@@ -545,15 +545,23 @@ class UserController extends GetxController {
 
   }
 
-  commentOnPost(postUid, index) async {
+  commentOnPost(postUid, postIndex) async {
     if(kDebugMode) print('/// COMMENT');
     Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
       'userImageUrl' : userModel!.image,
     };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
-    getPosts();
-  }  /// not change
+    // getPosts();
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').get().then((value){
+      comments[postIndex] = [];
+      for (var item in value.docs) {
+        comments[postIndex].add(item.data());
+      }
+    });
+    commentsCounts[postIndex] ++;
+    update();
+  }
 
 
   ////////////////////////////////////////////////////////////////////
