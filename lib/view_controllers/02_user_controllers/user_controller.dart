@@ -741,14 +741,10 @@ class UserController extends GetxController {
               for (var doc in favouritesSnapshots.docs) {
                 // no need to work on favourites List --> commented for saving resources
                 // favourites.add(doc.data());
-                print('xxxxFAVxxxxx');
-                print('${doc.data()['uId']} --- COMPARE --- $uId');
                 if (doc.data()['uId'] == uId) {
-                  print('TRUEEEEEEEEEEEEE');
                   isFavouredByMe = true;
                 }
               }
-              print('EEEEEE is favoured by me : $isFavouredByMe');
               if (isFavouredByMe) {
                 favouriteByMe.add(true);
                 favouriteByMeIndex.add(i);
@@ -769,23 +765,13 @@ class UserController extends GetxController {
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
           });
 
-          print('/// Post # $i');
-          print('/// Liked By Me:');
-          print('Liked By Me: $likedByMe');
-          print('Liked By Me Index: $likedindex');
-          print('Favourite By Me By Me: $favouriteByMe');
-          print('Favourite By Me Index: $favouriteByMeIndex');
-
           if (i == postEvent.docs.length - 1) {
             // reset of we got all posts
             i = 0;
-            print('/// Reset i');
           } else {
             // Increment if there are other posts to catch
             i++;
-            print('/// Increment i');
           }
-          print('/// ================================================================== ///');
         }
 
         changeIsLoadingGettingPosts(false);
