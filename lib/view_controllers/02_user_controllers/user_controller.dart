@@ -84,11 +84,11 @@ class UserController extends GetxController {
     try {
       changeIsLoadingGetUserDataState(true);
        FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
-        userModel = AppUserModel.fromJson(event.data()! );
-        nameController.text = userModel!.name!;
-        emailController.text = userModel!.email!;
-        ageController.text = userModel!.age!;
-        twitterController.text = userModel!.twitter!;
+        userModel = AppUserModel.fromJson(event.data()!);
+        nameController.text = userModel!.name ?? '';
+        emailController.text = userModel!.email ?? '';
+        ageController.text = userModel!.age ?? '';
+        twitterController.text = userModel!.twitter ?? '';
 
         changeIsLoadingGetUserDataState(false);
 
@@ -559,7 +559,7 @@ class UserController extends GetxController {
         comments[postIndex].add(item.data());
       }
     });
-    commentsCounts[postIndex] ++;
+    commentsCounts[postIndex] = comments[postIndex].length;
     update();
   }
 
@@ -664,6 +664,15 @@ class UserController extends GetxController {
   getPosts() {
     try {
       int i = 0;
+
+      // FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) {
+      //   print('/// Length:');
+      //   print(postEvent.docChanges.length);
+      //   for (var item in postEvent.docChanges) {
+      //     print(item.doc.data());
+      //   }
+      // });
+
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
 
        // print('/// Docs Changes ...');
@@ -671,8 +680,8 @@ class UserController extends GetxController {
 
        // print('/// GET POSTS ...');
 
-        changeIsLoadingGettingPosts(true);
 
+        // changeIsLoadingGettingPosts(true);
         /// Get Posts and likes counts
 
         posts = [];
@@ -686,9 +695,9 @@ class UserController extends GetxController {
         myPost = [];
         favourites = [];
         favouriteByMe = [];
-        favouriteByMeIndex=[];
-        favcounter=0;
-        likedindex=[];
+        favouriteByMeIndex= [];
+        favcounter = 0;
+        likedindex = [];
         /////////////////////
 
 
@@ -706,7 +715,7 @@ class UserController extends GetxController {
           ///////////////////////////////////////////////////////////////
 
           /// Likes
-          await   post.reference.collection('likes')
+          await post.reference.collection('likes')
               .get()
               .then((likesSnapshots) {
 
@@ -737,7 +746,7 @@ class UserController extends GetxController {
           ///////////////////////////////////////////////////////////////
 
           /// Favourites
-          await    post.reference.collection('favourites')
+          await post.reference.collection('favourites')
               .get()
               .then((favouritesSnapshots) {
 
