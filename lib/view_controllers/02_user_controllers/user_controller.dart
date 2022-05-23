@@ -16,7 +16,6 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
-
   int currentIndex = 0;
   List<PostModel> posts = [];
   List<String> postsId = [];
@@ -27,9 +26,9 @@ class UserController extends GetxController {
   AppUserModel? userModel;
   bool isLoadingGetUserData = false;
   bool isLoadingCreatePost = false;
-  bool isLoadingSetNotification =false;
-  bool isLoadingSendFeedback =false;
-  bool isLoadingGetCommentsOnPost =false;
+  bool isLoadingSetNotification = false;
+  bool isLoadingSendFeedback = false;
+  bool isLoadingGetCommentsOnPost = false;
   var textController = TextEditingController();
   var picker = ImagePicker();
   var nameController = TextEditingController();
@@ -55,7 +54,6 @@ class UserController extends GetxController {
     update();
   }
 
-
   changeShowCommentsState(bool state) {
     showComments = state;
     update();
@@ -70,11 +68,13 @@ class UserController extends GetxController {
     isLoadingGetUserData = state;
     update();
   }
+
 /////////////////////
   changeIsLoadingSetNotification(bool state) {
     isLoadingSetNotification = state;
     update();
   }
+
   changeIsLoadingSendFeedback(bool state) {
     isLoadingSendFeedback = state;
     update();
@@ -84,7 +84,7 @@ class UserController extends GetxController {
   getUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);
-       FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
+      FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
         userModel = AppUserModel.fromJson(event.data()!);
         nameController.text = userModel!.name ?? '';
         emailController.text = userModel!.email ?? '';
@@ -92,15 +92,14 @@ class UserController extends GetxController {
         twitterController.text = userModel!.twitter ?? '';
 
         changeIsLoadingGetUserDataState(false);
-
       });
       update();
 
       // return userModel;
 
     } catch (e, stacktrace) {
-      if(kDebugMode) print('XXX EXCEPTION');
-      if(kDebugMode) print(stacktrace);
+      if (kDebugMode) print('XXX EXCEPTION');
+      if (kDebugMode) print(stacktrace);
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
@@ -123,12 +122,12 @@ class UserController extends GetxController {
 
   _uploadPostImage(profileImage) async {
     String path = 'post_pic-${DateTime.now()}';
-    if(kDebugMode) print(path);
+    if (kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('post_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    if(kDebugMode) print(imageUrl);
+    if (kDebugMode) print(imageUrl);
     return imageUrl;
     // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
 
@@ -151,7 +150,7 @@ class UserController extends GetxController {
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
     } else {
-      if(kDebugMode) print('no image selected');
+      if (kDebugMode) print('no image selected');
     }
     update();
   }
@@ -166,7 +165,7 @@ class UserController extends GetxController {
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
     } else {
-      if(kDebugMode) print('no image selected');
+      if (kDebugMode) print('no image selected');
     }
 
     update();
@@ -174,12 +173,12 @@ class UserController extends GetxController {
 
   _uploadProfileImage(profileImage) async {
     String path = 'profile_pic-${DateTime.now()}';
-    if(kDebugMode) print(path);
+    if (kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    if(kDebugMode) print(imageUrl);
+    if (kDebugMode) print(imageUrl);
     return imageUrl;
     // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
 
@@ -238,7 +237,7 @@ class UserController extends GetxController {
             'email': email,
             'age': age,
             'name': name,
-            'twitter' : twitter,
+            'twitter': twitter,
             'uId': userModel!.uId,
             'admin': isAdmin,
             'isEmailVerified': false,
@@ -252,6 +251,7 @@ class UserController extends GetxController {
     });
     //}
   }
+
 //////////////////////////////////////////////state wrong
   void sendFeedback({
     required String text,
@@ -278,7 +278,7 @@ class UserController extends GetxController {
     uId = '';
     isAdmin = null;
     //print (uId);
-    Get.delete(tag: "homeController",force: true);
+    Get.delete(tag: "homeController", force: true);
     navigateAndFinish(context, LoginScreen());
   }
 
@@ -476,31 +476,30 @@ class UserController extends GetxController {
 //   }
   List<Map<String, dynamic>> favourites = [];
   List<bool> favouriteByMe = [];
-  List<int> favouriteByMeIndex=[];
+  List<int> favouriteByMeIndex = [];
   int favcounter = 0;
-  List<int> likedindex=[];
+  List<int> likedindex = [];
   likeOrUnlikePost(postUid, index) async {
     try {
-      await FirebaseFirestore.instance.collection('posts')
+      await FirebaseFirestore.instance
+          .collection('posts')
           .doc(postUid)
           .collection('likes')
-          .get().then((snapshot) {
-
+          .get()
+          .then((snapshot) {
         if (snapshot.docs.isNotEmpty) {
           int x = 0;
           for (var element in snapshot.docs) {
-
             if (element.data()['uId']! == uId) {
-              x=1;
+              x = 1;
               _unlikePost(postUid, index);
               likedindex.remove(index);
             }
           }
-          if(x==0){
+          if (x == 0) {
             _likePost(postUid, index);
             likedindex.add(index);
             likedindex.sort();
-
           }
         } else {
           _likePost(postUid, index);
@@ -509,15 +508,16 @@ class UserController extends GetxController {
         }
       });
     } catch (e, stacktrace) {
-      if(kDebugMode) print(e);
-      if(kDebugMode) print(stacktrace);
+      if (kDebugMode) print(e);
+      if (kDebugMode) print(stacktrace);
     }
   }
 
   _likePost(String postUid, index) async {
     //print('/// LIKE');
 
-    await FirebaseFirestore.instance.collection('posts')
+    await FirebaseFirestore.instance
+        .collection('posts')
         .doc(postUid)
         .collection('likes')
         .doc(uId)
@@ -532,24 +532,21 @@ class UserController extends GetxController {
   _unlikePost(String postUid, index) async {
     //print('/// UN-LIKE');
 
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(postUid)
-        .collection('likes')
-        .doc(uId)
-        .delete();
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').doc(uId).delete();
 
     likesCounts[index]--;
     changeLikedByMeState(false, index);
 
     update();
-
   }
 
   commentOnPost(postUid, postIndex) async {
-    if(kDebugMode) print('/// COMMENT');
-    Map<String, Object?> data = {'uId': userModel!.uId, 'name': userModel!.name, 'comment': commentController.text,
-      'userImageUrl' : userModel!.image,
+    if (kDebugMode) print('/// COMMENT');
+    Map<String, Object?> data = {
+      'uId': userModel!.uId,
+      'name': userModel!.name,
+      'comment': commentController.text,
+      'userImageUrl': userModel!.image,
     };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
@@ -562,7 +559,12 @@ class UserController extends GetxController {
   getCommentsOnPosts(postUid, postIndex) async {
     try {
       print('/// Getting Comments on post index = $postIndex && uid = $postUid');
-      await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').get().then((value){
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postUid)
+          .collection('comments')
+          .get()
+          .then((value) {
         comments[postIndex] = [];
         for (var item in value.docs) {
           comments[postIndex].add(item.data());
@@ -594,40 +596,41 @@ class UserController extends GetxController {
 
   favouriteOrUnFavouritePost(postUid, index) async {
     try {
-      await FirebaseFirestore.instance.collection('posts')
+      await FirebaseFirestore.instance
+          .collection('posts')
           .doc(postUid)
           .collection('favourites')
-          .get().then((value) {
+          .get()
+          .then((value) {
         if (value.docs.isNotEmpty) {
-          int y= 0;
-          for (var element in value.docs)
-          {
-            if (element.data()['uId'] == uId)
-            {
+          int y = 0;
+          for (var element in value.docs) {
+            if (element.data()['uId'] == uId) {
               _unfavouritePost(postUid, index);
-              y=1;
+              y = 1;
             }
           }
-          if(y==0){_favouritePost(postUid, index);}
-        }
-        else {
+          if (y == 0) {
+            _favouritePost(postUid, index);
+          }
+        } else {
           _favouritePost(postUid, index);
         }
       });
-
     } catch (e, stacktrace) {
       //print(e);
       //print(stacktrace);
     }
   }
 
-  _favouritePost(String postUid, index) async  {
+  _favouritePost(String postUid, index) async {
     //print('/// Favourite');
-    await FirebaseFirestore.instance.collection('posts').
-    doc(postUid).
-    collection('favourites').
-    doc(uId).
-    set({'uId': uId});
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('favourites')
+        .doc(uId)
+        .set({'uId': uId});
     changeFavouriteByMeState(true, index);
     favouriteByMeIndex.add(index);
     favouriteByMeIndex.sort();
@@ -656,30 +659,20 @@ class UserController extends GetxController {
   ////////////////////////////////////////////////////////////////////
 
   checkAndDeletePost({required String id}) async {
-
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .get()
-        .then((value) {
-      if(value.data()!['uId'] == uId){
+    await FirebaseFirestore.instance.collection('posts').doc(id).get().then((value) {
+      if (value.data()!['uId'] == uId) {
         deletePost(id: id);
 
-        Get.snackbar(' Post Deleted', 'Successfully',colorText: Colors.white);
+        Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
       }
       update();
-    })
-        .catchError((error){
+    }).catchError((error) {
       showToast(text: '$error', state: ToastStates.error);
     });
-
   }
 
   deletePost({required String id}) async {
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .delete();
+    await FirebaseFirestore.instance.collection('posts').doc(id).delete();
   }
 
   getPosts() {
@@ -687,12 +680,10 @@ class UserController extends GetxController {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-
-       // print('/// Docs Changes ...');
+        // print('/// Docs Changes ...');
         //print(postEvent.docChanges);
 
-       // print('/// GET POSTS ...');
-
+        // print('/// GET POSTS ...');
 
         // changeIsLoadingGettingPosts(true);
         /// Get Posts and likes counts
@@ -708,77 +699,60 @@ class UserController extends GetxController {
         myPost = [];
         favourites = [];
         favouriteByMe = [];
-        favouriteByMeIndex= [];
+        favouriteByMeIndex = [];
         favcounter = 0;
         likedindex = [];
         /////////////////////
-
 
         for (var post in postEvent.docs) {
           //print('/// POST NUMBER $i');
           posts.add(PostModel.fromJson(post.data()));
           postsId.add(post.id);
-          if(post.data()['uId'] == uId) {
+          if (post.data()['uId'] == uId) {
             myPost.add(true);
-          }
-          else {
+          } else {
             myPost.add(false);
           }
 
           ///////////////////////////////////////////////////////////////
 
           /// Likes
-          await post.reference.collection('likes')
-              .get()
-              .then((likesSnapshots) {
-
+          await post.reference.collection('likes').get().then((likesSnapshots) {
             //print(likesSnapshots.docs.length);
             likesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
-
-              for (var doc in likesSnapshots.docs)
-              {
-
+              for (var doc in likesSnapshots.docs) {
                 likes.add(doc.data());
-                if(doc.data()['uId']! == uId) {
-                  likedByMe.add(true) ;
+                if (doc.data()['uId']! == uId) {
+                  likedByMe.add(true);
                   likedindex.add(i);
                 } else {
                   likedByMe.add(false);
                 }
               }
-            }
-            else {
+            } else {
               likedByMe.add(false);
             }
 
             //print(likedindex);
           });
 
-
           ///////////////////////////////////////////////////////////////
 
           /// Favourites
-          await post.reference.collection('favourites')
-              .get()
-              .then((favouritesSnapshots) {
-
+          await post.reference.collection('favourites').get().then((favouritesSnapshots) {
             if (favouritesSnapshots.docs.isNotEmpty) {
-
               for (var doc in favouritesSnapshots.docs) {
                 favourites.add(doc.data());
 
-                if ( doc.data()['uId']! == uId ) {
+                if (doc.data()['uId']! == uId) {
                   favouriteByMe.add(true);
                   favouriteByMeIndex.add(i);
-
-                }
-                else{
+                } else {
                   favouriteByMe.add(false);
                 }
               }
-            }
-            else {
+            } else {
               favouriteByMe.add(false);
             }
             //print( favouriteByMeIndex);
@@ -786,31 +760,30 @@ class UserController extends GetxController {
 
           i++;
 
-
           //////////////////////////////////////////////////////////////
           // comments
-                  await post.reference.collection('comments').get().then((commentsSnapshots) {
-                    commentsCounts.add(commentsSnapshots.docs.length);
-                    //
-                    // List<Map<String, dynamic>> postComments = [];
-                    // for (var doc in commentsSnapshots.docs) {
-                    //   postComments.add(doc.data());
-                    // }
-                    // comments.add(postComments);
-                    comments.add([]);
-                  });
+          await post.reference.collection('comments').get().then((commentsSnapshots) {
+            commentsCounts.add(commentsSnapshots.docs.length);
+            //
+            // List<Map<String, dynamic>> postComments = [];
+            // for (var doc in commentsSnapshots.docs) {
+            //   postComments.add(doc.data());
+            // }
+            // comments.add(postComments);
+            comments.add([]);
+          });
+        }
 
-                }
+        changeIsLoadingGettingPosts(false);
 
-                changeIsLoadingGettingPosts(false);
+        update();
+      });
+    } catch (e, stacktrace) {
+      if (kDebugMode) print(e);
+      if (kDebugMode) print(stacktrace);
+    }
+  }
 
-                update();
-              });
-            } catch (e, stacktrace) {
-              if(kDebugMode) print(e);
-              if(kDebugMode) print(stacktrace);
-            }
-          }
 ////////////////////////////////////////
   List<FriendModel> friends = [];
   List<String> friendsId = [];
@@ -830,30 +803,28 @@ class UserController extends GetxController {
     update();
   }
 
-  addFriend(
-      {
-        required String name,
-        required String phone,
-      }
-      ) async {
-
+  addFriend({
+    required String name,
+    required String phone,
+  }) async {
     changeIsLoadingAddFriend(true);
 
     FriendModel model = FriendModel(
       name: name,
       phone: phone,
     );
-    await FirebaseFirestore.instance.collection('users')
+    await FirebaseFirestore.instance
+        .collection('users')
         .doc(uId)
         .collection('friends')
-        .add(model.toMap()).then((value)
-    {
+        .add(model.toMap())
+        .then((value) {
       nameFriendController.text;
       phoneFriendController.text;
 
       changeIsLoadingAddFriend(false);
 
-      Get.snackbar('Add Friend ', 'Done',colorText: Colors.white);
+      Get.snackbar('Add Friend ', 'Done', colorText: Colors.white);
     }).catchError((error) {
       changeIsLoadingAddFriend(false);
       showToast(text: '$error', state: ToastStates.error);
@@ -870,18 +841,15 @@ class UserController extends GetxController {
           .collection('friends')
           .snapshots()
           .listen((event) {
-
         friends = [];
-        friendsId =[];
+        friendsId = [];
 
         event.docs.forEach((element) {
-
           friends.add(FriendModel.fromJson(element.data()));
           friendsId.add(element.id);
         });
 
         update();
-
       });
     }
 
@@ -889,7 +857,6 @@ class UserController extends GetxController {
   }
 
   deleteFriend({required String id}) async {
-
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
@@ -897,17 +864,12 @@ class UserController extends GetxController {
         .doc(id)
         .delete()
         .then((value) {
-
-      Get.snackbar(' Friend Deleted', 'Successfully',colorText: Colors.white);
+      Get.snackbar(' Friend Deleted', 'Successfully', colorText: Colors.white);
       update();
-    })
-        .catchError((error){
+    }).catchError((error) {
       showToast(text: '$error', state: ToastStates.error);
     });
-
   }
-
-
 
   ////////////////////////////////////////////
   @override
