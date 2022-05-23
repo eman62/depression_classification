@@ -570,7 +570,6 @@ class UserController extends GetxController {
           comments[postIndex].add(item.data());
         }
       });
-      print('xxxxxxxxxxxx');
       commentsCounts[postIndex] = comments[postIndex].length;
       changeIsLoadingGetCommentsOnPost(false);
       print(commentsCounts[postIndex]);
@@ -606,7 +605,7 @@ class UserController extends GetxController {
           int y = 0;
           for (var element in value.docs) {
             if (element.data()['uId'] == uId) {
-              _unfavouritePost(postUid, index);
+              _unFavouritePost(postUid, index);
               y = 1;
             }
           }
@@ -640,7 +639,7 @@ class UserController extends GetxController {
     update();
   }
 
-  _unfavouritePost(String postUid, index) async {
+  _unFavouritePost(String postUid, index) async {
     //print('/// UN-Favourite');
 
     await FirebaseFirestore.instance
@@ -680,14 +679,6 @@ class UserController extends GetxController {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        // print('/// Docs Changes ...');
-        //print(postEvent.docChanges);
-
-        // print('/// GET POSTS ...');
-
-        // changeIsLoadingGettingPosts(true);
-        /// Get Posts and likes counts
-
         posts = [];
         likes = [];
         likesCounts = [];
@@ -704,6 +695,7 @@ class UserController extends GetxController {
         likedindex = [];
         /////////////////////
 
+        print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
           //print('/// POST NUMBER $i');
           posts.add(PostModel.fromJson(post.data()));
@@ -721,14 +713,18 @@ class UserController extends GetxController {
             //print(likesSnapshots.docs.length);
             likesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
+              bool isLikedByMe = false;
               for (var doc in likesSnapshots.docs) {
                 likes.add(doc.data());
-                if (doc.data()['uId']! == uId) {
-                  likedByMe.add(true);
-                  likedindex.add(i);
-                } else {
-                  likedByMe.add(false);
+                if (doc.data()['uId'] == uId) {
+                  isLikedByMe = true;
                 }
+              }
+              if (isLikedByMe) {
+                likedByMe.add(true);
+                likedindex.add(i);
+              } else {
+                likedByMe.add(false);
               }
             } else {
               likedByMe.add(false);
@@ -736,21 +732,28 @@ class UserController extends GetxController {
 
             //print(likedindex);
           });
-
           ///////////////////////////////////////////////////////////////
 
           /// Favourites
           await post.reference.collection('favourites').get().then((favouritesSnapshots) {
             if (favouritesSnapshots.docs.isNotEmpty) {
+              bool isFavouredByMe = false;
               for (var doc in favouritesSnapshots.docs) {
-                favourites.add(doc.data());
-
-                if (doc.data()['uId']! == uId) {
-                  favouriteByMe.add(true);
-                  favouriteByMeIndex.add(i);
-                } else {
-                  favouriteByMe.add(false);
+                // no need to work on favourites List --> commented for saving resources
+                // favourites.add(doc.data());
+                print('xxxxFAVxxxxx');
+                print('${doc.data()['uId']} --- COMPARE --- $uId');
+                if (doc.data()['uId'] == uId) {
+                  print('TRUEEEEEEEEEEEEE');
+                  isFavouredByMe = true;
                 }
+              }
+              print('EEEEEE is favoured by me : $isFavouredByMe');
+              if (isFavouredByMe) {
+                favouriteByMe.add(true);
+                favouriteByMeIndex.add(i);
+              } else {
+                favouriteByMe.add(false);
               }
             } else {
               favouriteByMe.add(false);
@@ -758,20 +761,31 @@ class UserController extends GetxController {
             //print( favouriteByMeIndex);
           });
 
-          i++;
-
           //////////////////////////////////////////////////////////////
           // comments
           await post.reference.collection('comments').get().then((commentsSnapshots) {
             commentsCounts.add(commentsSnapshots.docs.length);
-            //
-            // List<Map<String, dynamic>> postComments = [];
-            // for (var doc in commentsSnapshots.docs) {
-            //   postComments.add(doc.data());
-            // }
-            // comments.add(postComments);
-            comments.add([]);
+            comments.add(
+                []); // we are adding the comments upon opening the comments bottom sheet to save the resources
           });
+
+          print('/// Post # $i');
+          print('/// Liked By Me:');
+          print('Liked By Me: $likedByMe');
+          print('Liked By Me Index: $likedindex');
+          print('Favourite By Me By Me: $favouriteByMe');
+          print('Favourite By Me Index: $favouriteByMeIndex');
+
+          if (i == postEvent.docs.length - 1) {
+            // reset of we got all posts
+            i = 0;
+            print('/// Reset i');
+          } else {
+            // Increment if there are other posts to catch
+            i++;
+            print('/// Increment i');
+          }
+          print('/// ================================================================== ///');
         }
 
         changeIsLoadingGettingPosts(false);
