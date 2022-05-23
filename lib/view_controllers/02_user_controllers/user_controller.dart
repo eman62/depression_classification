@@ -29,6 +29,7 @@ class UserController extends GetxController {
   bool isLoadingCreatePost = false;
   bool isLoadingSetNotification =false;
   bool isLoadingSendFeedback =false;
+  bool isLoadingGetCommentsOnPost =false;
   var textController = TextEditingController();
   var picker = ImagePicker();
   var nameController = TextEditingController();
@@ -553,6 +554,12 @@ class UserController extends GetxController {
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
     // getPosts();
+    getCommentsOnPosts(postUid, postIndex);
+    print(postUid);
+  }
+
+  getCommentsOnPosts(postUid, postIndex) async {
+    print('/// Getting Comments on post index = $postIndex && uid = $postUid');
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').get().then((value){
       comments[postIndex] = [];
       for (var item in value.docs) {
@@ -560,9 +567,14 @@ class UserController extends GetxController {
       }
     });
     commentsCounts[postIndex] = comments[postIndex].length;
+    print(commentsCounts[postIndex]);
     update();
   }
 
+  changeIsLoadingGetCommentsOnPost(bool state) {
+    isLoadingGetCommentsOnPost = state;
+    update();
+  }
 
   ////////////////////////////////////////////////////////////////////
 
@@ -664,14 +676,6 @@ class UserController extends GetxController {
   getPosts() {
     try {
       int i = 0;
-
-      // FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) {
-      //   print('/// Length:');
-      //   print(postEvent.docChanges.length);
-      //   for (var item in postEvent.docChanges) {
-      //     print(item.doc.data());
-      //   }
-      // });
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
 
@@ -785,26 +789,8 @@ class UserController extends GetxController {
                       // print('comments|');
                     }
                     comments.add(postComments);
-                    //print('/// comments length');
-                   // if(kDebugMode) print(commentsSnapshots.docs.length);
-                    // if (commentsSnapshots.docs.isNotEmpty) {
-                    //   print('xxxx');
-                    //   for (var doc in commentsSnapshots.docs) {
-                    //     comments[i][commentsSnapshots.docs.indexOf(doc)].add(doc.data());
-                    //   }
-                    //
-                    //   // todo: comment by me
-                    //   // for (var element in commentsSnapshots.docs) {
-                    //   //   element.data()['uId'] == userModel!.uId ? likedByMe.add(true) : likedByMe.add(false);
-                    //   // }
-                    // } else {
-                    //   print('yyyy');
-                    //   // comments.add({});
-                    // }
                   });
-                  //print(comments);
-                 // print(comments.length);
-                  //i++;
+
                 }
 
                 changeIsLoadingGettingPosts(false);
