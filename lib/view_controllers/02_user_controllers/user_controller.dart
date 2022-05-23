@@ -553,21 +553,30 @@ class UserController extends GetxController {
     };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
-    // getPosts();
+
+    // re-render the post comments
     getCommentsOnPosts(postUid, postIndex);
-    print(postUid);
   }
 
+  /// opening the comments bottom sheet of a post
   getCommentsOnPosts(postUid, postIndex) async {
-    print('/// Getting Comments on post index = $postIndex && uid = $postUid');
-    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').get().then((value){
-      comments[postIndex] = [];
-      for (var item in value.docs) {
-        comments[postIndex].add(item.data());
-      }
-    });
-    commentsCounts[postIndex] = comments[postIndex].length;
-    print(commentsCounts[postIndex]);
+    try {
+      print('/// Getting Comments on post index = $postIndex && uid = $postUid');
+      await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').get().then((value){
+        comments[postIndex] = [];
+        for (var item in value.docs) {
+          comments[postIndex].add(item.data());
+        }
+      });
+      print('xxxxxxxxxxxx');
+      commentsCounts[postIndex] = comments[postIndex].length;
+      changeIsLoadingGetCommentsOnPost(false);
+      print(commentsCounts[postIndex]);
+      print(commentsCounts[postIndex]);
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+    }
     update();
   }
 
@@ -782,13 +791,13 @@ class UserController extends GetxController {
           // comments
                   await post.reference.collection('comments').get().then((commentsSnapshots) {
                     commentsCounts.add(commentsSnapshots.docs.length);
-
-                    List<Map<String, dynamic>> postComments = [];
-                    for (var doc in commentsSnapshots.docs) {
-                      postComments.add(doc.data());
-                      // print('comments|');
-                    }
-                    comments.add(postComments);
+                    //
+                    // List<Map<String, dynamic>> postComments = [];
+                    // for (var doc in commentsSnapshots.docs) {
+                    //   postComments.add(doc.data());
+                    // }
+                    // comments.add(postComments);
+                    comments.add([]);
                   });
 
                 }

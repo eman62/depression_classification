@@ -335,17 +335,15 @@ class UserPostItem extends StatelessWidget {
 }
 
 showCommentsBottomSheet({required UserController controller, required int postIndex}) {
-  // print(controller.comments[postIndex]);
-  // print(controller.comments[postIndex].length);
-  // print('/// Post Index: $postIndex');
-
-  controller.getCommentsOnPosts(controller.postsId[postIndex], postIndex);
   Get.bottomSheet(
     CommentsBottomSheet(controller: controller, postIndex: postIndex),
     isScrollControlled: true,
     enableDrag: true,
     isDismissible: true,
   );
+
+  controller.changeIsLoadingGetCommentsOnPost(true);
+  controller.getCommentsOnPosts(controller.postsId[postIndex], postIndex);
 }
 
 class CommentsBottomSheet extends StatefulWidget {
