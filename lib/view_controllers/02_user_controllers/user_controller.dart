@@ -678,31 +678,47 @@ class UserController extends GetxController {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        posts = [];
-        likes = [];
-        likesCounts = [];
-        likedByMe = [];
-        postsId = [];
-        comments = [];
+        // posts = [];
+        // likes = [];
+        // likesCounts = [];
+        // likedByMe = [];
+        // postsId = [];
+        // comments = [];
+        // commentsCounts = [];
+        // /////////////////////
+        // myPost = [];
+        // favourites = [];
+        // favouriteByMe = [];
+        // favouriteByMeIndex = [];
+        // favcounter = 0;
+        // likedindex = [];
+        /////////////////////
 
+        List<PostModel> rposts = [];
+        List<Map<String, dynamic>> rlikes = [];
+        List<int> rlikesCounts = [];
+        List<bool> rlikedByMe = [];
+        List<String> rpostsId = [];
+        List<List<Map<String, dynamic>>> rcomments = [];
+        List<int> rcommentsCounts = [];
         /////////////////////
-        myPost = [];
-        favourites = [];
-        favouriteByMe = [];
-        favouriteByMeIndex = [];
-        favcounter = 0;
-        likedindex = [];
-        /////////////////////
+        List<bool> rmyPost = [];
+        List<Map<String, dynamic>> rfavourites = [];
+        List<bool> rfavouriteByMe = [];
+        List<int> rfavouriteByMeIndex = [];
+        int rfavcounter = 0;
+        List<int> rlikedindex = [];
+
 
         print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
           print('/// Post $i-1');
-          posts.add(PostModel.fromJson(post.data()));
-          postsId.add(post.id);
+          rposts.add(PostModel.fromJson(post.data()));
+          rpostsId.add(post.id);
           if (post.data()['uId'] == uId) {
-            myPost.add(true);
+            rmyPost.add(true);
           } else {
-            myPost.add(false);
+            rmyPost.add(false);
           }
 
           ///////////////////////////////////////////////////////////////
@@ -712,23 +728,23 @@ class UserController extends GetxController {
             print('/// Post $i-2');
 
             //print(likesSnapshots.docs.length);
-            likesCounts.add(likesSnapshots.docs.length);
+            rlikesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
               bool isLikedByMe = false;
               for (var doc in likesSnapshots.docs) {
-                likes.add(doc.data());
+                rlikes.add(doc.data());
                 if (doc.data()['uId'] == uId) {
                   isLikedByMe = true;
                 }
               }
               if (isLikedByMe) {
-                likedByMe.add(true);
-                likedindex.add(i);
+                rlikedByMe.add(true);
+                rlikedindex.add(i);
               } else {
-                likedByMe.add(false);
+                rlikedByMe.add(false);
               }
             } else {
-              likedByMe.add(false);
+              rlikedByMe.add(false);
             }
 
             //print(likedindex);
@@ -749,13 +765,13 @@ class UserController extends GetxController {
                 }
               }
               if (isFavouredByMe) {
-                favouriteByMe.add(true);
-                favouriteByMeIndex.add(i);
+                rfavouriteByMe.add(true);
+                rfavouriteByMeIndex.add(i);
               } else {
-                favouriteByMe.add(false);
+                rfavouriteByMe.add(false);
               }
             } else {
-              favouriteByMe.add(false);
+              rfavouriteByMe.add(false);
             }
             //print( favouriteByMeIndex);
           });
@@ -765,8 +781,8 @@ class UserController extends GetxController {
           await post.reference.collection('comments').get().then((commentsSnapshots) {
             print('/// Post $i-4');
 
-            commentsCounts.add(commentsSnapshots.docs.length);
-            comments.add(
+            rcommentsCounts.add(commentsSnapshots.docs.length);
+            rcomments.add(
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
           });
 
@@ -779,8 +795,23 @@ class UserController extends GetxController {
           }
         }
 
+        posts = rposts;
+        likes = rlikes;
+        likesCounts = rlikesCounts;
+        likedByMe = rlikedByMe;
+        postsId = rpostsId;
+        comments = rcomments;
+        commentsCounts = rcommentsCounts;
+        /////////////////////
+        myPost = rmyPost;
+        favourites = rfavourites;
+        favouriteByMe = rfavouriteByMe;
+        favouriteByMeIndex = rfavouriteByMeIndex;
+        favcounter = rfavcounter;
+        likedindex = rlikedindex;
+
         changeIsLoadingGettingPosts(false);
-        // update();
+        update();
       });
     } catch (e, stacktrace) {
       if (kDebugMode) print(e);
