@@ -73,6 +73,7 @@ class UserPostItem extends StatelessWidget {
                 /// Add Icon Delete
                 /////////////////////////////
 
+                // todo: #1
                 controller.myPost[postIndex] == true
                     ? IconButton(
                         onPressed: () {
@@ -192,7 +193,9 @@ class UserPostItem extends StatelessWidget {
                                 // todo: resolve likes
                                 Text(
                                   // '0',
-                                  controller.likesCounts[postIndex].toString(),
+                                  controller.likesCounts.isEmpty
+                                      ? '-'
+                                      : controller.likesCounts[postIndex].toString(),
                                   style: Theme.of(context).textTheme.caption!.copyWith(
                                         color: controller.likedindex.contains(postIndex)
                                             ? Theme.of(context).colorScheme.primary

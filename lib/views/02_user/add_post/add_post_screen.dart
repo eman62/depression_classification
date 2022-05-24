@@ -1,4 +1,3 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,15 +16,17 @@ class NewPostScreen extends StatelessWidget {
           builder: (context) => Scaffold(
             appBar: AppBar(
               elevation: 0,
-              title: Text('Add Post',style: TextStyle(fontSize: 20),),
+              title: Text(
+                'Add Post',
+                style: TextStyle(fontSize: 20),
+              ),
               backgroundColor: Colors.green,
               actions: [
                 MaterialButton(
                   onPressed: () {
                     //  AppCubit.get(context).currentIndex =0;
                     var now = DateTime.now();
-                    controller.createPost(
-                        dateTime: now.toString(), text: controller.textController.text);
+                    controller.createPost(dateTime: now.toString(), text: controller.textController.text);
                   },
                   child: const Text(' Save', style: TextStyle(color: Colors.amber, fontSize: 20)),
                 ),
@@ -35,8 +36,9 @@ class NewPostScreen extends StatelessWidget {
               children: [
                 if (controller.isLoadingCreatePost) const LinearProgressIndicator(),
                 if (controller.isLoadingCreatePost)
-                SizedBox(height: 30,),
-
+                  SizedBox(
+                    height: 30,
+                  ),
 
                 Padding(
                   padding: const EdgeInsets.all(15.0),

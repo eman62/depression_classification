@@ -308,7 +308,6 @@ class UserController extends GetxController {
     FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
       textController.text = '';
       postImage = null;
-      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
 
       changeIsLoadingCreatePost(false);
     }).catchError((error) {
@@ -697,7 +696,7 @@ class UserController extends GetxController {
 
         print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
-          //print('/// POST NUMBER $i');
+          print('/// Post $i-1');
           posts.add(PostModel.fromJson(post.data()));
           postsId.add(post.id);
           if (post.data()['uId'] == uId) {
@@ -710,6 +709,8 @@ class UserController extends GetxController {
 
           /// Likes
           await post.reference.collection('likes').get().then((likesSnapshots) {
+            print('/// Post $i-2');
+
             //print(likesSnapshots.docs.length);
             likesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
@@ -736,6 +737,8 @@ class UserController extends GetxController {
 
           /// Favourites
           await post.reference.collection('favourites').get().then((favouritesSnapshots) {
+            print('/// Post $i-3');
+
             if (favouritesSnapshots.docs.isNotEmpty) {
               bool isFavouredByMe = false;
               for (var doc in favouritesSnapshots.docs) {
@@ -760,6 +763,8 @@ class UserController extends GetxController {
           //////////////////////////////////////////////////////////////
           // comments
           await post.reference.collection('comments').get().then((commentsSnapshots) {
+            print('/// Post $i-4');
+
             commentsCounts.add(commentsSnapshots.docs.length);
             comments.add(
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
@@ -775,8 +780,7 @@ class UserController extends GetxController {
         }
 
         changeIsLoadingGettingPosts(false);
-
-        update();
+        // update();
       });
     } catch (e, stacktrace) {
       if (kDebugMode) print(e);
