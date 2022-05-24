@@ -182,7 +182,7 @@ class UserPostItem extends StatelessWidget {
                                   size: 22,
 
                                   /// change Size
-                                  color: controller.likedindex.contains(postIndex)
+                                  color: controller.likedIndex.contains(postIndex)
                                       ? Theme.of(context).colorScheme.primary
                                       : Colors.grey,
                                 ),
@@ -197,7 +197,7 @@ class UserPostItem extends StatelessWidget {
                                       ? '-'
                                       : controller.likesCounts[postIndex].toString(),
                                   style: Theme.of(context).textTheme.caption!.copyWith(
-                                        color: controller.likedindex.contains(postIndex)
+                                        color: controller.likedIndex.contains(postIndex)
                                             ? Theme.of(context).colorScheme.primary
                                             : Colors.grey,
                                       ),
@@ -301,11 +301,11 @@ class UserPostItem extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(
-                            controller.likedindex.contains(postIndex) ? Icons.check : Icons.thumb_up_alt,
+                            controller.likedIndex.contains(postIndex) ? Icons.check : Icons.thumb_up_alt,
 
                             ///change icon
                             size: 17,
-                            color: controller.likedindex.contains(postIndex)
+                            color: controller.likedIndex.contains(postIndex)
                                 ? Theme.of(context).colorScheme.primary
                                 : Colors.grey,
                           ),
@@ -313,9 +313,9 @@ class UserPostItem extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            controller.likedindex.contains(postIndex) ? 'Liked' : 'Like',
+                            controller.likedIndex.contains(postIndex) ? 'Liked' : 'Like',
                             style: Theme.of(context).textTheme.caption!.copyWith(
-                                  color: controller.likedindex.contains(postIndex)
+                                  color: controller.likedIndex.contains(postIndex)
                                       ? Theme.of(context).colorScheme.primary
                                       : Colors.grey,
                                 ),

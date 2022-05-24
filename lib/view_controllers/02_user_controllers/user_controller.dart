@@ -476,8 +476,8 @@ class UserController extends GetxController {
   List<Map<String, dynamic>> favourites = [];
   List<bool> favouriteByMe = [];
   List<int> favouriteByMeIndex = [];
-  int favcounter = 0;
-  List<int> likedindex = [];
+  int favCounter = 0;
+  List<int> likedIndex = [];
   likeOrUnlikePost(postUid, index) async {
     try {
       await FirebaseFirestore.instance
@@ -492,18 +492,18 @@ class UserController extends GetxController {
             if (element.data()['uId']! == uId) {
               x = 1;
               _unlikePost(postUid, index);
-              likedindex.remove(index);
+              likedIndex.remove(index);
             }
           }
           if (x == 0) {
             _likePost(postUid, index);
-            likedindex.add(index);
-            likedindex.sort();
+            likedIndex.add(index);
+            likedIndex.sort();
           }
         } else {
           _likePost(postUid, index);
-          likedindex.add(index);
-          likedindex.sort();
+          likedIndex.add(index);
+          likedIndex.sort();
         }
       });
     } catch (e, stacktrace) {
@@ -694,31 +694,31 @@ class UserController extends GetxController {
         // likedindex = [];
         /////////////////////
 
-        List<PostModel> rposts = [];
-        List<Map<String, dynamic>> rlikes = [];
-        List<int> rlikesCounts = [];
-        List<bool> rlikedByMe = [];
-        List<String> rpostsId = [];
-        List<List<Map<String, dynamic>>> rcomments = [];
-        List<int> rcommentsCounts = [];
+        List<PostModel> rPosts = [];
+        List<Map<String, dynamic>> rLikes = [];
+        List<int> rLikesCounts = [];
+        List<bool> rLikedByMe = [];
+        List<String> rPostsId = [];
+        List<List<Map<String, dynamic>>> rComments = [];
+        List<int> rCommentsCounts = [];
         /////////////////////
-        List<bool> rmyPost = [];
-        List<Map<String, dynamic>> rfavourites = [];
-        List<bool> rfavouriteByMe = [];
-        List<int> rfavouriteByMeIndex = [];
-        int rfavcounter = 0;
-        List<int> rlikedindex = [];
+        List<bool> rMyPost = [];
+        List<Map<String, dynamic>> rFavourites = [];
+        List<bool> rFavouriteByMe = [];
+        List<int> rFavouriteByMeIndex = [];
+        int rFavCounter = 0;
+        List<int> rLikedIndex = [];
 
 
         print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
           print('/// Post $i-1');
-          rposts.add(PostModel.fromJson(post.data()));
-          rpostsId.add(post.id);
+          rPosts.add(PostModel.fromJson(post.data()));
+          rPostsId.add(post.id);
           if (post.data()['uId'] == uId) {
-            rmyPost.add(true);
+            rMyPost.add(true);
           } else {
-            rmyPost.add(false);
+            rMyPost.add(false);
           }
 
           ///////////////////////////////////////////////////////////////
@@ -728,23 +728,23 @@ class UserController extends GetxController {
             print('/// Post $i-2');
 
             //print(likesSnapshots.docs.length);
-            rlikesCounts.add(likesSnapshots.docs.length);
+            rLikesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
               bool isLikedByMe = false;
               for (var doc in likesSnapshots.docs) {
-                rlikes.add(doc.data());
+                rLikes.add(doc.data());
                 if (doc.data()['uId'] == uId) {
                   isLikedByMe = true;
                 }
               }
               if (isLikedByMe) {
-                rlikedByMe.add(true);
-                rlikedindex.add(i);
+                rLikedByMe.add(true);
+                rLikedIndex.add(i);
               } else {
-                rlikedByMe.add(false);
+                rLikedByMe.add(false);
               }
             } else {
-              rlikedByMe.add(false);
+              rLikedByMe.add(false);
             }
 
             //print(likedindex);
@@ -765,13 +765,13 @@ class UserController extends GetxController {
                 }
               }
               if (isFavouredByMe) {
-                rfavouriteByMe.add(true);
-                rfavouriteByMeIndex.add(i);
+                rFavouriteByMe.add(true);
+                rFavouriteByMeIndex.add(i);
               } else {
-                rfavouriteByMe.add(false);
+                rFavouriteByMe.add(false);
               }
             } else {
-              rfavouriteByMe.add(false);
+              rFavouriteByMe.add(false);
             }
             //print( favouriteByMeIndex);
           });
@@ -781,8 +781,8 @@ class UserController extends GetxController {
           await post.reference.collection('comments').get().then((commentsSnapshots) {
             print('/// Post $i-4');
 
-            rcommentsCounts.add(commentsSnapshots.docs.length);
-            rcomments.add(
+            rCommentsCounts.add(commentsSnapshots.docs.length);
+            rComments.add(
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
           });
 
@@ -795,20 +795,20 @@ class UserController extends GetxController {
           }
         }
 
-        posts = rposts;
-        likes = rlikes;
-        likesCounts = rlikesCounts;
-        likedByMe = rlikedByMe;
-        postsId = rpostsId;
-        comments = rcomments;
-        commentsCounts = rcommentsCounts;
+        posts = rPosts;
+        likes = rLikes;
+        likesCounts = rLikesCounts;
+        likedByMe = rLikedByMe;
+        postsId = rPostsId;
+        comments = rComments;
+        commentsCounts = rCommentsCounts;
         /////////////////////
-        myPost = rmyPost;
-        favourites = rfavourites;
-        favouriteByMe = rfavouriteByMe;
-        favouriteByMeIndex = rfavouriteByMeIndex;
-        favcounter = rfavcounter;
-        likedindex = rlikedindex;
+        myPost = rMyPost;
+        favourites = rFavourites;
+        favouriteByMe = rFavouriteByMe;
+        favouriteByMeIndex = rFavouriteByMeIndex;
+        favCounter = rFavCounter;
+        likedIndex = rLikedIndex;
 
         changeIsLoadingGettingPosts(false);
         update();
