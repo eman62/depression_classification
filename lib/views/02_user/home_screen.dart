@@ -197,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 appBar: AppBar(
+                  elevation: 0,
                   title:
                   Text(
                     name[controller.currentIndex],

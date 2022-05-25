@@ -166,7 +166,7 @@ class AuthController extends GetxController {
     }
     else {
      //////////// photo
-      imageUrl = 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4692e9108512257.5fbf40ee3888a.jpg';
+      imageUrl = 'https://esquimaltmfrc.com/wp-content/uploads/2015/09/flat-faces-icons-circle-man-6.png';
     }
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(

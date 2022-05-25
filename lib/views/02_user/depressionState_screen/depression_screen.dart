@@ -24,6 +24,9 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.only(bottomStart: Radius.circular(200))),
+      ),
         body: SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

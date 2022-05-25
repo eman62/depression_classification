@@ -19,17 +19,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   List<BoardingModel> onBoarding = [
     BoardingModel(
-        image: 'https://pbs.twimg.com/media/E2qR8-IWUAQ_1o2.jpg',
+        image: 'https://img.freepik.com/free-vector/alone-concept-illustration_114360-2548.jpg?w=740&t=st=1653506578~exp=1653507178~hmac=83fb506db6aa275a6e8e166ff88c4029f8dde42ee684969462020d67a1339c12',
         title: 'Test Depression',
         body: 'To find out if you have depression or not, by doing a test to tweets on your Twitter account, and also showing how much your depression is.\n'
             'All this by analyzing your words in your tweets using Machine Learning'),
     BoardingModel(
-        image: 'https://iranilike.com/wp-content/uploads/2021/12/Add-friends-bro-300x300.png',
+        image: 'https://img.freepik.com/free-vector/add-friends-concept-illustration_114360-5548.jpg?t=st=1653507152~exp=1653507752~hmac=5e20da7c0028b3385093217a214edd3a1a14b369c6505db25e5feaf12375814c&w=740',
         title: 'Friends',
         body: 'You can add three friends or Relatives  phone numbers so that we can communicate with them'
             ' if you need a help By sending them sms'),
     BoardingModel(
-        image: 'https://www.concept-cda.com/wp-content/uploads/2019/11/Content-bro-1.png',
+        image: 'https://img.freepik.com/free-vector/copywriter-concept-idea-writing-texts-creativity-promotion-making-valuable-content-working-as-freelancer-illustration_277904-4499.jpg?w=740',
         title: "Post",
         body: 'You can add a post to tell about your depression and respond and interact with the rest of the users\n''\n'
             'Also, when you skip this stage, you can tell your success story in this matter and help those in need.\n''\n'
@@ -85,8 +85,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       effect: const ExpandingDotsEffect(
                         dotColor: Colors.black12,
                         activeDotColor: Colors.green,
-                        dotHeight: 15,
-                        dotWidth: 40,
+                        dotHeight: 10,
+                        dotWidth: 15,
                         expansionFactor: 4,
                         spacing: 5.0,
                       ),

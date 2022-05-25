@@ -97,33 +97,33 @@ class UserItem extends StatelessWidget {
                   height: 1.3,color: Colors.grey,
                 ),
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete,size: 30,color: Colors.red,),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          title: Text('Delete User', style: Theme.of(context).textTheme.bodyText1,),
-                          content: Text('Are you sure to delete this account?', style: Theme.of(context).textTheme.bodyText1,),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child:  Text('Cancel', style: Theme.of(context).textTheme.bodyText1,),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-
-                              },
-                              child: Text('Delete',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),),
-                            ),
-                          ],
-                        );
-                      }
-                  );
-                },),
+              // trailing: IconButton(
+              //   icon: const Icon(Icons.delete,size: 30,color: Colors.red,),
+              //   onPressed: () {
+              //     showDialog(
+              //         context: context,
+              //         builder: (context) {
+              //           return AlertDialog(
+              //             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              //             title: Text('Delete User', style: Theme.of(context).textTheme.bodyText1,),
+              //             content: Text('Are you sure to delete this account?', style: Theme.of(context).textTheme.bodyText1,),
+              //             actions: [
+              //               TextButton(
+              //                 onPressed: () => Navigator.pop(context),
+              //                 child:  Text('Cancel', style: Theme.of(context).textTheme.bodyText1,),
+              //               ),
+              //               TextButton(
+              //                 onPressed: () {
+              //                   Navigator.pop(context);
+              //
+              //                 },
+              //                 child: Text('Delete',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),),
+              //               ),
+              //             ],
+              //           );
+              //         }
+              //     );
+              //   },),
 
             ),
           ),
