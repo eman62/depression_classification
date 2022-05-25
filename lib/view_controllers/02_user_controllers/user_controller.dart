@@ -529,7 +529,6 @@ class UserController extends GetxController {
   }
 
   _unlikePost(String postUid, index) async {
-    //print('/// UN-LIKE');
 
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').doc(uId).delete();
 
@@ -571,11 +570,11 @@ class UserController extends GetxController {
       });
       commentsCounts[postIndex] = comments[postIndex].length;
       changeIsLoadingGetCommentsOnPost(false);
-      print(commentsCounts[postIndex]);
-      print(commentsCounts[postIndex]);
+     // print(commentsCounts[postIndex]);
+     // print(commentsCounts[postIndex]);
     } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
+    //  print(e);
+    //  print(stacktrace);
     }
     update();
   }

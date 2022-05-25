@@ -302,11 +302,11 @@ class AdminController extends GetxController {
       });
       commentsCounts[postIndex] = comments[postIndex].length;
       changeIsLoadingGetCommentsOnPost(false);
-      print(commentsCounts[postIndex]);
-      print(commentsCounts[postIndex]);
+     // print(commentsCounts[postIndex]);
+    //  print(commentsCounts[postIndex]);
     } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
+    //  print(e);
+    //  print(stacktrace);
     }
     update();
   }
@@ -426,15 +426,27 @@ class AdminController extends GetxController {
       if (kDebugMode) print(stacktrace);
     }
   }
+/////////////////////////////////
+  checkAndDeletePost({required String id}) async {
+    await FirebaseFirestore.instance.collection('posts').doc(id).get().then((value) {
+        deletePost(id: id);
+        Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
 
+      update();
+    }).catchError((error) {
+      showToast(text: '$error', state: ToastStates.error);
+    });
+  }
 
+  deletePost({required String id}) async {
+    await FirebaseFirestore.instance.collection('posts').doc(id).delete().then((value) {
+      Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
+      update();
+    }).catchError((error) {
+      showToast(text: '$error', state: ToastStates.error);
+    });
 
-
-
-
-
-
-
+  }
 
 
   /////////////////////////////

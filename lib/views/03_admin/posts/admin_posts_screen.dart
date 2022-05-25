@@ -20,8 +20,16 @@ class AdminPostsScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: ConditionalBuilder(
-            condition: (controller.posts.isNotEmpty),
-            builder: (context) => ListView.separated(
+            condition: controller.isLoadingGettingPosts,
+            builder: (context) => Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            fallback: (context) => controller.posts.isEmpty
+                ? const Text('No posts ..')
+                :ListView.separated(
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) => AdminPostItem(
                 model: controller.posts[index],
@@ -34,7 +42,6 @@ class AdminPostsScreen extends StatelessWidget {
               ),
               itemCount: controller.posts.length,
             ),
-            fallback: (context) => const Center(child: Scaffold()),
           ),
         ),
       );

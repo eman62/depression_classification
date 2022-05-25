@@ -101,7 +101,7 @@ class AdminPostItem extends StatelessWidget {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
-                                  //  controller.checkAndDeletePost(id: controller.postsId[postIndex]);
+                                    controller.deletePost(id: controller.postsId[postIndex]);
                                   },
                                   child: Text(
                                     'Delete',
@@ -247,69 +247,69 @@ class AdminPostItem extends StatelessWidget {
                     width: double.infinity,
                   ),
                 ),
-                Row(
-                  children: [
-                    /// ///////////////////////
-                    // Container(),
-                    // Expanded(
-                    //   child: InkWell(
-                    //     child: Row(
-                    //       children: [
-                    //         CircleAvatar(
-                    //           radius: 18.0,
-                    //           backgroundImage: NetworkImage('${controller.userModel?.image}'),
-                    //         ),
-                    //         const SizedBox(
-                    //           width: 15,
-                    //         ),
-                    //         Text(
-                    //           'write a comment ..',
-                    //           style: Theme.of(context).textTheme.caption!.copyWith(
-                    //             height: 1.3,
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //     onTap: () {
-                    //       controller.commentController.text = '';
-                    //       showCommentsBottomSheet(controller: controller, postIndex: postIndex);
-                    //     },
-                    //   ),
-                    // ),
-
-                    /// like text
-                    /// ///////////////////////
-                    // InkWell(
-                    //   child: Row(
-                    //     children: [
-                    //       Icon(
-                    //         controller.likedIndex.contains(postIndex) ? Icons.check : Icons.thumb_up_alt,
-                    //
-                    //         ///change icon
-                    //         size: 17,
-                    //         color: controller.likedIndex.contains(postIndex)
-                    //             ? Theme.of(context).colorScheme.primary
-                    //             : Colors.grey,
-                    //       ),
-                    //       const SizedBox(
-                    //         width: 5,
-                    //       ),
-                    //       Text(
-                    //         controller.likedIndex.contains(postIndex) ? 'Liked' : 'Like',
-                    //         style: Theme.of(context).textTheme.caption!.copyWith(
-                    //           color: controller.likedIndex.contains(postIndex)
-                    //               ? Theme.of(context).colorScheme.primary
-                    //               : Colors.grey,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   onTap: () {
-                    //     controller.likeOrUnlikePost(controller.postsId[postIndex], postIndex);
-                    //   },
-                    // ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     /// ///////////////////////
+                //     // Container(),
+                //     // Expanded(
+                //     //   child: InkWell(
+                //     //     child: Row(
+                //     //       children: [
+                //     //         CircleAvatar(
+                //     //           radius: 18.0,
+                //     //           backgroundImage: NetworkImage('${controller.userModel?.image}'),
+                //     //         ),
+                //     //         const SizedBox(
+                //     //           width: 15,
+                //     //         ),
+                //     //         Text(
+                //     //           'write a comment ..',
+                //     //           style: Theme.of(context).textTheme.caption!.copyWith(
+                //     //             height: 1.3,
+                //     //           ),
+                //     //         ),
+                //     //       ],
+                //     //     ),
+                //     //     onTap: () {
+                //     //       controller.commentController.text = '';
+                //     //       showCommentsBottomSheet(controller: controller, postIndex: postIndex);
+                //     //     },
+                //     //   ),
+                //     // ),
+                //
+                //     /// like text
+                //     /// ///////////////////////
+                //     // InkWell(
+                //     //   child: Row(
+                //     //     children: [
+                //     //       Icon(
+                //     //         controller.likedIndex.contains(postIndex) ? Icons.check : Icons.thumb_up_alt,
+                //     //
+                //     //         ///change icon
+                //     //         size: 17,
+                //     //         color: controller.likedIndex.contains(postIndex)
+                //     //             ? Theme.of(context).colorScheme.primary
+                //     //             : Colors.grey,
+                //     //       ),
+                //     //       const SizedBox(
+                //     //         width: 5,
+                //     //       ),
+                //     //       Text(
+                //     //         controller.likedIndex.contains(postIndex) ? 'Liked' : 'Like',
+                //     //         style: Theme.of(context).textTheme.caption!.copyWith(
+                //     //           color: controller.likedIndex.contains(postIndex)
+                //     //               ? Theme.of(context).colorScheme.primary
+                //     //               : Colors.grey,
+                //     //         ),
+                //     //       ),
+                //     //     ],
+                //     //   ),
+                //     //   onTap: () {
+                //     //     controller.likeOrUnlikePost(controller.postsId[postIndex], postIndex);
+                //     //   },
+                //     // ),
+                //   ],
+                // ),
               ],
             ),
           ],
