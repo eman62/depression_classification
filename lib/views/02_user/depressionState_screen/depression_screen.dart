@@ -61,7 +61,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: 20,
             ),
             TextButton.icon(
               style: TextButton.styleFrom(
@@ -71,11 +71,11 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
               icon: const Icon(
                 Icons.sentiment_neutral,
                 color: Colors.green,
-                size: 20,
+                size: 30,
               ),
               label: Text(
                 'Tell Me!',
-                style: Theme.of(context).textTheme.headline6!.apply(color: Colors.black87),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color,fontSize: 22),
               ),
               onPressed: () => tellMeMethod(),
             ),
@@ -93,8 +93,8 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
             if (sentimentScore != "" && !isLoading)
               Text(
                 "$sentimentScore %",
-                style: const TextStyle(
-                    color: Colors.black, fontSize: 17, fontFamily: 'Lato', fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1?.color, fontSize: 17, fontWeight: FontWeight.w400),
               ),
             const SizedBox(
               height: 20,

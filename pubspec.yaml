@@ -47,6 +47,7 @@ dependencies:
   flutter_local_notifications: ^9.5.2
   workmanager: ^0.4.1
   http: ^0.13.4
+  smooth_page_indicator: ^1.0.0+2
   #firebase
   firebase_dynamic_links:
   firebase_core: ^1.13.1

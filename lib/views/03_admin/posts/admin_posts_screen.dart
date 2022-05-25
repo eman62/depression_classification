@@ -1,9 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:save/models/post_model.dart';
 import 'package:save/view_controllers/03_admin_controllers/admin_controller.dart';
 import 'package:get/get.dart';
-
 import '../../widgets/admin_post_item.dart';
 
 class AdminPostsScreen extends StatelessWidget {
@@ -28,7 +26,7 @@ class AdminPostsScreen extends StatelessWidget {
               itemBuilder: (context, index) => AdminPostItem(
                 model: controller.posts[index],
                 context: context,
-                index: index,
+                postIndex: index,
                 controller: controller,
               ),
               separatorBuilder: (context, index) => const SizedBox(

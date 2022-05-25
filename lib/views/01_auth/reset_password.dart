@@ -1,5 +1,4 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';

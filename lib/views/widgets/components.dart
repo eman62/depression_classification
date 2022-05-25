@@ -189,3 +189,14 @@ chooseToastTitle(ToastStates state) {
 }
 
 void navigateAndFinish(context, widget) => Get.offAll(widget);
+
+Widget defaultTextButton({
+  required Function function,
+  required String text,
+}) =>
+    TextButton(
+      onPressed: () {
+        function();
+      },
+      child: Text(text.toUpperCase()),
+    );

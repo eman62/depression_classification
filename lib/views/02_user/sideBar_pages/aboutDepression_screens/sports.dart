@@ -37,7 +37,7 @@ class _SportsState extends State<Sports> {
                       child: Column(
                         //mainAxisAlignment:MainAxisAlignment.center,
                         children:const [
-                          Image(image: NetworkImage('https://www.elbalad.news/UploadCache/libfiles/866/6/600x338o/760.jpg'),
+                          Image(image: NetworkImage('https://img.freepik.com/free-photo/young-slim-sporty-man-warming-stretching-legs-before-run-outdoors-athletic-man-black-sportswear-doing-fitness-stretching-exercises-sport-healthy-lifestyle_1421-5457.jpg?w=1060'),
                               width:900,
                               fit: BoxFit.cover
                           )
@@ -103,7 +103,7 @@ class _SportsState extends State<Sports> {
                       child: Column(
                         //mainAxisAlignment:MainAxisAlignment.center,
                         children:[
-                          const Image( image:NetworkImage('https://cdn.teb21.com/thumb/1280/036/sports-benefits-for-health.webp'),
+                          const Image( image:NetworkImage('https://images.unsplash.com/photo-1549951490-363c7e240302?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170'),
                             fit: BoxFit.contain,
                             width: 900,
                           ),
@@ -140,7 +140,7 @@ class _SportsState extends State<Sports> {
                       child: Column(
                         //mainAxisAlignment:MainAxisAlignment.center,
                         children:[
-                          const Image(image: NetworkImage("https://www.sayidaty.net/sites/default/files/styles/900_scale/public/2017/11/10/3053936-360956810.jpg?itok=5XoEGqHV"),
+                          const Image(image: NetworkImage("https://img.freepik.com/free-photo/man-using-massage-gun-arm-full-shot_23-2149407534.jpg?t=st=1653315517~exp=1653316117~hmac=740df34c38f1c45cee33880101bae816edf9e85cdf742a7994e019eda3f1fc82&w=1060"),
                             fit: BoxFit.contain,
                             // fit: BoxFit.fitWidth,
                             width: 900,
@@ -178,7 +178,7 @@ class _SportsState extends State<Sports> {
                         //mainAxisAlignment:MainAxisAlignment.center,
                         children:[
                           const Image(
-                            image:NetworkImage("https://media.gemini.media/img/Original/2021/8/22/2021_8_22_17_7_43_128.jpg"),
+                            image:NetworkImage("https://img.freepik.com/free-photo/faceless-man-relaxing-armchair_23-2147800039.jpg?w=1060"),
                             fit: BoxFit.contain,
                             // fit: BoxFit.fitWidth,
                             width: 900,
@@ -265,7 +265,7 @@ class _SportsState extends State<Sports> {
                         //mainAxisAlignment:MainAxisAlignment.center,
                         children:[
                           const Image(
-                            image:NetworkImage("https://cdn.altibbi.com/cdn/cache/1000x500/image/2020/07/30/ce2b4f2bc1541309dbfd6aeee63f1eb8.png.webp"),
+                            image:NetworkImage("https://img.freepik.com/free-photo/these-exercises-are-very-important-your-recovery-shot-young-male-physiotherapist-helping-client-with-stretching-exercises-his-office-during-day_590464-7355.jpg?w=1060"),
                             fit: BoxFit.contain,
                             // fit: BoxFit.fitWidth,
                             width: 900,

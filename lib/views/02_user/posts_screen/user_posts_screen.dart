@@ -1,6 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:save/models/post_model.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +16,7 @@ class UserPostsScreen extends StatelessWidget {
           return ConditionalBuilder(
             condition: controller.isLoadingGettingPosts,
             builder: (context) => Container(
-              color: Colors.black,
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

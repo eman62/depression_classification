@@ -17,24 +17,44 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AdminController extends GetxController {
   List<FeedbackModel> feedback = [];
-  List<PostModel> posts = [];
-  List<String> postsId = [];
-  List<int> likes = [];
   List<AppUserModel> users = [];
   AppUserModel? userModel;
   int userCount = 0;
   File? postImage;
+  List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<Map<String, dynamic>> likes = [];
+  List<List<Map<String, dynamic>>> comments = [];
+  List<int> likesCounts = [];
+  List<int> commentsCounts = [];
+  List<bool> likedByMe = [];
   var picker = ImagePicker();
   var textController = TextEditingController();
-
+  var commentController = TextEditingController();
   bool isLoadingGettingUsers = false;
   bool isLoadingCreatePost = false;
+  bool isLoadingGetCommentsOnPost = false;
+  bool showComments = false;
+  bool isLoadingGettingPosts = false;
+
   changeIsLoadingGettingUsers(bool state) {
     isLoadingGettingUsers = state;
     update();
   }
   changeIsLoadingCreatePost(bool state) {
     isLoadingCreatePost = state;
+    update();
+  }
+  changeShowCommentsState(bool state) {
+    showComments = state;
+    update();
+  }
+  changeLikedByMeState(bool state, index) {
+    likedByMe[index] = state;
+    update();
+  }
+  changeIsLoadingGettingPosts(bool state) {
+    isLoadingGettingPosts = state;
     update();
   }
 
@@ -92,28 +112,28 @@ class AdminController extends GetxController {
     update();
   }
 
-  /// todo: check method
-  void getPosts() {
-    if (posts.isEmpty) {
-      FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
-        posts = [];
-        //postsId =[];
-        event.docs.forEach((element) {
-          //  posts =[];
-          element.reference.collection('likes').snapshots().listen((event) {
-            //   postsId =[];
-            //  likes = [];
-            likes.add(event.docs.length);
-            postsId.add(element.id);
-            posts.add(PostModel.fromJson(element.data()));
-          });
-          // posts =[];
-        });
-        update();
-      });
-    }
-    update();
-  }
+  // /// todo: check method
+  // void getPosts() {
+  //   if (posts.isEmpty) {
+  //     FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+  //       posts = [];
+  //       //postsId =[];
+  //       event.docs.forEach((element) {
+  //         //  posts =[];
+  //         element.reference.collection('likes').snapshots().listen((event) {
+  //           //   postsId =[];
+  //           //  likes = [];
+  //           likes.add(event.docs.length);
+  //           postsId.add(element.id);
+  //           posts.add(PostModel.fromJson(element.data()));
+  //         });
+  //         // posts =[];
+  //       });
+  //       update();
+  //     });
+  //   }
+  //   update();
+  // }
 
   void getFeedbacks() {
     if (feedback.isEmpty) {
@@ -173,12 +193,12 @@ class AdminController extends GetxController {
 
   _uploadPostImage(profileImage) async {
     String path = 'post_pic-${DateTime.now()}';
-    if(kDebugMode) print(path);
+    if (kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('post_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    if(kDebugMode) print(imageUrl);
+    if (kDebugMode) print(imageUrl);
     return imageUrl;
     // updateUser(name: name, email: email, age: age, phone: phone, image: imageUrl);
 
@@ -201,7 +221,7 @@ class AdminController extends GetxController {
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
     } else {
-      if(kDebugMode) print('no image selected');
+      if (kDebugMode) print('no image selected');
     }
     update();
   }
@@ -248,7 +268,164 @@ class AdminController extends GetxController {
 
     update();
   }
+  /////////////////////////////////////
+  commentOnPost(postUid, postIndex) async {
+    if (kDebugMode) print('/// COMMENT');
+    Map<String, Object?> data = {
+      'uId': userModel!.uId,
+      'name': userModel!.name,
+      'comment': commentController.text,
+      'userImageUrl': userModel!.image,
+    };
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
+    commentController.text = '';
 
+    // re-render the post comments
+    getCommentsOnPosts(postUid, postIndex);
+  }
+
+
+  /// opening the comments bottom sheet of a post
+  getCommentsOnPosts(postUid, postIndex) async {
+    try {
+      print('/// Getting Comments on post index = $postIndex && uid = $postUid');
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postUid)
+          .collection('comments')
+          .get()
+          .then((value) {
+        comments[postIndex] = [];
+        for (var item in value.docs) {
+          comments[postIndex].add(item.data());
+        }
+      });
+      commentsCounts[postIndex] = comments[postIndex].length;
+      changeIsLoadingGetCommentsOnPost(false);
+      print(commentsCounts[postIndex]);
+      print(commentsCounts[postIndex]);
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+    }
+    update();
+  }
+
+  changeIsLoadingGetCommentsOnPost(bool state) {
+    isLoadingGetCommentsOnPost = state;
+    update();
+  }
+
+  ////////////////////////////////////////////////////////////////////
+
+  getPosts() {
+    try {
+      int i = 0;
+
+      FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
+        // posts = [];
+        // likes = [];
+        // likesCounts = [];
+        // likedByMe = [];
+        // postsId = [];
+        // comments = [];
+        // commentsCounts = [];
+        // /////////////////////
+        // myPost = [];
+        // favourites = [];
+        // favouriteByMe = [];
+        // favouriteByMeIndex = [];
+        // favcounter = 0;
+        // likedindex = [];
+        /////////////////////
+
+        List<PostModel> rPosts = [];
+        List<Map<String, dynamic>> rLikes = [];
+        List<int> rLikesCounts = [];
+        List<bool> rLikedByMe = [];
+        List<String> rPostsId = [];
+        List<List<Map<String, dynamic>>> rComments = [];
+        List<int> rCommentsCounts = [];
+        /////////////////////
+        List<int> rLikedIndex = [];
+
+
+        print('/// Total number of posts = ${postEvent.docs.length}');
+        for (var post in postEvent.docs) {
+          print('/// Post $i-1');
+          rPosts.add(PostModel.fromJson(post.data()));
+          rPostsId.add(post.id);
+
+
+          ///////////////////////////////////////////////////////////////
+
+          /// Likes
+          await post.reference.collection('likes').get().then((likesSnapshots) {
+            print('/// Post $i-2');
+
+            //print(likesSnapshots.docs.length);
+            rLikesCounts.add(likesSnapshots.docs.length);
+            if (likesSnapshots.docs.isNotEmpty) {
+              bool isLikedByMe = false;
+              for (var doc in likesSnapshots.docs) {
+                rLikes.add(doc.data());
+                if (doc.data()['uId'] == uId) {
+                  isLikedByMe = true;
+                }
+              }
+              if (isLikedByMe) {
+                rLikedByMe.add(true);
+                rLikedIndex.add(i);
+              } else {
+                rLikedByMe.add(false);
+              }
+            } else {
+              rLikedByMe.add(false);
+            }
+
+            //print(likedindex);
+          });
+          ///////////////////////////////////////////////////////////////
+
+
+
+          //////////////////////////////////////////////////////////////
+          // comments
+          await post.reference.collection('comments').get().then((commentsSnapshots) {
+            print('/// Post $i-4');
+
+            rCommentsCounts.add(commentsSnapshots.docs.length);
+            rComments.add(
+                []); // we are adding the comments upon opening the comments bottom sheet to save the resources
+          });
+
+          if (i == postEvent.docs.length - 1) {
+            // reset of we got all posts
+            i = 0;
+          } else {
+            // Increment if there are other posts to catch
+            i++;
+          }
+        }
+
+        posts = rPosts;
+        likes = rLikes;
+        likesCounts = rLikesCounts;
+        likedByMe = rLikedByMe;
+        postsId = rPostsId;
+        comments = rComments;
+        commentsCounts = rCommentsCounts;
+        /////////////////////
+
+
+        changeIsLoadingGettingPosts(false);
+        update();
+      });
+    } catch (e, stacktrace) {
+      if (kDebugMode) print(e);
+      if (kDebugMode) print(stacktrace);
+    }
+  }
 
 
 

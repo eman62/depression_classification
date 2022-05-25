@@ -20,6 +20,7 @@ class PeopleState extends State<People> {
             fontSize: 20,
           ),
         ),
+        elevation: 0,
         backgroundColor:Colors.green,
         leading: const BackButton(
           color: Colors.white,
@@ -30,339 +31,168 @@ class PeopleState extends State<People> {
           Expanded(
             child: SingleChildScrollView(
               scrollDirection:Axis.vertical,
-              child: Column(
-                  children :[
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800s_getty_rm_dwayne_johnson.jpg?resize=652px:*&output-quality=75'),
-                            fit:BoxFit.fill,),
-                          Text(
-                            '\nDwayne Johnson\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            'He’s one of Hollywood’s highest paid actors, but “The Rock” recently opened up about depression to the Express, a British newspaper. “Struggle and pain is real,” said Johnson, who saved his mother from a suicide attempt when he was 15.  “Depression never discriminates,” he tweeted later. “Took me a long time to realize it but the key is to not be afraid to open up. Especially us dudes have a tendency to keep it in. You’re not alone.\n”',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 15),
+                child: Column(
+                    children :[
+                      Card(
+                        child: Column(
+                          //mainAxisAlignment:MainAxisAlignment.center,
+                          children:[
 
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800s_getty_rm_kirsten_dunst.jpg?resize=652px:*&output-quality=75'),
-                            fit:BoxFit.fill,),
+                            const Text(
+                              '\nJeanette\n',
+                              style:TextStyle(
+                                fontSize:25,
+                                fontWeight:FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                '\nTo say that my life has been a upward challenge for the last 25 years would be a complete understatement.\n'
+                                    '\nI dealt with depression for the last few years which I am trying to cope with.'
+                                    'So on a beautiful spring day Sept 1991 was supposed to be the most perfect day of my life. But unfortunately that’s when it first started. My depression worsened  over the next few years. I turned to the person that was supposed to support you and love you but had to deal with depression on my own.\n'
+                                    '\nIt was a struggle for me so I told my GP what I was going through. She then wrote me out a script for antidepressants. I thought I was brave and powerful that I could deal with it on my own, so I did n’t take the medication. How wrong I was if only I took those antidepressants I would n’t of attempted my suicide in 2006. \n'
+                                    '\nAfter an argument with my ex husband in 2006 I stormed out of work and said I could not bear this anymore. I grabbed my keys and took off. Not knowing what I was doing I texted my best friend to look after my children. I wrote a suicide note and then attempted to take my life. I was found two days later. I then spent the next three months on life support. Then doctors wanted to turn the machine off because they said that there was no way I could live and if I do, I’d be a complete vegetable all my life. I would never walk or be independent again. My best friend yelled at the doctors and said ‘NO’ she’s a fighter. Well I definitely proved the doctors wrong, because my friend had seen a flicker in my eye. I then started to breath for myself.\n '
+                                    '\nIt has been a real struggle for me to try and get better and the next few years I know I have to get better for my faith and for my four children I have now.\n'
+                                    '\nOne in three people actually suffer with depression. It could even be the person sitting next to you. If you see a person acting strange, depressed and or anxious, try to interact with them.\n'
+                                    '\nA very close friend would go up to them and ask them out for a nice cup of coffee hoping they will spill the beans on what’s going on and show them that you care and that you will go with them to get the help that they need.\n'
+                                    '\nIf we all put our heads together and be more loving and thoughtful towards each other, we can help tackle depression and suicide.\n '
+                                ,style: Theme.of(context).textTheme.bodyText1!.copyWith( height: 1.5,letterSpacing: 1.0, fontSize:18),
+                              ),
+                            ),
 
-                          Text(
-                            '\nKirsten Dunst\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        shadowColor: Colors.grey[200],
+                        elevation: 5,
+                      ),
+                      const SizedBox(
+                        height:30,
+                      ),
+                      Card(
+                        child: Column(
+                          //mainAxisAlignment:MainAxisAlignment.center,
+                          children:[
+                            const Text(
+                              '\nBill\n',
+                              style:TextStyle(
+                                fontSize:25,
+                                fontWeight:FontWeight.bold,
+                                color:Colors.green,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'The 39-year-old actor has revealed that when she was in her 20s, she entered a rehab center for help with depression. Dunst says she struggled with the condition for years and realized she was bottling up a lot of anger. All Ill say is that medication is a great thing and can really help you come out of something," she says. "I was afraid to take something and so I sat in it for too long. I would recommend getting help when you need it.\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                '\nI have been affected by depression and anxiety for around twenty years. That was when I suffered a total mental breakdown and lost everything I had including my wife, my children, my business and my mind. I ended up in a caravan park where I was “living on the gutters edge”.  I would hide inside the van for most of the day being too afraid to go outside in case I had to talk to people. My brain simply stopped working. I could n’t even get it together to make a cup of cup of coffee let alone make a meal.  It was so bad I hated waking up in the morning and often wished that I had n’t.\n'
+                                    '\nI constantly had emotions of anxiety, fear, guilt, sadness and terror welling up from inside of me. It was the gut wrenching feeling from my stomach and ache in my heart I dreaded the most. Many times I thought about committing suicide and tried to figure out ways to do it.  On a day when it was really bad, I was seriously considering it when the phone rang and the voice simply said, “How are your going?”  “Terrible” I replied – and I’m sure the person could hear the despair in my voice.  “Where are you?” he said – “Stay there, don’t go anywhere else”. \n'
+                                    '\nAbout ten minutes later, there was a knock on the caravan door. I went to open it and there was a stranger standing there. “Can I come in?” was all he said. That man simply talked to me about his life and what had happened for him. He told me how it took a long time to overcome his problem step-by-step and having faith and the belief that he would some day become well. I could see the similarities in my life and began to accept myself as being one of the many people that suffers from a mental condition. The stranger inspired me in two ways. Firstly, that if he could re-build his life it was proof that I could also get my life back together again. Secondly and more important, was that this man valued me sufficiently enough for him to leave work and come to see me.\n'
+                                    '\nThis meant I must have been of some value to another person and I did n’t have the right to end my life. And it does n’t stop there. People suffering from mental conditions need support and encouragement to keep working on themselves. I’ve been using pressure points on myself to make the feelings of depression go away within a few minutes and I no longer have thoughts of suicide.\n'
+                                ,style: Theme.of(context).textTheme.bodyText1!.copyWith( height: 1.5,letterSpacing: 1.0, fontSize:18),
+                              ),
                             ),
-                          ),
 
-                        ],
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        shadowColor: Colors.grey[200],
+                        elevation: 5,
                       ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
+                      const SizedBox(
+                        height:30,
                       ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800ss_getty_rm_jon_hamm.jpg?resize=652px:*&output-quality=75'),
-                            fit:BoxFit.fill,),
+                      Card(
+                        child: Column(
+                          //mainAxisAlignment:MainAxisAlignment.center,
+                          children:[
+                            const Text(
+                              '\nSteph\n',
+                              style:TextStyle(
+                                fontSize:25,
+                                fontWeight:FontWeight.bold,
+                                color:Colors.green,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                '\nI have two black dogs. Sometimes I only have one. But once I see him, I know the other one will shortly follow. I don’t always have the black dogs with me. Some days I feel completely weightless, like I’m not carrying a burden. I’m so used to the black dogs being around. I feel guilty not having them. I worry if they are not with me they are with someone else. But when they are there I want them to leave. I wish they would die and never return. But they can not be killed.\n'
+                                    '\nThe black dogs names are depression and anxiety. You never know when they are going to come back to their master. Although I am their master I have no control over them. They are constantly barking. Confusing me. I can’t think with them barking so loudly. The shame of owning these black dogs is real. You feel like they are a sign of weakness. You don’t want anyone knowing you have these black dogs. Especially dogs you can’t control. When you see friends, you put the music on loud, so they can’t hear the black dogs. You pull the curtain so they can’t see the black dogs. You’re so busy worrying about people seeing the black dogs, so worried the black dogs will escape and bite someone that you give up trying. You isolate yourself, wanting to be alone with them.\n'
+                                    '\nThe dogs soon take over everything in your life. They take up all your time.  People who come over, you push away because you don’t want them to see the real side of you, the pain and shame you are feeling. If people see the dogs get defensive. You reassure people that “that they are OK” and “I have them trained and under control”. But you (alone) can never get control over them.  \n'
+                                    '\nAll the things you used to enjoy are now pointless. The dogs distract you and ruin everything surrounding you. You don’t want anyone to be affect by you having the dogs. This is why you hide. When you finally admit to yourself that you need to get a trainer to help train the black dogs, they leave. You think the worst is over. They won’t come back.  But (for me) they always come back. They can come back at any time and who knows, the dogs maybe bigger and more viscous next time.\n'
+                                    '\nSome days I just want to end it all, I have tried once, but luckily it was unsuccessful. I just want to have a day without the black dogs, or a day when I can fully control them. I am glad I am now getting help, because everyday it is getting better, and I am beginning to see a light at the end of the tunnel.  \n'
+                                ,style: Theme.of(context).textTheme.bodyText1!.copyWith( height: 1.5,letterSpacing: 1.0, fontSize:18),
+                              ),
+                            ),
 
-                          Text(
-                            '\nJon Hamm\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        shadowColor: Colors.grey[200],
+                        elevation: 5,
+                      ),
+                      const SizedBox(
+                        height:30,
+                      ),
+                      Card(
+                        child: Column(
+                          //mainAxisAlignment:MainAxisAlignment.center,
+                          children:[
+                            const Text(
+                              '\nIsabelle\n',
+                              style:TextStyle(
+                                fontSize:25,
+                                fontWeight:FontWeight.bold,
+                                color:Colors.green,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Just like his character Don Draper on Mad Men, Hamm has battled some heavy stuff. He’s been open about his bouts with depression and says it was particularly rough after his father died when he was in college. In an interview with InStyle magazine, Hamm spoke about the benefits of therapy. “We live in a world where to admit anything negative about yourself is seen as a weakness, when it’s actually a strength. It’s not a weak move to say, ‘I need help\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                '\nWhen I think of good mental health I think of being able to look at myself in the mirror everyday and say I\'m proud of who I am. I\'m happy in my skin and I\'m positive about who I am and what I say and do.\n '
+                                    '\nHow easy do you think it is to be happy? Can we simply choose to be happy?  What happens when big life events happen? These events could be being bullied or someone you love being sick or dying or.....and this is the BIG one.....Donald Trump becoming president.\n'
+                                    '\nSo what are some things that can go wrong with mental health?  Imagine waking up every day feeling like you can\'t live with yourself. Picture having no motivation or interest in anything. This is the reality for too many.\n'
+                                    '\nAccording to the White Cloud foundation currently over 3 million Australians suffer from mental illness. 10,000 of these are young people.\n'
+                                    '\nThe World Health organisation reports that over 350 million people suffer from depression. This is a more than serious issue. I am your youth, here is my voice and it is up to us to educate ourselves, protect ourselves and support others.\n'
+                                    '\nI feel passionately about this subject. My cousin Lisa suffered from mental illness that started when she was my age. She fought her depression every day for 8 years. She looked after herself, she exercised, she sought medical treatment.\n'
+                                    '\nShe battled long and hard on a quest to be at peace with herself and to be well. Unfortunately when she was 20 Lisa could fight no longer and she took her life.\n'
+                                    '\nAs I get older and see more things I think about how brave she was and how desperate she was. It makes me want to scream and yell. \n'
+                                    '\nMy well-loved uncle Glenn was Lisa\'s father. After she had taken her life he could n\'t live with her loss and the fact that he could n\'t help her and he too ended his life a year ago.\n'
+                                    '\nI was 10 when that happened and it had more of an impact on me as I was older and I loved him. I felt like he was pretty quiet and I did n\'t get to know him as I wanted to. Depression is a thief it robbed me of him.\n'
+                                    '\nBoth my cousin and uncle were young, had families that loved them, had all the support in the world and had so much to live for. They and so many others see no other way out.\n'
+                                    '\nHowever, my voice is here to say that for anyone out there who suffers with a mental illness that this does n\'t have to be the outcome. Is there hope? Absolutely! Does sadness mean you are going to die?  Of course not! There is help out there and help has been given to many.\n'
+                                    '\nSo what can we do to look after our mental health? Things like exercise, eating right, medication and talking to someone can help you feel better.\n'
+                                    '\nIt might be a long journey but remember it never should end that way. The impacts on those left behind are huge.\n'
+                                    '\nThere are lots of organisations such as Beyond Blue, The Black Dog Institute and Suicide Prevention Australia. That have a lot of tools to help you.\n'
+                                    '\nWe need to tackle this problem early and often.\n'
+                                    '\nGrown-ups….I beg you to educate yourselves. No family is immune. It does n\'t always happen to other people. We can\'t run away from this problem. We need to face it head on.\n'
+                                    '\nI wanted to talk to you about this topic today because it is very dear to my heart. I don\'t want the same thing to happen to your family as what\'s happened to mine.\n'
+                                    '\nOnce it is done it is done. You are special, you are unique, you cannot be replaced. Join me in the fight to look after our mental health and stop suicide. And finally, in the words of Donald Trump. ‘Depression!....You\'re fired‘.\n'
+                                ,style: Theme.of(context).textTheme.bodyText1!.copyWith( height: 1.5,letterSpacing: 1.0, fontSize:18),
+                              ),
                             ),
-                          ),
 
-                        ],
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        shadowColor: Colors.grey[200],
+                        elevation: 5,
                       ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800s_getty_rm_michael_phelps.jpg?resize=652px:*&output-quality=75'),
-                            fit:BoxFit.fill,),
-                          Text(
-                            '\nMichael Phelps\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            'The swimmer who’s won 28 Olympic medals said his first “depression spell” happened in 2004, but his lowest point came after the 2012 Games, according to CNN. Phelps said he sat alone in his bedroom for 3 to 5 days “not wanting to be alive,” and he knew he needed help. After he sought treatment and started talking about his feelings, he said “life became easy.” Now he understands that “it’s OK to not be OK.\n”',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
 
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800s_getty_rm_wayne_brady.jpg?resize=652px:*&output-quality=75'),
-                            fit:BoxFit.fill,),
-                          Text(
-                            '\nWayne Brady\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            'This comedian’s upbeat public image hid a long fight with mental illness. Brady described his experience to Entertainment Tonight in 2014. You don\'t want to move; you cant move in the darkness. He opened up in an effort to stop the double standard in Hollywood, he said, where it seems more acceptable to admit to a drug problem than to clinical depression.\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://deadline.com/wp-content/uploads/2022/03/Angelina-Jolie-photo-Netflix-Alexei-Hay-e1646407877581.jpeg?w=1024'),
-                            fit:BoxFit.fill,),
-                          Text(
-                            '\nAngelina Jolie\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            'In an interview with Wall Street Journal, actress Angelina Jolie revealed that she suffered from depression in her teens. “I grew up in L.A., where focus is very inward. I didn’t know why I was so destructive and miserable. I didn’t appreciate or understand my life," she admitted. Since then, she has said that her humanitarian work has played a major role in helping her find herself.\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800s_getty_rm_bruce_springsteen.jpg?resize=652px:*&output-quality=75',),
-                            fit:BoxFit.fill,),
-
-                          Text(
-                            '\nBruce Springsteen\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            '“The Boss” had bouts of depression in his 60s that “lasted for a long time,” he told CBS Sunday Morning. “It’s like this thing that engulfs you. I got to where I didn’t want to get out of bed.” He said it didn’t affect his work, and wife Patti Scialfa’s “strength and love” were key. “She’d say, ‘You’re going to be OK. Maybe not today or tomorrow, but it’s going to be all right. He also got help for the condition from therapy and medication.\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-                    const SizedBox(
-                      height:30,
-                    ),
-                    Container(
-                      child: Column(
-                        //mainAxisAlignment:MainAxisAlignment.center,
-                        children:[
-                          const Image(
-                            image : NetworkImage('https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/celebs_with_depression_slideshow/1800ss_getty_rm_ryan_phillippe.jpg?resize=652px:*&output-quality=75',),
-                            fit:BoxFit.fill,),
-
-                          Text(
-                            '\nRyan Phillippe\n',
-                            style:TextStyle(
-                              fontSize:25,
-                              fontWeight:FontWeight.bold,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                          Text(
-                            'The Cruel Intentions actor says his battle with depression began at a young age. “As you get older, I think it decreases some, but Im just innately kind of a sad person, he recently told Elle magazine. Phillippe hasn’t let his condition keep him from shining onscreen, though. He recently starred in the TV drama Secrets and Lies.\n',
-                            style:TextStyle(
-                              fontSize:19,
-                              color:Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      decoration:BoxDecoration(
-                          borderRadius:BorderRadius.circular(18),
-                          // color: Colors.grey[800].withOpacity(0.5),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow:const [
-                            BoxShadow(
-                              color:Colors.grey,
-                              blurRadius:10,
-                              offset: Offset(0, 3),
-                            )
-                          ]
-                      ),
-                    ),
-
-                  ]
+                    ]
+                ),
               ),
             ),
           ),

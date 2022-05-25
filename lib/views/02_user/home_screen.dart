@@ -15,12 +15,6 @@ import 'add_post/add_post_screen.dart';
 import 'depressionState_screen/depression_screen.dart';
 import 'friends_screen/friends_screen.dart';
 import 'notification_screen/notification_screen.dart';
-////////////////////// notifications
-
-
-
-
-
 
 //////////////////////////////////
 class HomeScreen extends StatefulWidget {
@@ -46,27 +40,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
-    const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'), // todo: fix overflow
-   // const TabItem(icon: Icon(Icons.upload_file), title: 'Post'),
+    const TabItem(icon: Icon(Icons.dynamic_feed_outlined), title: 'Social'),
+    const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'),
     const TabItem(icon: Icon(Icons.people_alt_rounded), title: 'Friends'),
-    const TabItem(icon: Icon(Icons.person), title: 'Test'),
   ];
 
   final List<Widget> screens = [
+    const DepressionStateScreen(),
     const UserPostsScreen(),
     const NotificationScreen(),
-    //const NewPostScreen(),
-    //addPostsScreen(),
     const FriendsScreen(),
-    const DepressionStateScreen(),
+
   ];
 
   final List<String> name = [
-    'Home',
+    'Depression Helper',
+    'Social',
     'Notifications',
-   // 'Add Post',
     'Friends',
-    'Depression Test',
+
   ];
 
   @override

@@ -6,6 +6,7 @@ import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
 import 'package:save/views/01_auth/login_screen.dart';
 import 'package:save/views/02_user/home_screen.dart';
+import 'package:save/views/02_user/on_boarding_screens/on_boarding_screens.dart';
 import 'package:save/views/03_admin/admin_home.dart';
 import 'helpers/globals.dart';
 import 'style/themes.dart';
@@ -36,7 +37,7 @@ void main(context) async {
       widget = HomeScreen();
     }
   } else {
-    widget = LoginScreen();
+    widget = OnBoardingScreen();
   }
 
   runApp(MyApp(startWidget: widget));
