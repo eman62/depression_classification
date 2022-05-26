@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:save/models/on_boarding_model.dart';
 import 'package:save/views/01_auth/login_screen.dart';
@@ -161,6 +160,3 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 //   ),
 //       (Route<dynamic> route) => false,
 // );
-
-
-
