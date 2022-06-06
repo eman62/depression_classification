@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:save/models/friend_model.dart';
+import 'package:save/models/notification_model.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
@@ -45,6 +46,7 @@ class UserController extends GetxController {
   List<bool> myPost = [];
   var commentController = TextEditingController();
   bool showComments = false;
+  List<NotificationModel> notifications = [];
 
   bool isDark = true;
   IconData suffix = Icons.brightness_7_outlined;
@@ -102,6 +104,26 @@ class UserController extends GetxController {
       if (kDebugMode) print(stacktrace);
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
+    }
+  }
+
+  getUserNotifications() {
+    try {
+      FirebaseFirestore.instance.collection('users').doc(uId).collection('notifications').snapshots().listen((event) {
+       List<NotificationModel> _notifications = [];
+
+       for (var item in event.docs) {
+         _notifications.add(NotificationModel.fromJson(item.data()));
+       }
+       notifications = _notifications;
+      });
+      update();
+
+    } catch (e, stacktrace) {
+      if (kDebugMode) print('XXX EXCEPTION');
+      if (kDebugMode) print(stacktrace);
+      showToast(text: e.toString(), state: ToastStates.error);
+      // changeIsLoadingGetUserDataState(false);
     }
   }
 

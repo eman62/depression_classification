@@ -14,17 +14,18 @@ import '../views/02_user/staticVars.dart';
 
 void saveNotification({
   required String text,
-}) async{
+}) async {
   //changeIsLoadingSetNotification(true);
-  if (Firebase.apps.length ==0)
-  await Firebase.initializeApp();
+  if (Firebase.apps.length == 0) await Firebase.initializeApp();
   NotificationModel model = NotificationModel(
     text: text,
   );
-  FirebaseFirestore.instance.collection('notifications').add(model.toMap()).then((value) {
-  //  changeIsLoadingSetNotification(false);
+  FirebaseFirestore.instance.collection('users').doc(Get.find<UserController>().userModel!.uId)
+      .collection('notifications').add(model.toMap()).then((_) {
+    Get.find<UserController>().getUserNotifications();
+    //  changeIsLoadingSetNotification(false);
   }).catchError((error) {
-  //  changeIsLoadingSetNotification(false);
+    //  changeIsLoadingSetNotification(false);
   });
 }
 ////////////////
@@ -33,26 +34,21 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationPlugin;
 //FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future showNotification() async {
+  int rndmIndex = Random().nextInt(StaticVars().quots.length - 1);
 
-  int rndmIndex = Random().nextInt(StaticVars().quots.length-1);
-
-  AndroidNotificationDetails androidPlatformChannelSpecifics =
-  AndroidNotificationDetails(
+  AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
     '$rndmIndex.0',
     'depression app',
     importance: Importance.max,
     priority: Priority.high,
     playSound: true,
     enableVibration: true,
-
   );
   var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
     threadIdentifier: 'thread_id',
   );
-  var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics
-  );
+  var platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 //////////////////////////////////todo: set notifications
 //sendNotification(text: StaticVars().quots[rndmIndex]);
   await flutterLocalNotificationPlugin?.show(
@@ -61,7 +57,7 @@ Future showNotification() async {
     StaticVars().quots[rndmIndex],
     platformChannelSpecifics,
   );
-saveNotification(text:StaticVars().quots[rndmIndex] );
+  saveNotification(text: StaticVars().quots[rndmIndex]);
   //var userController =
   // homeController.sendNotification(text: StaticVars().quots[rndmIndex]);
 
@@ -76,11 +72,7 @@ saveNotification(text:StaticVars().quots[rndmIndex] );
   // FirebaseFirestore.instance.collection('notifications').add(model.toMap());
 }
 
-
-
-
 void callbackDispatcher() {
-
   // initial notifications
   var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = const IOSInitializationSettings();
@@ -92,26 +84,21 @@ void callbackDispatcher() {
 
   flutterLocalNotificationPlugin = FlutterLocalNotificationsPlugin();
 
- // WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
   flutterLocalNotificationPlugin?.initialize(
     initializationSettings,
   );
-
 
   Workmanager().executeTask((task, inputData) {
     showNotification();
     return Future.value(true);
   });
 }
+
 class FcmManager {
-
-  initialize (){
-
-    Workmanager().initialize(
-        callbackDispatcher,
-        isInDebugMode: kDebugMode
-    );
+  initialize() {
+    Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
     Workmanager().registerPeriodicTask(
       "1",
       "periodic Notification",
