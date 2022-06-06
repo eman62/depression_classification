@@ -1,37 +1,38 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:save/models/notification_model.dart';
 import 'package:workmanager/workmanager.dart';
-
 import '../view_controllers/02_user_controllers/user_controller.dart';
 import '../views/02_user/staticVars.dart';
-//////////////////
+import 'package:save/helpers/globals.dart';
 
-void saveNotification({
-  required String text,
-}) async {
+void saveNotification({required String text}) async {
   //changeIsLoadingSetNotification(true);
   if (Firebase.apps.length == 0) await Firebase.initializeApp();
   NotificationModel model = NotificationModel(
     text: text,
   );
-  FirebaseFirestore.instance.collection('users').doc(Get.find<UserController>().userModel!.uId)
-      .collection('notifications').add(model.toMap()).then((_) {
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(uId)
+      .collection('notifications')
+      .add(model.toMap())
+      .then((_) {
     Get.find<UserController>().getUserNotifications();
     //  changeIsLoadingSetNotification(false);
-  }).catchError((error) {
+  }).catchError((e, stacktrace) {
+    print(e);
+    print(stacktrace);
     //  changeIsLoadingSetNotification(false);
   });
 }
-////////////////
 
 FlutterLocalNotificationsPlugin? flutterLocalNotificationPlugin;
-//FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future showNotification() async {
   int rndmIndex = Random().nextInt(StaticVars().quots.length - 1);
@@ -72,6 +73,26 @@ Future showNotification() async {
   // FirebaseFirestore.instance.collection('notifications').add(model.toMap());
 }
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel',
+  'high_importance_notification',
+  description: 'used for important notifications',
+  importance: Importance.high,
+  playSound: true,
+  enableVibration: true,
+);
+
+_handlePlatformSpecificImplementation() async {
+  await flutterLocalNotificationPlugin!
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    sound: true,
+  );
+}
+
 void callbackDispatcher() {
   // initial notifications
   var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -89,6 +110,8 @@ void callbackDispatcher() {
   flutterLocalNotificationPlugin?.initialize(
     initializationSettings,
   );
+
+  _handlePlatformSpecificImplementation();
 
   Workmanager().executeTask((task, inputData) {
     showNotification();

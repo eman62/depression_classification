@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
 
   FcmManager().initialize();
+  // FcmManager().showNotification();
 
     super.initState();
   }
