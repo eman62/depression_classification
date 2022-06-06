@@ -699,21 +699,6 @@ class UserController extends GetxController {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        // posts = [];
-        // likes = [];
-        // likesCounts = [];
-        // likedByMe = [];
-        // postsId = [];
-        // comments = [];
-        // commentsCounts = [];
-        // /////////////////////
-        // myPost = [];
-        // favourites = [];
-        // favouriteByMe = [];
-        // favouriteByMeIndex = [];
-        // favcounter = 0;
-        // likedindex = [];
-        /////////////////////
 
         List<PostModel> rPosts = [];
         List<Map<String, dynamic>> rLikes = [];
@@ -731,9 +716,7 @@ class UserController extends GetxController {
         List<int> rLikedIndex = [];
 
 
-        print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
-          print('/// Post $i-1');
           rPosts.add(PostModel.fromJson(post.data()));
           rPostsId.add(post.id);
           if (post.data()['uId'] == uId) {
@@ -746,8 +729,6 @@ class UserController extends GetxController {
 
           /// Likes
           await post.reference.collection('likes').get().then((likesSnapshots) {
-            print('/// Post $i-2');
-
             //print(likesSnapshots.docs.length);
             rLikesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
@@ -774,8 +755,6 @@ class UserController extends GetxController {
 
           /// Favourites
           await post.reference.collection('favourites').get().then((favouritesSnapshots) {
-            print('/// Post $i-3');
-
             if (favouritesSnapshots.docs.isNotEmpty) {
               bool isFavouredByMe = false;
               for (var doc in favouritesSnapshots.docs) {
@@ -800,8 +779,6 @@ class UserController extends GetxController {
           //////////////////////////////////////////////////////////////
           // comments
           await post.reference.collection('comments').get().then((commentsSnapshots) {
-            print('/// Post $i-4');
-
             rCommentsCounts.add(commentsSnapshots.docs.length);
             rComments.add(
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
