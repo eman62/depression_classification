@@ -82,19 +82,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   enableVibration: true,
 );
 
-_handlePlatformSpecificImplementation() async {
-  await flutterLocalNotificationPlugin!
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    sound: true,
-  );
-}
-
-void callbackDispatcher() {
-  // initial notifications
+initializeNotificationSettings() {
   var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = const IOSInitializationSettings();
 
@@ -110,9 +98,14 @@ void callbackDispatcher() {
   flutterLocalNotificationPlugin?.initialize(
     initializationSettings,
   );
+}
 
-  _handlePlatformSpecificImplementation();
+showFirstNotification() {
+  Future.delayed(const Duration(seconds: 5), () => showNotification());
+}
 
+
+void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) {
     showNotification();
     return Future.value(true);
@@ -121,6 +114,9 @@ void callbackDispatcher() {
 
 class FcmManager {
   initialize() {
+    initializeNotificationSettings();
+    showFirstNotification();
+
     Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
     Workmanager().registerPeriodicTask(
       "1",

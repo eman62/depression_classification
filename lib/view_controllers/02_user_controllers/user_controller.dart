@@ -274,7 +274,6 @@ class UserController extends GetxController {
     //}
   }
 
-//////////////////////////////////////////////state wrong
   void sendFeedback({
     required String text,
   }) {
@@ -453,8 +452,6 @@ class UserController extends GetxController {
     update();
   }
 
-  ////////////////////////////////////////////////////////////////////
-
   changeFavouriteByMeState(bool state, index) {
     favouriteByMe[index] = state;
     update();
@@ -521,8 +518,6 @@ class UserController extends GetxController {
     //print(favouriteByMeIndex);
     update();
   }
-
-  ////////////////////////////////////////////////////////////////////
 
   checkAndDeletePost({required String id}) async {
     await FirebaseFirestore.instance.collection('posts').doc(id).get().then((value) {
@@ -664,7 +659,6 @@ class UserController extends GetxController {
     }
   }
 
-////////////////////////////////////////
   List<FriendModel> friends = [];
   List<String> friendsId = [];
   FriendModel? friendsModel;
@@ -751,13 +745,10 @@ class UserController extends GetxController {
     });
   }
 
-  ////////////////////////////////////////////
   @override
   void onInit() {
     isLoadingGettingPosts = true;
     getPosts();
-    // getLikes();
-    //print (uId);
     getUserData(uId: uId);
     getFriends();
     super.onInit();
