@@ -104,7 +104,6 @@ showFirstNotification() {
   Future.delayed(const Duration(seconds: 5), () => showNotification());
 }
 
-
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) {
     showNotification();

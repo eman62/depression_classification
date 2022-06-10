@@ -31,7 +31,7 @@ class UserPostsScreen extends StatelessWidget {
                     margin: EdgeInsets.all(8.0),
                   ),
                   controller.posts.isEmpty
-                      ? const Text('No posts ..')
+                      ? const Center(child: Text('No posts ..'))
                       : ListView.separated(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),

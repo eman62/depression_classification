@@ -50,6 +50,7 @@ class UserController extends GetxController {
 
   bool isDark = true;
   IconData suffix = Icons.brightness_7_outlined;
+
   changeDarkModeIcon() {
     isDark = !isDark;
     suffix = isDark ? Icons.brightness_7_outlined : Icons.dark_mode;
@@ -83,7 +84,7 @@ class UserController extends GetxController {
   }
 
   ///////////////////////////
-  getUserData({String? uId}) {
+  getMyUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);
       FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
@@ -107,18 +108,31 @@ class UserController extends GetxController {
     }
   }
 
+  Future<AppUserModel> getAnyUserData({String? uId}) async {
+    AppUserModel? _userModel;
+
+    var user = await FirebaseFirestore.instance.collection('users').doc(uId).get();
+    _userModel = AppUserModel.fromJson(user.data()!);
+
+    return _userModel;
+  }
+
   getUserNotifications() {
     try {
-      FirebaseFirestore.instance.collection('users').doc(uId).collection('notifications').snapshots().listen((event) {
-       List<NotificationModel> _notifications = [];
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('notifications')
+          .snapshots()
+          .listen((event) {
+        List<NotificationModel> _notifications = [];
 
-       for (var item in event.docs) {
-         _notifications.add(NotificationModel.fromJson(item.data()));
-       }
-       notifications = _notifications;
+        for (var item in event.docs) {
+          _notifications.add(NotificationModel.fromJson(item.data()));
+        }
+        notifications = _notifications;
       });
       update();
-
     } catch (e, stacktrace) {
       if (kDebugMode) print('XXX EXCEPTION');
       if (kDebugMode) print(stacktrace);
@@ -266,7 +280,8 @@ class UserController extends GetxController {
           }; // if we don't have image don't make it = null, just leave its value
 
     FirebaseFirestore.instance.collection('users').doc(userModel!.uId).update(model).then((value) {
-      getUserData(uId: userModel?.uId);
+      getMyUserData(uId: userModel?.uId);
+      getPosts();
       changeIsLoadingUpdateUser(false);
     }).catchError((error) {
       changeIsLoadingUpdateUser(false);
@@ -317,8 +332,6 @@ class UserController extends GetxController {
 
     // use the image link
     PostModel model = PostModel(
-      name: userModel!.name,
-      image: userModel!.image,
       uId: userModel!.uId,
       dateTime: dateTime,
       text: text,
@@ -339,7 +352,6 @@ class UserController extends GetxController {
 
     update();
   }
-
 
   List<Map<String, dynamic>> favourites = [];
   List<bool> favouriteByMe = [];
@@ -397,7 +409,6 @@ class UserController extends GetxController {
   }
 
   _unlikePost(String postUid, index) async {
-
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').doc(uId).delete();
 
     likesCounts[index]--;
@@ -410,9 +421,7 @@ class UserController extends GetxController {
     if (kDebugMode) print('/// COMMENT');
     Map<String, Object?> data = {
       'uId': userModel!.uId,
-      'name': userModel!.name,
-      'comment': commentController.text,
-      'userImageUrl': userModel!.image,
+      'text': commentController.text,
     };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
@@ -430,19 +439,27 @@ class UserController extends GetxController {
           .doc(postUid)
           .collection('comments')
           .get()
-          .then((value) {
+          .then((value) async {
         comments[postIndex] = [];
         for (var item in value.docs) {
-          comments[postIndex].add(item.data());
+          AppUserModel user = await getAnyUserData(uId: item['uId']);
+          Map<String, dynamic>? commentItem = {
+            'name' : user.name,
+            'text' : item['text'],
+            'uId' : item['uId'],
+            'userImageUrl' : user.image,
+          };
+
+          comments[postIndex].add(commentItem);
         }
       });
       commentsCounts[postIndex] = comments[postIndex].length;
       changeIsLoadingGetCommentsOnPost(false);
-     // print(commentsCounts[postIndex]);
-     // print(commentsCounts[postIndex]);
+      // print(commentsCounts[postIndex]);
+      // print(commentsCounts[postIndex]);
     } catch (e, stacktrace) {
-    //  print(e);
-    //  print(stacktrace);
+      //  print(e);
+      //  print(stacktrace);
     }
     update();
   }
@@ -541,7 +558,6 @@ class UserController extends GetxController {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-
         List<PostModel> rPosts = [];
         List<Map<String, dynamic>> rLikes = [];
         List<int> rLikesCounts = [];
@@ -557,15 +573,27 @@ class UserController extends GetxController {
         int rFavCounter = 0;
         List<int> rLikedIndex = [];
 
-
         for (var post in postEvent.docs) {
-          rPosts.add(PostModel.fromJson(post.data()));
           rPostsId.add(post.id);
           if (post.data()['uId'] == uId) {
             rMyPost.add(true);
           } else {
             rMyPost.add(false);
           }
+
+          AppUserModel user = await getAnyUserData(uId: post.data()['uId']);
+
+          PostModel postItem = PostModel(
+            uId: post.data()['uId'],
+            dateTime: post.data()['dateTime'],
+            image: user.image,
+            likesCount: post.data()['likesCount'],
+            name: user.name,
+            postImage: post.data()['postImage'],
+            text: post.data()['text'],
+          );
+
+          rPosts.add(postItem);
 
           ///////////////////////////////////////////////////////////////
 
@@ -749,7 +777,7 @@ class UserController extends GetxController {
   void onInit() {
     isLoadingGettingPosts = true;
     getPosts();
-    getUserData(uId: uId);
+    getMyUserData(uId: uId);
     getFriends();
     super.onInit();
   }
