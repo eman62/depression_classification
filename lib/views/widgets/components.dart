@@ -2,6 +2,134 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+showYesNoDialog({
+  String headerString = 'Header Message',
+  String message = 'Body Message?',
+  Color headerTextColor = Colors.blue,
+  Color messageTextColor = Colors.grey,
+  Color yesButtonFillColor = Colors.green,
+  Color noButtonFillColor = Colors.red,
+  Color yesTextColor = Colors.white,
+  Color noTextColor = Colors.white,
+  BoxBorder? yesButtonBorder,
+  BoxBorder? noButtonBorder,
+  Function()? yesFunction,
+  Function()? noFunction,
+}) {
+  return Get.dialog(
+    /// Dark Grey Background
+    Container(
+      alignment: Alignment.center,
+      height: Get.height,
+      width: Get.width,
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.6), // dark grey
+      ),
+
+      /// Dialog White Container
+      child: SizedBox(
+        height: 309,
+        // height: Get.height,
+        child: Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 40,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// Header
+                Text(
+                  headerString,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: headerTextColor,
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                /// Message
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'cairo',
+                    // fontWeight: FontWeight.bold,
+                    color: messageTextColor,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                /// Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    /// Yes
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: yesFunction,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: yesButtonFillColor,
+                            borderRadius: BorderRadius.circular(7),
+                            border: yesButtonBorder,
+                          ),
+                          child: Text(
+                            'Yes',
+                            style: TextStyle(
+                              color: yesTextColor,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 33),
+
+                    /// No
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: noFunction,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: noButtonFillColor,
+                            borderRadius: BorderRadius.circular(7),
+                            border: noButtonBorder,
+                          ),
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                              color: noTextColor,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Widget defaultButton({
   required double width,
   required Color background,

@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:save/view_controllers/02_user_controllers/user_controller.dart';
+import 'package:save/views/widgets/components.dart';
 import '../../../../helpers/constants.dart';
 import '../../edit_profile/edit_profile.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,16 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10,top: 5),
               child: IconButton(
                 onPressed: (){
-                  controller.deleteMyAccount(context);
+
+                  showYesNoDialog(
+                    headerString: 'Delete my account',
+                    message: 'Are you sure to delete your account?',
+                    noFunction: () => Get.back(),
+                    yesFunction: () => controller.deleteMyAccount(context),
+
+                  );
+
+
                 },
                 icon: const Icon(
                   Icons.delete,
