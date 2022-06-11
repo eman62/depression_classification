@@ -57,6 +57,37 @@ class UserController extends GetxController {
     update();
   }
 
+  Future deleteMyAccount(context) async {
+    try {
+      /// delete user from auth
+      User? user = FirebaseAuth.instance.currentUser;
+      user!.delete();
+
+      /// delete user data from the database
+      deleteUserFromDatabase(user);
+
+      /// delete user posts
+      deleteUserPosts(user);
+      signOut(context);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  deleteUserPosts(User? user) async {
+    var collection = FirebaseFirestore.instance.collection('posts');
+    var snapshot = await collection.where('uId', isEqualTo: user!.uid).get();
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  deleteUserFromDatabase(User? user) async {
+    var collection = FirebaseFirestore.instance.collection('users');
+    var doc = await collection.doc(user!.uid).get();
+    await doc.reference.delete();
+  }
+
   changeShowCommentsState(bool state) {
     showComments = state;
     update();
@@ -112,8 +143,15 @@ class UserController extends GetxController {
     AppUserModel? _userModel;
 
     var user = await FirebaseFirestore.instance.collection('users').doc(uId).get();
-    _userModel = AppUserModel.fromJson(user.data()!);
-
+    print('/// uuuu');
+    print(user.data());
+    Map<String, dynamic>? userData = user.data();
+    if (userData != null) {
+      _userModel = AppUserModel.fromJson(user.data()!);
+    } else {
+      _userModel = AppUserModel();
+    }
+    print('/// returning');
     return _userModel;
   }
 
@@ -442,13 +480,22 @@ class UserController extends GetxController {
           .then((value) async {
         comments[postIndex] = [];
         for (var item in value.docs) {
-          AppUserModel user = await getAnyUserData(uId: item['uId']);
+          print('////////////////1');
+          AppUserModel? user;
+          user = await getAnyUserData(uId: item['uId']);
+          // user = AppUserModel();
+          print('////////////////2');
+          print(user);
           Map<String, dynamic>? commentItem = {
-            'name' : user.name,
-            'text' : item['text'],
-            'uId' : item['uId'],
-            'userImageUrl' : user.image,
+            'name': user.name ?? 'Deleted User',
+            'text': item['text'],
+            'uId': item['uId'] ?? '',
+            'userImageUrl': user.image ??
+                'https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png',
           };
+
+          print('/// comment item');
+          print(commentItem);
 
           comments[postIndex].add(commentItem);
         }

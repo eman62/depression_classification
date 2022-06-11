@@ -20,6 +20,19 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10,top: 5),
               child: IconButton(
                 onPressed: (){
+                  controller.deleteMyAccount(context);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 10,top: 5),
+              child: IconButton(
+                onPressed: (){
                   Navigator.push(context,
                     MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
                   );
@@ -30,6 +43,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+
           ],
           elevation: 0,
         ),
