@@ -34,6 +34,19 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 10, top: 5),
+              child: IconButton(
+                onPressed: () {
+                  controller.sendSendSms();
+                },
+                icon: const Icon(
+                  Icons.mail,
+                  color: Colors.white,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 10, top: 5),
               child: IconButton(

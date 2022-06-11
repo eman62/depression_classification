@@ -16,6 +16,7 @@ import '../../views/widgets/components.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 
+
 class UserController extends GetxController {
   int currentIndex = 0;
   List<PostModel> posts = [];
@@ -55,6 +56,17 @@ class UserController extends GetxController {
     isDark = !isDark;
     suffix = isDark ? Icons.brightness_7_outlined : Icons.dark_mode;
     update();
+  }
+
+
+  sendSendSms() async {
+    // String message = 'test message';
+    // List<String> recipients = ['+201288560645'];
+    // String _result = await sendSMS(message: message, recipients: recipients)
+    //     .catchError((onError) {
+    //   print(onError);
+    // });
+    // print(_result);
   }
 
   Future deleteMyAccount(context) async {

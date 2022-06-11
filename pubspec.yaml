@@ -58,6 +58,8 @@ dependencies:
   firebase_storage: ^10.2.10
   firebase_database: ^9.0.10
   get: ^4.6.1
+  flutter_sms: ^2.3.3
+
 
 dev_dependencies:
   flutter_test:
