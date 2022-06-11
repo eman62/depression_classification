@@ -18,19 +18,15 @@ class ProfileScreen extends StatelessWidget {
           backgroundColor: Colors.green,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 10,top: 5),
+              padding: const EdgeInsets.only(right: 10, top: 5),
               child: IconButton(
-                onPressed: (){
-
+                onPressed: () {
                   showYesNoDialog(
                     headerString: 'Delete my account',
                     message: 'Are you sure to delete your account?',
                     noFunction: () => Get.back(),
                     yesFunction: () => controller.deleteMyAccount(context),
-
                   );
-
-
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -38,13 +34,13 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.only(right: 10,top: 5),
+              padding: const EdgeInsets.only(right: 10, top: 5),
               child: IconButton(
-                onPressed: (){
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const EditProfileScreen()),
                   );
                 },
                 icon: const Icon(
@@ -53,7 +49,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
           ],
           elevation: 0,
         ),
@@ -87,43 +82,41 @@ class ProfileScreen extends StatelessWidget {
                           backgroundImage: NetworkImage('${userModel?.image}'),
                         ),
                       ),
-
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
                     '${userModel?.name}',
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 25),
                   ),
-                   const SizedBox(width: 5,),
-                    // IconButton(
-                    //   onPressed: (){
-                    //     Navigator.push(context,
-                    //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
-                    //     );
-                    //   },
-                    //   icon: const Icon(
-                    //     Icons.edit,
-                    //     color: defaultColor,
-                    //   ),
-                    // ),
-                    // TextButton(
-                    //   onPressed: (){
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
-                    //     );
-                    //   },
-                    //   child: Text(
-                    //     'edit',
-                    //     style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 20,color: defaultColor),
-                    //   ),
-                    // ),
-                  ]
-                ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  // IconButton(
+                  //   onPressed: (){
+                  //     Navigator.push(context,
+                  //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                  //     );
+                  //   },
+                  //   icon: const Icon(
+                  //     Icons.edit,
+                  //     color: defaultColor,
+                  //   ),
+                  // ),
+                  // TextButton(
+                  //   onPressed: (){
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) =>const  EditProfileScreen()),
+                  //     );
+                  //   },
+                  //   child: Text(
+                  //     'edit',
+                  //     style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1.5, fontSize: 20,color: defaultColor),
+                  //   ),
+                  // ),
+                ]),
                 const SizedBox(
                   height: 50,
                 ),
