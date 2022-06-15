@@ -57,6 +57,22 @@ class AdminController extends GetxController {
     isLoadingGettingPosts = state;
     update();
   }
+  Future<AppUserModel> getAnyUserData({String? uId}) async {
+    AppUserModel? _userModel;
+
+    var user = await FirebaseFirestore.instance.collection('users').doc(uId).get();
+    print('/// uuuu');
+    print(user.data());
+    Map<String, dynamic>? userData = user.data();
+    if (userData != null) {
+      _userModel = AppUserModel.fromJson(user.data()!);
+    } else {
+      _userModel = AppUserModel();
+    }
+    print('/// returning');
+    return _userModel;
+  }
+
 
 /////////////////////////////////////
   // void getUsers() async {
@@ -245,8 +261,6 @@ class AdminController extends GetxController {
 
     // use the image link
     PostModel model = PostModel(
-      name: userModel!.name,
-      image: userModel!.image,
       uId: userModel!.uId,
       dateTime: dateTime,
       text: text,
@@ -257,7 +271,6 @@ class AdminController extends GetxController {
     FirebaseFirestore.instance.collection('posts').add(model.toMap()).then((value) {
       textController.text = '';
       postImage = null;
-      // FirebaseFirestore.instance.collection('posts').doc(value.id).collection('likes')
 
       changeIsLoadingCreatePost(false);
     }).catchError((error) {
@@ -268,14 +281,76 @@ class AdminController extends GetxController {
 
     update();
   }
-  /////////////////////////////////////
+
+  List<Map<String, dynamic>> favourites = [];
+  List<bool> favouriteByMe = [];
+  List<int> favouriteByMeIndex = [];
+  int favCounter = 0;
+  List<int> likedIndex = [];
+  likeOrUnlikePost(postUid, index) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postUid)
+          .collection('likes')
+          .get()
+          .then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          int x = 0;
+          for (var element in snapshot.docs) {
+            if (element.data()['uId']! == uId) {
+              x = 1;
+              _unlikePost(postUid, index);
+              likedIndex.remove(index);
+            }
+          }
+          if (x == 0) {
+            _likePost(postUid, index);
+            likedIndex.add(index);
+            likedIndex.sort();
+          }
+        } else {
+          _likePost(postUid, index);
+          likedIndex.add(index);
+          likedIndex.sort();
+        }
+      });
+    } catch (e, stacktrace) {
+      if (kDebugMode) print(e);
+      if (kDebugMode) print(stacktrace);
+    }
+  }
+
+  _likePost(String postUid, index) async {
+    //print('/// LIKE');
+
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postUid)
+        .collection('likes')
+        .doc(uId)
+        .set({'uId': uId});
+    likesCounts[index]++;
+    changeLikedByMeState(true, index);
+
+    update();
+    // getPosts();
+  }
+
+  _unlikePost(String postUid, index) async {
+    await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('likes').doc(uId).delete();
+
+    likesCounts[index]--;
+    changeLikedByMeState(false, index);
+
+    update();
+  }
+
   commentOnPost(postUid, postIndex) async {
     if (kDebugMode) print('/// COMMENT');
     Map<String, Object?> data = {
       'uId': userModel!.uId,
-      'name': userModel!.name,
-      'comment': commentController.text,
-      'userImageUrl': userModel!.image,
+      'text': commentController.text,
     };
     await FirebaseFirestore.instance.collection('posts').doc(postUid).collection('comments').add(data);
     commentController.text = '';
@@ -283,7 +358,6 @@ class AdminController extends GetxController {
     // re-render the post comments
     getCommentsOnPosts(postUid, postIndex);
   }
-
 
   /// opening the comments bottom sheet of a post
   getCommentsOnPosts(postUid, postIndex) async {
@@ -294,19 +368,36 @@ class AdminController extends GetxController {
           .doc(postUid)
           .collection('comments')
           .get()
-          .then((value) {
+          .then((value) async {
         comments[postIndex] = [];
         for (var item in value.docs) {
-          comments[postIndex].add(item.data());
+          print('////////////////1');
+          AppUserModel? user;
+          user = await getAnyUserData(uId: item['uId']);
+          // user = AppUserModel();
+          print('////////////////2');
+          print(user);
+          Map<String, dynamic>? commentItem = {
+            'name': user.name ?? 'Deleted User',
+            'text': item['text'],
+            'uId': item['uId'] ?? '',
+            'userImageUrl': user.image ??
+                'https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png',
+          };
+
+          print('/// comment item');
+          print(commentItem);
+
+          comments[postIndex].add(commentItem);
         }
       });
       commentsCounts[postIndex] = comments[postIndex].length;
       changeIsLoadingGetCommentsOnPost(false);
-     // print(commentsCounts[postIndex]);
-    //  print(commentsCounts[postIndex]);
+      // print(commentsCounts[postIndex]);
+      // print(commentsCounts[postIndex]);
     } catch (e, stacktrace) {
-    //  print(e);
-    //  print(stacktrace);
+      //  print(e);
+      //  print(stacktrace);
     }
     update();
   }
@@ -316,29 +407,28 @@ class AdminController extends GetxController {
     update();
   }
 
-  ////////////////////////////////////////////////////////////////////
+  checkAndDeletePost({required String id}) async {
+    await FirebaseFirestore.instance.collection('posts').doc(id).get().then((value) {
+      if (value.data()!['uId'] == uId) {
+        deletePost(id: id);
+
+        Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
+      }
+      update();
+    }).catchError((error) {
+      showToast(text: '$error', state: ToastStates.error);
+    });
+  }
+
+  deletePost({required String id}) async {
+    await FirebaseFirestore.instance.collection('posts').doc(id).delete();
+  }
 
   getPosts() {
     try {
       int i = 0;
 
       FirebaseFirestore.instance.collection('posts').snapshots().listen((postEvent) async {
-        // posts = [];
-        // likes = [];
-        // likesCounts = [];
-        // likedByMe = [];
-        // postsId = [];
-        // comments = [];
-        // commentsCounts = [];
-        // /////////////////////
-        // myPost = [];
-        // favourites = [];
-        // favouriteByMe = [];
-        // favouriteByMeIndex = [];
-        // favcounter = 0;
-        // likedindex = [];
-        /////////////////////
-
         List<PostModel> rPosts = [];
         List<Map<String, dynamic>> rLikes = [];
         List<int> rLikesCounts = [];
@@ -347,22 +437,36 @@ class AdminController extends GetxController {
         List<List<Map<String, dynamic>>> rComments = [];
         List<int> rCommentsCounts = [];
         /////////////////////
+        List<bool> rMyPost = [];
+
         List<int> rLikedIndex = [];
 
-
-        print('/// Total number of posts = ${postEvent.docs.length}');
         for (var post in postEvent.docs) {
-          print('/// Post $i-1');
-          rPosts.add(PostModel.fromJson(post.data()));
           rPostsId.add(post.id);
+          if (post.data()['uId'] == uId) {
+            rMyPost.add(true);
+          } else {
+            rMyPost.add(false);
+          }
 
+          AppUserModel user = await getAnyUserData(uId: post.data()['uId']);
+
+          PostModel postItem = PostModel(
+            uId: post.data()['uId'],
+            dateTime: post.data()['dateTime'],
+            image: user.image,
+            likesCount: post.data()['likesCount'],
+            name: user.name,
+            postImage: post.data()['postImage'],
+            text: post.data()['text'],
+          );
+
+          rPosts.add(postItem);
 
           ///////////////////////////////////////////////////////////////
 
           /// Likes
           await post.reference.collection('likes').get().then((likesSnapshots) {
-            print('/// Post $i-2');
-
             //print(likesSnapshots.docs.length);
             rLikesCounts.add(likesSnapshots.docs.length);
             if (likesSnapshots.docs.isNotEmpty) {
@@ -386,14 +490,8 @@ class AdminController extends GetxController {
             //print(likedindex);
           });
           ///////////////////////////////////////////////////////////////
-
-
-
-          //////////////////////////////////////////////////////////////
           // comments
           await post.reference.collection('comments').get().then((commentsSnapshots) {
-            print('/// Post $i-4');
-
             rCommentsCounts.add(commentsSnapshots.docs.length);
             rComments.add(
                 []); // we are adding the comments upon opening the comments bottom sheet to save the resources
@@ -417,7 +515,6 @@ class AdminController extends GetxController {
         commentsCounts = rCommentsCounts;
         /////////////////////
 
-
         changeIsLoadingGettingPosts(false);
         update();
       });
@@ -426,30 +523,15 @@ class AdminController extends GetxController {
       if (kDebugMode) print(stacktrace);
     }
   }
-/////////////////////////////////
-  checkAndDeletePost({required String id}) async {
-    await FirebaseFirestore.instance.collection('posts').doc(id).get().then((value) {
-        deletePost(id: id);
-        Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
-
-      update();
-    }).catchError((error) {
-      showToast(text: '$error', state: ToastStates.error);
-    });
-  }
-
-  deletePost({required String id}) async {
-    await FirebaseFirestore.instance.collection('posts').doc(id).delete().then((value) {
-      Get.snackbar(' Post Deleted', 'Successfully', colorText: Colors.white);
-      update();
-    }).catchError((error) {
-      showToast(text: '$error', state: ToastStates.error);
-    });
-
-  }
+  /////////////////////////////////////
 
 
-  /////////////////////////////
+
+
+
+
+
+
 
   @override
   void onInit() {

@@ -450,7 +450,7 @@ class CommentItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  controller.comments[postIndex][commentIndex]['comment'],
+                  controller.comments[postIndex][commentIndex]['text'],
                   style: const TextStyle(
                     color: Colors.white,
                   ),

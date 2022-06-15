@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: defaultColor,
                         ),
                         title: const Text(
-                          'Treatment',
+                          'Self Care',
                           style: TextStyle(color: defaultColor, fontWeight: FontWeight.w500, fontSize: 20),
                         ),
                         onTap: () {

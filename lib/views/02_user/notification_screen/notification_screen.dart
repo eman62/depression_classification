@@ -10,21 +10,21 @@ class NotificationScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: GetBuilder<UserController>(
         builder: (controller) => controller.notifications.isEmpty
-            ? Padding(
-              padding: const EdgeInsets.only(top: 150),
-              child: Center(child: Text('لا توجد عناصر')),
+            ? const Padding(
+              padding: EdgeInsets.only(top: 150),
+              child: Center(child: Text('No items to show')),
             )
             : Column(
                 children: List.generate(
                   controller.notifications.length,
                   (index) => Container(
-                    margin: EdgeInsets.only(left: 8, right: 8, top: 10),
+                    margin: const EdgeInsets.only(left: 8, right: 8, top: 10),
                     // alignment: Alignment.center,
                     height: 75,
                     width: Get.width,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(9),
                         topRight: Radius.circular(9),
                         bottomLeft: Radius.circular(9),
@@ -42,6 +42,7 @@ class NotificationScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     child: Stack(
                       children: [
                         Row(
@@ -54,7 +55,7 @@ class NotificationScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Center(child: Text('')),
+                              child: const Center(child: Text('')),
                             ),
                           ],
                         ),
@@ -62,7 +63,7 @@ class NotificationScreen extends StatelessWidget {
                           minLeadingWidth: 20,
                           dense: true,
                           horizontalTitleGap: 10,
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.notifications_active_outlined,
                             size: 25,
                             color: Colors.grey,
@@ -70,8 +71,8 @@ class NotificationScreen extends StatelessWidget {
                           title: Text(
                             controller.notifications[index].text ?? '',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
+                              color: Theme.of(context).textTheme.bodyText1?.color,
+                              fontSize: 17,
                             ),
                           ),
                         ),
