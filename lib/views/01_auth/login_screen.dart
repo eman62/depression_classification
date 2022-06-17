@@ -101,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                 .hasMatch(value!);
 
-                                            if (value!.isEmpty) {
+                                            if (value.isEmpty) {
                                               return 'Email address can\'t be empty';
                                             } else if (!emailValid) {
                                               return 'Enter a valid email';

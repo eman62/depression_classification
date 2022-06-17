@@ -141,8 +141,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             bool emailValid = RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(value!);
-                            if (value!.isEmpty) {
-                              return 'email address can\'t be empty';
+                            if (value.isEmpty) {
+                              return 'enter valid email';
                             } else if (!emailValid) {
                               return 'Enter a valid email';
                             }
