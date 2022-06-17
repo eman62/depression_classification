@@ -26,7 +26,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         image: 'https://img.freepik.com/free-vector/add-friends-concept-illustration_114360-5548.jpg?t=st=1653507152~exp=1653507752~hmac=5e20da7c0028b3385093217a214edd3a1a14b369c6505db25e5feaf12375814c&w=740',
         title: 'Friends',
         body: 'You can add three friends or Relatives  phone numbers so that we can communicate with them'
-            ' if you need a help By sending them sms'),
+            ' if you need a help By sending them Whats App message.'),
     BoardingModel(
         image: 'https://img.freepik.com/free-vector/copywriter-concept-idea-writing-texts-creativity-promotion-making-valuable-content-working-as-freelancer-illustration_277904-4499.jpg?w=740',
         title: "Post",
@@ -38,7 +38,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             'You can also comment if you want\n'),
     BoardingModel(
         image: 'https://www.truepush.com/blog/wp-content/uploads/2021/03/push-notifications-concept-illustration_114360-4850.jpg',
-        title: "Notification",
+        title: "Quotes",
         body: 'Through the application, a text message notification appears to motivate you to get rid of depression every quarter of an hour\n''\n'
             'Through the application, you can know what depression is, its types and causes, as well as many ways to get rid of it\n''\n'
             'There is a page for exercises that you can view''\n'
@@ -117,37 +117,35 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Widget buildPageItem(BoardingModel model) => Expanded(
-    child: SingleChildScrollView(
-      scrollDirection:Axis.vertical,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image(
-            image: NetworkImage(model.image),
-            height:500,width:400,fit:BoxFit.fill,),
-          Text(
-            model.title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize:30,
-              color:Colors.lightGreen[900],
-            ),
+  Widget buildPageItem(BoardingModel model) => SingleChildScrollView(
+    scrollDirection:Axis.vertical,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image(
+          image: NetworkImage(model.image),
+          height:500,width:400,fit:BoxFit.fill,),
+        Text(
+          model.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize:30,
+            color:Colors.lightGreen[900],
           ),
-          Text(
-            model.body,
-            style: const TextStyle(
-              fontSize:20,
-              color:Colors.black,
-              letterSpacing:1.5,
-              height:1.6,
+        ),
+        Text(
+          model.body,
+          style: const TextStyle(
+            fontSize:20,
+            color:Colors.black,
+            letterSpacing:1.5,
+            height:1.6,
 
 
-            ),
           ),
+        ),
 
-        ],
-      ),
+      ],
     ),
   );
 }
