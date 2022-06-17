@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<TabItem> bottomItems2 = [
     const TabItem(icon: Icon(Icons.home), title: 'Home'),
     const TabItem(icon: Icon(Icons.dynamic_feed_outlined), title: 'Social'),
-    const TabItem(icon: Icon(Icons.notifications), title: 'Notifications'),
+    const TabItem(icon: Icon(Icons.notifications), title: 'Quotes'),
     const TabItem(icon: Icon(Icons.people_alt_rounded), title: 'Friends'),
   ];
 
