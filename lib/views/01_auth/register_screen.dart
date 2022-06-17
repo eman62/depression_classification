@@ -138,8 +138,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           type: TextInputType.emailAddress,
                           // || RegExp (r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(value)
                           validate: (String? value) {
+                            bool emailValid = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value!);
                             if (value!.isEmpty) {
-                              return 'email address must not be empty';
+                              return 'email address can\'t be empty';
+                            } else if (!emailValid) {
+                              return 'Enter a valid email';
                             }
                             return null;
                           },
@@ -165,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             type: TextInputType.visiblePassword,
                             validate: (String? value) {
                               if (value!.isEmpty) {
-                                return 'password must not be empty';
+                                return 'password can\'t be empty';
                               }
                               return null;
                             },
@@ -186,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             type: TextInputType.emailAddress,
                             validate: (String? value) {
                               if (value!.isEmpty) {
-                                return 'twitter account must not be empty';
+                                return 'twitter account can\'t be empty';
                               }
                               return null;
                             },

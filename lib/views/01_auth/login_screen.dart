@@ -97,12 +97,18 @@ class LoginScreen extends StatelessWidget {
                                           controller: emailController,
                                           type: TextInputType.emailAddress,
                                           validate: (String? value) {
+                                            bool emailValid = RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                .hasMatch(value!);
+
                                             if (value!.isEmpty) {
-                                              return 'email address must not be empty';
+                                              return 'Email address can\'t be empty';
+                                            } else if (!emailValid) {
+                                              return 'Enter a valid email';
                                             }
                                             return null;
                                           },
-                                          label: 'email address',
+                                          label: 'Email address',
                                           prefix: Icons.email_outlined),
                                       const SizedBox(
                                         height: 20,
@@ -112,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                                           type: TextInputType.visiblePassword,
                                           validate: (String? value) {
                                             if (value!.isEmpty) {
-                                              return 'password must not be empty';
+                                              return 'Password can\'t be empty';
                                             }
                                             return null;
                                           },
@@ -187,7 +193,6 @@ class LoginScreen extends StatelessWidget {
                                               )),
                                         ],
                                       ),
-
                                     ],
                                   ),
                                 ),
