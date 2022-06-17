@@ -182,6 +182,8 @@ class AdminController extends GetxController {
     isLoadingGetUserData = state;
     update();
   }
+
+
   getUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);

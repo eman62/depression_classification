@@ -7,6 +7,8 @@ class AppUserModel {
   String? uId;
   bool? admin;
   bool? isEmailVerified;
+  bool? isLocked;
+
   AppUserModel({
     this.email,
     this.age,
@@ -16,7 +18,9 @@ class AppUserModel {
     this.isEmailVerified,
     this.image,
     this.admin,
+    this.isLocked,
   });
+
   AppUserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     age = json['age'];
@@ -26,6 +30,7 @@ class AppUserModel {
     image = json['image'];
     isEmailVerified = json['isEmailVerified'];
     admin = json['admin'];
+    isLocked = json['isLocked'] ?? false;
   }
   Map<String, dynamic> toMap() {
     return {
@@ -37,6 +42,7 @@ class AppUserModel {
       'uId': uId,
       'isEmailVerified': isEmailVerified,
       'admin': admin,
+      'isLocked': isLocked,
     };
   }
 }

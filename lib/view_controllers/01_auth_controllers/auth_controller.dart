@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:save/views/02_user/locked_screen.dart';
 import 'package:save/views/03_admin/admin_home.dart';
 import '../../helpers/globals.dart' as globals;
 import 'dart:io';
@@ -56,20 +57,20 @@ class AuthController extends GetxController {
     suffixIcon = isPassword ? Icons.visibility : Icons.visibility_off;
     update();
   }
+
   File? profileImage;
 
   var picker = ImagePicker();
 
   uploadProfileImage(profileImage) async {
     String path = 'profile_pic-${DateTime.now()}';
-    if(kDebugMode) print(path);
+    if (kDebugMode) print(path);
 
     final ref = firebase_storage.FirebaseStorage.instance.ref('profile_pics').child(path);
     final uploadValue = await ref.putFile(profileImage!);
     String imageUrl = await uploadValue.ref.getDownloadURL();
-    if(kDebugMode) print(imageUrl);
+    if (kDebugMode) print(imageUrl);
     return imageUrl;
-
   }
 
   Future<void> getProfileImage() async {
@@ -77,12 +78,11 @@ class AuthController extends GetxController {
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
     } else {
-      if(kDebugMode) print('no image selected');
+      if (kDebugMode) print('no image selected');
     }
 
     update();
   }
-
 
   Future<void> userLogin(
     context, {
@@ -94,14 +94,15 @@ class AuthController extends GetxController {
       UserCredential credential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-      //  print('/// UID: ${credential.user!.uid}');
+      print('/// UID: ${credential.user!.uid}');
 
       /// Success
       AppUserModel? user = await getUserData(uId: credential.user!.uid);
 
-      //  print('/// NAME: ${user?.name}');
-      //  print('/// ADMIN: ${user?.admin}');
-      //  print('/// EMAIL: ${user?.email}');
+      print('/// NAME: ${user?.name}');
+      print('/// ADMIN: ${user?.admin}');
+      print('/// EMAIL: ${user?.email}');
+      print('/// IS_LOCKED: ${user?.isLocked}');
 
       if (user!.admin != null) {
         await CacheHelper.saveData(key: 'admin', value: user.admin);
@@ -113,7 +114,7 @@ class AuthController extends GetxController {
         //  print (credential.user!.uid);
       }
 
-      navigate(user.admin!);
+      navigate(user.admin!, user);
 
       changeIsLoadingLoginState(false);
     } on Exception catch (e) {
@@ -122,8 +123,12 @@ class AuthController extends GetxController {
     }
   }
 
-  navigate(bool isAdmin) {
-    isAdmin ? Get.offAll(AdminHome()) : Get.offAll(HomeScreen());
+  navigate(bool isAdmin, AppUserModel user) {
+    if (isAdmin) {
+      Get.offAll(AdminHome());
+    } else {
+      user.isLocked! ? Get.offAll(HomeScreen()) : Get.offAll(LockedScreen());
+    }
   }
 
   getUserData({String? uId}) async {
@@ -138,8 +143,8 @@ class AuthController extends GetxController {
       return userModel;
     } catch (e, stacktrace) {
       showToast(text: e.toString(), state: ToastStates.error);
-     // print(e);
-   //   print(stacktrace);
+      // print(e);
+      //   print(stacktrace);
       changeIsLoadingGetUserDataState(false);
     }
   }
@@ -161,11 +166,11 @@ class AuthController extends GetxController {
     String? imageUrl,
   }) async {
     changeIsLoadingRegisterState(true);
-    if (profileImage != null) {        ///CHANGE
+    if (profileImage != null) {
+      ///CHANGE
       imageUrl = await uploadProfileImage(profileImage);
-    }
-    else {
-     //////////// photo
+    } else {
+      //////////// photo
       imageUrl = 'https://esquimaltmfrc.com/wp-content/uploads/2015/09/flat-faces-icons-circle-man-6.png';
     }
     await FirebaseAuth.instance
@@ -181,6 +186,7 @@ class AuthController extends GetxController {
         twitter: twitter,
         uId: value.user!.uid,
         image: imageUrl,
+        isLocked: false,
       );
       // CacheHelper.saveData(key: 'uId', value: value.02_user!.uid);
     }).catchError((e) {
@@ -196,6 +202,7 @@ class AuthController extends GetxController {
     required String email,
     required String twitter,
     required String uId,
+    bool? isLocked,
     String? image,
   }) async {
     AppUserModel model = AppUserModel(
@@ -207,6 +214,7 @@ class AuthController extends GetxController {
       isEmailVerified: false,
       admin: false,
       image: image,
+      isLocked: isLocked,
     );
 
     print(model.email);

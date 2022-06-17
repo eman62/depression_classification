@@ -23,33 +23,35 @@ class UsersScreen extends StatelessWidget {
             condition: controller.users.isEmpty,
             builder: (context) => controller.isLoadingGettingUsers
                 ? const Center(
-              child: CircularProgressIndicator(),
-            )
-                : Center(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.menu,
-                  size: 100,
-                  color: Colors.grey,
-                ),
-                Text(
-                  'There are no users..',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    child: CircularProgressIndicator(),
+                  )
+                : Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.menu,
+                          size: 100,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          'There are no users..',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),),
             fallback: (context) => ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => UserItem(model: controller.users[index], context: context),
                 separatorBuilder: (context, index) => const SizedBox(
-                  height: 15,
-                ),
+                      height: 8,
+                    ),
                 itemCount: controller.users.length),
           ),
         ),
@@ -59,7 +61,6 @@ class UsersScreen extends StatelessWidget {
 }
 
 class UserItem extends StatelessWidget {
-
   final AppUserModel model;
   final BuildContext context;
 
@@ -67,68 +68,80 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      shadowColor: Colors.grey[200],
+      elevation: 7,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: ListTile(
+          minLeadingWidth: 70,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          leading: CircleAvatar(
+            radius: 35,
+            backgroundImage: NetworkImage('${model.image}'),
           ),
-          shadowColor: Colors.grey[200],
-          elevation: 7,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: ListTile(
-              minLeadingWidth: 70,
-              leading:  CircleAvatar(
-                radius: 35,
-                backgroundImage: NetworkImage('${model.image}'),
-              ),
-              title: Text(
-                '${model.name}',
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          title: Text(
+            '${model.name}',
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   height: 1.3,
                 ),
-              ),
-              subtitle: Text(
-                '${model.email}',
-                maxLines: 1,
-                overflow: TextOverflow.clip,
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  height: 1.3,color: Colors.grey,
+          ),
+          subtitle: Text(
+            '${model.email}',
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  height: 1.3,
+                  color: Colors.grey,
                 ),
-              ),
-              // trailing: IconButton(
-              //   icon: const Icon(Icons.delete,size: 30,color: Colors.red,),
-              //   onPressed: () {
-              //     showDialog(
-              //         context: context,
-              //         builder: (context) {
-              //           return AlertDialog(
-              //             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              //             title: Text('Delete User', style: Theme.of(context).textTheme.bodyText1,),
-              //             content: Text('Are you sure to delete this account?', style: Theme.of(context).textTheme.bodyText1,),
-              //             actions: [
-              //               TextButton(
-              //                 onPressed: () => Navigator.pop(context),
-              //                 child:  Text('Cancel', style: Theme.of(context).textTheme.bodyText1,),
-              //               ),
-              //               TextButton(
-              //                 onPressed: () {
-              //                   Navigator.pop(context);
-              //
-              //                 },
-              //                 child: Text('Delete',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),),
-              //               ),
-              //             ],
-              //           );
-              //         }
-              //     );
-              //   },),
-
+          ),
+          trailing: IconButton(
+            icon: Icon(
+              model.isLocked! ? Icons.no_encryption_gmailerrorred : Icons.lock,
+              size: 22,
+              color: Colors.red,
             ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      title: Text(
+                        'Disable User',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      content: Text(
+                        'Are you sure to disable this account?',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            'Cancel',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Disable',
+                            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            },
           ),
         ),
-      ],
+      ),
     );
   }
 }
