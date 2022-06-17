@@ -102,7 +102,7 @@ class UserItem extends StatelessWidget {
             icon: Icon(
               model.isLocked! ? Icons.no_encryption_gmailerrorred : Icons.lock,
               size: 22,
-              color: Colors.red,
+              color: model.isLocked! ? Colors.green : Colors.red,
             ),
             onPressed: () {
               showDialog(
@@ -111,11 +111,13 @@ class UserItem extends StatelessWidget {
                     return AlertDialog(
                       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                       title: Text(
-                        'Disable User',
+                        model.isLocked! ? 'Enable User' : 'Disable User',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       content: Text(
-                        'Are you sure to disable this account?',
+                        model.isLocked!
+                            ? 'Are you sure to enable this account?'
+                            : 'Are you sure to disable this account?',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       actions: [
@@ -128,11 +130,14 @@ class UserItem extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
+                            model.isLocked!
+                                ? Get.find<AdminController>().enableUser(model)
+                                : Get.find<AdminController>().disableUser(model);
                             Navigator.pop(context);
                           },
                           child: Text(
-                            'Disable',
-                            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),
+                            model.isLocked! ? 'Enable' : 'Disable',
+                            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: model.isLocked! ? Colors.green: Colors.red),
                           ),
                         ),
                       ],

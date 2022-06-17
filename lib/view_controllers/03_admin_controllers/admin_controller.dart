@@ -37,26 +37,41 @@ class AdminController extends GetxController {
   bool showComments = false;
   bool isLoadingGettingPosts = false;
 
+  disableUser(AppUserModel user) async {
+    await FirebaseFirestore.instance.collection('users').doc(user.uId).update({'isLocked': true});
+    getUsers();
+  }
+
+  enableUser(AppUserModel user) async {
+    await FirebaseFirestore.instance.collection('users').doc(user.uId).update({'isLocked': false});
+    getUsers();
+  }
+
   changeIsLoadingGettingUsers(bool state) {
     isLoadingGettingUsers = state;
     update();
   }
+
   changeIsLoadingCreatePost(bool state) {
     isLoadingCreatePost = state;
     update();
   }
+
   changeShowCommentsState(bool state) {
     showComments = state;
     update();
   }
+
   changeLikedByMeState(bool state, index) {
     likedByMe[index] = state;
     update();
   }
+
   changeIsLoadingGettingPosts(bool state) {
     isLoadingGettingPosts = state;
     update();
   }
+
   Future<AppUserModel> getAnyUserData({String? uId}) async {
     AppUserModel? _userModel;
 
@@ -72,7 +87,6 @@ class AdminController extends GetxController {
     print('/// returning');
     return _userModel;
   }
-
 
 /////////////////////////////////////
   // void getUsers() async {
@@ -99,22 +113,19 @@ class AdminController extends GetxController {
   //   update();
   // }
 
- getUsers() {
+  getUsers() {
     if (users.isEmpty) {
-     // print('/// GETTING USERS ..');
-      FirebaseFirestore.instance
-          .collection('users')
-          .snapshots()
-          .listen((event) {
-       // print('/// NEW USER LISTENER TRIGGERED ..');
-       // print('${event.docs}');
+      // print('/// GETTING USERS ..');
+      FirebaseFirestore.instance.collection('users').snapshots().listen((event) {
+        // print('/// NEW USER LISTENER TRIGGERED ..');
+        // print('${event.docs}');
         users = [];
         event.docs.forEach((element) {
-         // print(element.data()['admin']);
-         // print ("هنا");
-         // print(element.data()['uId']);
+          // print(element.data()['admin']);
+          // print ("هنا");
+          // print(element.data()['uId']);
 
-          if(element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
+          if (element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
           return element.data()['uId'];
         });
 
@@ -169,9 +180,10 @@ class AdminController extends GetxController {
     token = '';
     uId = '';
     isAdmin = null;
-    Get.delete(tag: "homeController",force: true);
+    Get.delete(tag: "homeController", force: true);
     navigateAndFinish(context, LoginScreen());
   }
+
   /////////////////////////
   var nameController = TextEditingController();
   var emailController = TextEditingController();
@@ -183,31 +195,28 @@ class AdminController extends GetxController {
     update();
   }
 
-
   getUserData({String? uId}) {
     try {
       changeIsLoadingGetUserDataState(true);
       FirebaseFirestore.instance.collection('users').doc(uId).snapshots().listen((event) {
-        userModel = AppUserModel.fromJson(event.data()! );
+        userModel = AppUserModel.fromJson(event.data()!);
         nameController.text = userModel!.name!;
         emailController.text = userModel!.email!;
         ageController.text = userModel!.age!;
         changeIsLoadingGetUserDataState(false);
-
       });
       update();
 
       // return userModel;
 
     } catch (e, stacktrace) {
-      if(kDebugMode) print('XXX EXCEPTION');
-      if(kDebugMode) print(stacktrace);
+      if (kDebugMode) print('XXX EXCEPTION');
+      if (kDebugMode) print(stacktrace);
       showToast(text: e.toString(), state: ToastStates.error);
       changeIsLoadingGetUserDataState(false);
     }
   }
 ///////////////////////////////////////////////
-
 
   _uploadPostImage(profileImage) async {
     String path = 'post_pic-${DateTime.now()}';
@@ -526,14 +535,6 @@ class AdminController extends GetxController {
     }
   }
   /////////////////////////////////////
-
-
-
-
-
-
-
-
 
   @override
   void onInit() {
