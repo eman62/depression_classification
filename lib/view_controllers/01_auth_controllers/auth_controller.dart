@@ -127,7 +127,7 @@ class AuthController extends GetxController {
     if (isAdmin) {
       Get.offAll(AdminHome());
     } else {
-      user.isLocked! ? Get.offAll(HomeScreen()) : Get.offAll(LockedScreen());
+      user.isLocked! ? Get.offAll(LockedScreen()) : Get.offAll(HomeScreen());
     }
   }
 

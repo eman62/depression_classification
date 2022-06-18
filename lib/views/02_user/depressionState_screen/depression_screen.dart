@@ -118,7 +118,7 @@ class _DepressionStateScreenState extends State<DepressionStateScreen> {
           isLoading = true;
         });
         print('object');
-        final url = Uri.parse("https://gp-depapp.herokuapp.com/depression-detection");
+        final url = Uri.parse("https://depp-app.herokuapp.com/depression-detection");
         final body = {'username': textController.text};
         final headers = {
           'Content-Type': 'application/json',
