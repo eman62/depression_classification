@@ -14,10 +14,10 @@ class PeopleState extends State<People> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title:const Text('People who got rid of depression',
+        title:const Text('People get rid of depression',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
         elevation: 0,

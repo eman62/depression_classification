@@ -20,7 +20,7 @@ class _TestState extends State<screen> with SingleTickerProviderStateMixin{
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Treatment', style: TextStyle(
+        title: const Text('Self Care', style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 22,
         ),),
