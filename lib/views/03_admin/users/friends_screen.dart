@@ -157,7 +157,8 @@ class FriendItem extends StatelessWidget {
 
 sendWhatsapp(String phone, name) async {
   var whatsApp = phone.replaceAll(' ', '');
-  var whatsAppURl_android = 'whatsapp://send?phone=$whatsApp&&text=Talk to your friend $name she is not OK.';
+  var whatsAppURl_android =
+      'whatsapp://send?phone=$whatsApp&&text=Talk to your friend $name , your friend is not OK.';
   var whatAppURL_ios = 'https://wa.me/$whatsApp';
   if (Platform.isIOS) {
     // for iOS phone only
