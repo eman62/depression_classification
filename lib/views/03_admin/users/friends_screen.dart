@@ -67,26 +67,26 @@ class FriendsScreen extends StatelessWidget {
           ),
         ),
         // if(controller.friends.length != 3)
-        floatingActionButton: controller.userFriends.length != 3
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    if (controller.userFriends.length != 3) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddFriendScreen()),
-                      );
-                    }
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    size: 30,
-                  ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              )
-            : Text(''),
+        // floatingActionButton: controller.userFriends.length != 3
+        //     ? Padding(
+        //         padding: const EdgeInsets.only(bottom: 15),
+        //         child: FloatingActionButton(
+        //           onPressed: () {
+        //             if (controller.userFriends.length != 3) {
+        //               Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(builder: (context) => AddFriendScreen()),
+        //               );
+        //             }
+        //           },
+        //           child: const Icon(
+        //             Icons.add,
+        //             size: 30,
+        //           ),
+        //           backgroundColor: Theme.of(context).colorScheme.primary,
+        //         ),
+        //       )
+        //     : Text(''),
       );
     });
   }
