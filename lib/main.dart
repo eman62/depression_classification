@@ -6,20 +6,17 @@ import 'package:save/helpers/cache_helper.dart';
 import 'package:save/models/user_model.dart';
 import 'package:save/view_controllers/01_auth_controllers/auth_controller.dart';
 import 'package:save/view_controllers/theme_controller.dart';
-import 'package:save/views/01_auth/login_screen.dart';
-import 'package:save/views/02_user/home_screen.dart';
-import 'package:save/views/02_user/locked_screen.dart';
-import 'package:save/views/02_user/on_boarding_screens/on_boarding_screens.dart';
-import 'package:save/views/03_admin/admin_home.dart';
+import 'package:save/views/01_auth/splash_screen.dart';
 import 'helpers/globals.dart';
 import 'style/themes.dart';
 
 void main(context) async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await CacheHelper.init();
   // await CacheHelper.reset();
   await Firebase.initializeApp();
-  Widget widget;
+  SplashRoute splashRoute;
 
   /// To clear the global variables upon hot restart
   uId = '';
@@ -36,7 +33,7 @@ void main(context) async {
   if (uId != null) {
 
     if (isAdmin!) {
-      widget = AdminHome();
+      splashRoute = SplashRoute.admin;
     } else {
       bool? isLocked;
       DocumentSnapshot? snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
@@ -47,22 +44,23 @@ void main(context) async {
       print('/// EMAIL: ${user.email}');
       print('/// IS_LOCKED: ${user.isLocked}');
       if(isLocked!) {
-        widget = LockedScreen();
+        splashRoute = SplashRoute.locked;
       } else {
-        widget = HomeScreen();
+        splashRoute = SplashRoute.user;
       }
     }
   } else {
-    widget = OnBoardingScreen();
+    splashRoute = SplashRoute.onBoarding;
   }
 
-  runApp(MyApp(startWidget: widget));
+  runApp(MyApp(splashRoute: splashRoute));
+
 }
 
 class MyApp extends StatelessWidget {
   // final bool isDark;
-  final Widget? startWidget;
-  MyApp({Key? key, this.startWidget}) : super(key: key);
+  final SplashRoute splashRoute;
+  MyApp({Key? key, required this.splashRoute}) : super(key: key);
 
   final authController = Get.put(AuthController(), permanent: false);
   final themeController = Get.put(ThemeController(), permanent: true);
@@ -75,7 +73,7 @@ class MyApp extends StatelessWidget {
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeController.initialThemeMode!,
-      home: startWidget,
+      home: SplashScreen(route: splashRoute),
     );
   }
 }
