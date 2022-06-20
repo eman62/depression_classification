@@ -8,9 +8,9 @@ import '../../../models/friend_model.dart';
 import '../../../view_controllers/03_admin_controllers/admin_controller.dart';
 import 'dart:io';
 
-class FriendsScreen extends StatelessWidget {
+class UserFriendsScreen extends StatelessWidget {
   final int index;
-  const FriendsScreen({Key? key, required this.index}) : super(key: key);
+  const UserFriendsScreen({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

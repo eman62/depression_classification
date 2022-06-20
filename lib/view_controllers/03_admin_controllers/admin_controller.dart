@@ -133,14 +133,16 @@ class AdminController extends GetxController {
 
   getUsers() async {
     List<String> twitterList = [];
+    List<AppUserModel> userList = [];
 
     await FirebaseFirestore.instance.collection('users').get().then((value){
       for (var doc in value.docs) {
-        if(!doc.data()['admin']) users.add(AppUserModel.fromJson(doc.data()));
+        if(!doc.data()['admin']) userList.add(AppUserModel.fromJson(doc.data()));
         twitterList.add(doc.data()['twitter']);
         scoreList.add('--');
       }
-      userCount = users.length;
+      userCount = userList.length;
+      users = userList;
       print(userCount);
     });
 
