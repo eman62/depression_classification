@@ -8,9 +8,9 @@ import '../../../models/friend_model.dart';
 import '../../../view_controllers/03_admin_controllers/admin_controller.dart';
 import 'dart:io';
 
-class FriendsScreen extends StatelessWidget {
-  final int index;
-  const FriendsScreen({Key? key, required this.index}) : super(key: key);
+class UserFriendsScreen extends StatelessWidget {
+  final int userIndex;
+  const UserFriendsScreen({Key? key, required this.userIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class FriendsScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            '${controller.users[index].name} friends',
+            '${controller.users[userIndex].name} friends',
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
           ),
         ),
@@ -44,7 +44,7 @@ class FriendsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 22),
                           Text(
-                            '${controller.users[index].name} don\'t have Friends yet..',
+                            '${controller.users[userIndex].name} don\'t have Friends yet..',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Colors.grey,
@@ -62,7 +62,7 @@ class FriendsScreen extends StatelessWidget {
                 model: controller.userFriends[index],
                 context: context,
                 index: index,
-                username: controller.users[index].name!,
+                username: controller.users[userIndex].name!,
               ),
               separatorBuilder: (context, index) => const SizedBox(
                 height: 17,

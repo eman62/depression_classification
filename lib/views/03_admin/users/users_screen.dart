@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:save/models/user_model.dart';
 import 'package:save/view_controllers/03_admin_controllers/admin_controller.dart';
 import 'package:get/get.dart';
-import 'package:save/views/03_admin/users/friends_screen.dart';
+import 'package:save/views/03_admin/users/user_friends_screen.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({Key? key}) : super(key: key);
@@ -89,8 +89,8 @@ class UserItem extends StatelessWidget {
         child: ListTile(
           onTap: () {
             Get.find<AdminController>().getUserFriends(model.uId);
-            Get.to(FriendsScreen(
-              index: index,
+            Get.to(UserFriendsScreen(
+              userIndex: index,
             ));
           },
           minLeadingWidth: 70,
