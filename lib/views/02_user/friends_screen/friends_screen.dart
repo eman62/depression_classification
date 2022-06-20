@@ -29,16 +29,18 @@ class FriendsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(
-                          Icons.menu,
-                          size: 100,
+                          Icons.group_off,
+                          size: 80,
                           color: Colors.grey,
                         ),
+                        SizedBox(height: 22),
                         Text(
                           'you don\'t have Friends yet..',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -124,9 +126,7 @@ class FriendItem extends StatelessWidget {
                         color: Colors.grey,
                       ),
                 ),
-                trailing:
-
-                SizedBox(
+                trailing: SizedBox(
                   width: 100,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -176,8 +176,10 @@ class FriendItem extends StatelessWidget {
                                       },
                                       child: Text(
                                         'Delete',
-                                        style:
-                                            Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(color: Colors.red),
                                       ),
                                     ),
                                   ],
@@ -199,8 +201,7 @@ class FriendItem extends StatelessWidget {
 
 sendWhatsapp(String phone, name) async {
   var whatsApp = phone.replaceAll(' ', '');
-  var whatsAppURl_android =
-      'whatsapp://send?phone=$whatsApp&&text=Talk to $name I am not OK.';
+  var whatsAppURl_android = 'whatsapp://send?phone=$whatsApp&&text=Talk to $name I am not OK.';
   var whatAppURL_ios = 'https://wa.me/$whatsApp';
   if (Platform.isIOS) {
     // for iOS phone only

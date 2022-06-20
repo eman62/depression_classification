@@ -31,24 +31,29 @@ class FriendsScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   )
                 : Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.menu,
-                          size: 100,
-                          color: Colors.grey,
-                        ),
-                        Text(
-                          '${controller.users[index].name} don\'t have Friends yet..',
-                          style: const TextStyle(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.group_off,
+                            size: 80,
                             color: Colors.grey,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 22),
+                          Text(
+                            '${controller.users[index].name} don\'t have Friends yet..',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
             fallback: (context) => ListView.separated(
@@ -98,7 +103,8 @@ class FriendItem extends StatelessWidget {
   final int index;
   final String username;
 
-  const FriendItem({Key? key, required this.model, required this.context, required this.index, required this.username})
+  const FriendItem(
+      {Key? key, required this.model, required this.context, required this.index, required this.username})
       : super(key: key);
 
   @override
@@ -151,8 +157,7 @@ class FriendItem extends StatelessWidget {
 
 sendWhatsapp(String phone, name) async {
   var whatsApp = phone.replaceAll(' ', '');
-  var whatsAppURl_android =
-      'whatsapp://send?phone=$whatsApp&&text=Talk to your friend $name she is not OK.';
+  var whatsAppURl_android = 'whatsapp://send?phone=$whatsApp&&text=Talk to your friend $name she is not OK.';
   var whatAppURL_ios = 'https://wa.me/$whatsApp';
   if (Platform.isIOS) {
     // for iOS phone only
