@@ -90,7 +90,7 @@ class UserItem extends StatelessWidget {
           onTap: () {
             Get.find<AdminController>().getUserFriends(model.uId);
             Get.to(UserFriendsScreen(
-              index: index,
+              userIndex: index,
             ));
           },
           minLeadingWidth: 70,
