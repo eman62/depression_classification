@@ -24,7 +24,8 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     Size? size = MediaQuery.of(context).size;
-    return GetBuilder<AdminController>(builder: (controller) {
+    return GetBuilder<AdminController>(init:AdminController(),
+        builder: (controller) {
       return Scaffold(
         drawer: Drawer(
           child: ListView(
