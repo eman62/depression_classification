@@ -1,6 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.save">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+    <queries android:exported="true">
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+
+    </queries>
+
+    <application
         android:label="save"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
