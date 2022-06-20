@@ -59,6 +59,8 @@ dependencies:
   firebase_database: ^9.0.10
   get: ^4.6.1
   flutter_sms: ^2.3.3
+  url_launcher: ^6.0.20
+
 
 
 dev_dependencies:

@@ -144,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value.isEmpty) {
                               return 'enter valid email';
                             } else if (!emailValid) {
-                              return 'Enter a valid email';
+                              return 'email can\'t be empty';
                             }
                             return null;
                           },
@@ -195,7 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }
                               return null;
                             },
-                            label: 'Twitter account',
+                            label: 'twitter username',
                             prefix: Icons.email),
                         const SizedBox(
                           height: 30,

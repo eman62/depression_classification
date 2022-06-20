@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,10 +11,12 @@ import 'package:save/models/post_model.dart';
 import '../../helpers/cache_helper.dart';
 import '../../helpers/globals.dart';
 import '../../models/feedback_model.dart';
+import '../../models/friend_model.dart';
 import '../../models/user_model.dart';
 import '../../views/01_auth/login_screen.dart';
 import '../../views/widgets/components.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:http/http.dart' as http;
 
 class AdminController extends GetxController {
   List<FeedbackModel> feedback = [];
@@ -36,6 +39,7 @@ class AdminController extends GetxController {
   bool isLoadingGetCommentsOnPost = false;
   bool showComments = false;
   bool isLoadingGettingPosts = false;
+  List<String> scoreList = [];
 
   disableUser(AppUserModel user) async {
     await FirebaseFirestore.instance.collection('users').doc(user.uId).update({'isLocked': true});
@@ -76,15 +80,12 @@ class AdminController extends GetxController {
     AppUserModel? _userModel;
 
     var user = await FirebaseFirestore.instance.collection('users').doc(uId).get();
-    print('/// uuuu');
-    print(user.data());
     Map<String, dynamic>? userData = user.data();
     if (userData != null) {
       _userModel = AppUserModel.fromJson(user.data()!);
     } else {
       _userModel = AppUserModel();
     }
-    print('/// returning');
     return _userModel;
   }
 
@@ -113,28 +114,128 @@ class AdminController extends GetxController {
   //   update();
   // }
 
-  getUsers() {
-    if (users.isEmpty) {
-      // print('/// GETTING USERS ..');
-      FirebaseFirestore.instance.collection('users').snapshots().listen((event) {
-        // print('/// NEW USER LISTENER TRIGGERED ..');
-        // print('${event.docs}');
-        users = [];
-        event.docs.forEach((element) {
-          // print(element.data()['admin']);
-          // print ("هنا");
-          // print(element.data()['uId']);
+  // listenToUserChanges() {
+  //   FirebaseFirestore.instance.collection('users').snapshots().listen((event) {
+  //     print(event.docChanges);
+  //     // users = [];
+  //     // event.docs.forEach((element) {
+  //       // if (element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
+  //       // twitterList.add(element.data()['twitter']);
+  //       // scoreList.add('--');
+  //     // });
+  //     //
+  //     // userCount = users.length;
+  //     update();
+  //
+  //   });
+  // }
 
-          if (element.data()['admin'] == false) users.add(AppUserModel.fromJson(element.data()));
-          return element.data()['uId'];
-        });
 
-        userCount = users.length;
-        update();
+  getUsers() async {
+    List<String> twitterList = [];
 
-        //print(users.length);
-      });
+    await FirebaseFirestore.instance.collection('users').get().then((value){
+      for (var doc in value.docs) {
+        if(!doc.data()['admin']) users.add(AppUserModel.fromJson(doc.data()));
+        twitterList.add(doc.data()['twitter']);
+        scoreList.add('--');
+      }
+      userCount = users.length;
+      print(userCount);
+    });
+
+    calculateScores(twitterList);
+    // listenToUserChanges();
+    update();
+  }
+
+  calculateScores(List<String> twitterList) async {
+    print(users.length);
+    print('/// calc Scores .......');
+
+    for (int i = 0 ; i < twitterList.length ; i++) {
+      if (twitterList[i].contains('@')) {
+        twitterList[i] = twitterList[i].replaceAll('@', '');
+        print('/// account is:');
+        print(twitterList[i]);
+      }
+      String score = await getSentmentScore(twitterList[i]);
+      scoreList[i] = score;
     }
+    // for (String account in twitterList) {
+    //   if (account.contains('@')) {
+    //     account = account.replaceAll('@', '');
+    //     print('/// account is:');
+    //     print(account);
+    //   }
+    //   String score = await getSentmentScore(account);
+    //   scoreList[twitterList.indexOf(twitterList.where((element) => element == account).toList()[0])] = score;
+    // }
+    print(scoreList);
+    update();
+  }
+
+  getSentmentScore(account) async {
+    try {
+      final url = Uri.parse("https://depp-app.herokuapp.com/depression-detection");
+      final body = {'username': account};
+      final headers = {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      };
+      print(body);
+
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(body),
+      );
+      print('StatusCode:${response.statusCode}');
+      print('Return Date:${response.body}');
+      String? sentimentScore;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+        sentimentScore = jsonResponse['score'].toString();
+      } else {
+        sentimentScore = '--';
+      }
+      return sentimentScore;
+    } catch (e, StackTrace) {
+      print(e);
+      print(StackTrace);
+    }
+  }
+
+  List<FriendModel> userFriends = [];
+  List<String> friendsId = [];
+  FriendModel? friendsModel;
+  bool isLoadingGettingFriends = false;
+
+  changeIsLoadingGettingFriends(bool state) {
+    isLoadingGettingFriends = state;
+    update();
+  }
+
+  getUserFriends(uId) {
+    changeIsLoadingGettingFriends(true);
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('friends')
+          .snapshots()
+          .listen((event) {
+        userFriends = [];
+        friendsId = [];
+
+        event.docs.forEach((element) {
+          userFriends.add(FriendModel.fromJson(element.data()));
+          friendsId.add(element.id);
+        });
+        changeIsLoadingGettingFriends(false);
+
+        update();
+      });
+
 
     update();
   }

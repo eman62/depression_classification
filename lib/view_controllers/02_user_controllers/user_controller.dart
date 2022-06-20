@@ -155,15 +155,12 @@ class UserController extends GetxController {
     AppUserModel? _userModel;
 
     var user = await FirebaseFirestore.instance.collection('users').doc(uId).get();
-    print('/// uuuu');
-    print(user.data());
     Map<String, dynamic>? userData = user.data();
     if (userData != null) {
       _userModel = AppUserModel.fromJson(user.data()!);
     } else {
       _userModel = AppUserModel();
     }
-    print('/// returning');
     return _userModel;
   }
 
